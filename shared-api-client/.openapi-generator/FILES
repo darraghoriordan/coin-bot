@@ -1,0 +1,17 @@
+.gitignore
+.npmignore
+README.md
+package.json
+src/apis/ApplicationSupportApi.ts
+src/apis/EmailClientApi.ts
+src/apis/OrganisationsApi.ts
+src/apis/PersonsApi.ts
+src/apis/index.ts
+src/index.ts
+src/models/CreateOrganisationDto.ts
+src/models/Organisation.ts
+src/models/Person.ts
+src/models/UpdateOrganisationDto.ts
+src/models/index.ts
+src/runtime.ts
+tsconfig.json
