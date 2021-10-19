@@ -3,6 +3,9 @@ import {
     Configuration,
     ApplicationSupportApi,
     EmailClientApi,
+    PersonsApi,
+    OrganisationsApi,
+    CustomBotApi,
 } from "../../../shared-api-client/dist";
 import { AuthenticatedRequests } from "./AuthenticatedRequests";
 import fetch from "node-fetch";
@@ -14,12 +17,20 @@ export class ApiClientFactory {
 
     public static getAll(): {
         applicationSupportApi: ApplicationSupportApi;
+        personApi: PersonsApi;
+        organisationApi: OrganisationsApi;
+        customBotApi: CustomBotApi;
         emailClientApi: EmailClientApi;
     } {
         return {
             applicationSupportApi: ApiClientFactory.getAuthenticatedApiInstance(
                 ApplicationSupportApi
             ),
+            personApi: ApiClientFactory.getAuthenticatedApiInstance(PersonsApi),
+            organisationApi:
+                ApiClientFactory.getAuthenticatedApiInstance(OrganisationsApi),
+            customBotApi:
+                ApiClientFactory.getAuthenticatedApiInstance(CustomBotApi),
             emailClientApi:
                 ApiClientFactory.getAuthenticatedApiInstance(EmailClientApi),
         };

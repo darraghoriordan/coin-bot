@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude, Type } from "class-transformer";
 import {
     Column,
     CreateDateColumn,
@@ -40,19 +41,23 @@ export class Trigger {
         enum: TriggerTypeEnum,
         default: TriggerTypeEnum.NO_ACTION_DEFAULT,
     })
-    @ApiProperty()
+    @ApiProperty({ enum: TriggerTypeEnum, enumName: "TriggerTypeEnum" })
     public triggerType!: TriggerTypeEnum;
 
+    @ApiProperty({ type: () => TriggerResult, isArray: true })
+    @Type(() => TriggerResult)
     @OneToMany(() => TriggerResult, (result) => result.trigger, {
         cascade: true,
     })
     triggerResults!: TriggerResult[];
 
+    @Exclude()
     @ManyToOne(() => CustomBot, (customBot) => customBot.triggers, {
         eager: true,
         onDelete: "CASCADE",
     })
     @Index()
+    @Type(() => CustomBot)
     @JoinColumn()
     customBot!: CustomBot;
 
@@ -61,7 +66,8 @@ export class Trigger {
     customBotId!: number;
 
     @Column({ type: "jsonb" })
-    @ApiProperty()
+    @Type(() => Object)
+    @ApiProperty({ type: Object })
     public meta!: Record<string, unknown>;
 
     @CreateDateColumn()

@@ -18,6 +18,9 @@ import {
     CreateCustomBotDto,
     CreateCustomBotDtoFromJSON,
     CreateCustomBotDtoToJSON,
+    CustomBot,
+    CustomBotFromJSON,
+    CustomBotToJSON,
     UpdateCustomBotDto,
     UpdateCustomBotDtoFromJSON,
     UpdateCustomBotDtoToJSON,
@@ -58,11 +61,11 @@ export interface CustomBotApiInterface {
      * @throws {RequiredError}
      * @memberof CustomBotApiInterface
      */
-    customBotControllerCreateRaw(requestParameters: CustomBotControllerCreateRequest): Promise<runtime.ApiResponse<void>>;
+    customBotControllerCreateRaw(requestParameters: CustomBotControllerCreateRequest): Promise<runtime.ApiResponse<CustomBot>>;
 
     /**
      */
-    customBotControllerCreate(requestParameters: CustomBotControllerCreateRequest): Promise<void>;
+    customBotControllerCreate(requestParameters: CustomBotControllerCreateRequest): Promise<CustomBot>;
 
     /**
      * 
@@ -70,11 +73,11 @@ export interface CustomBotApiInterface {
      * @throws {RequiredError}
      * @memberof CustomBotApiInterface
      */
-    customBotControllerFindAllRaw(): Promise<runtime.ApiResponse<void>>;
+    customBotControllerFindAllRaw(): Promise<runtime.ApiResponse<Array<CustomBot>>>;
 
     /**
      */
-    customBotControllerFindAll(): Promise<void>;
+    customBotControllerFindAll(): Promise<Array<CustomBot>>;
 
     /**
      * 
@@ -83,11 +86,11 @@ export interface CustomBotApiInterface {
      * @throws {RequiredError}
      * @memberof CustomBotApiInterface
      */
-    customBotControllerFindOneRaw(requestParameters: CustomBotControllerFindOneRequest): Promise<runtime.ApiResponse<void>>;
+    customBotControllerFindOneRaw(requestParameters: CustomBotControllerFindOneRequest): Promise<runtime.ApiResponse<CustomBot>>;
 
     /**
      */
-    customBotControllerFindOne(requestParameters: CustomBotControllerFindOneRequest): Promise<void>;
+    customBotControllerFindOne(requestParameters: CustomBotControllerFindOneRequest): Promise<CustomBot>;
 
     /**
      * 
@@ -123,11 +126,11 @@ export interface CustomBotApiInterface {
      * @throws {RequiredError}
      * @memberof CustomBotApiInterface
      */
-    customBotControllerUpdateRaw(requestParameters: CustomBotControllerUpdateRequest): Promise<runtime.ApiResponse<void>>;
+    customBotControllerUpdateRaw(requestParameters: CustomBotControllerUpdateRequest): Promise<runtime.ApiResponse<CustomBot>>;
 
     /**
      */
-    customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest): Promise<void>;
+    customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest): Promise<CustomBot>;
 
 }
 
@@ -138,7 +141,7 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
 
     /**
      */
-    async customBotControllerCreateRaw(requestParameters: CustomBotControllerCreateRequest): Promise<runtime.ApiResponse<void>> {
+    async customBotControllerCreateRaw(requestParameters: CustomBotControllerCreateRequest): Promise<runtime.ApiResponse<CustomBot>> {
         if (requestParameters.createCustomBotDto === null || requestParameters.createCustomBotDto === undefined) {
             throw new runtime.RequiredError('createCustomBotDto','Required parameter requestParameters.createCustomBotDto was null or undefined when calling customBotControllerCreate.');
         }
@@ -149,6 +152,14 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/custom-bot`,
             method: 'POST',
@@ -157,22 +168,31 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
             body: CreateCustomBotDtoToJSON(requestParameters.createCustomBotDto),
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CustomBotFromJSON(jsonValue));
     }
 
     /**
      */
-    async customBotControllerCreate(requestParameters: CustomBotControllerCreateRequest): Promise<void> {
-        await this.customBotControllerCreateRaw(requestParameters);
+    async customBotControllerCreate(requestParameters: CustomBotControllerCreateRequest): Promise<CustomBot> {
+        const response = await this.customBotControllerCreateRaw(requestParameters);
+        return await response.value();
     }
 
     /**
      */
-    async customBotControllerFindAllRaw(): Promise<runtime.ApiResponse<void>> {
+    async customBotControllerFindAllRaw(): Promise<runtime.ApiResponse<Array<CustomBot>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/custom-bot`,
             method: 'GET',
@@ -180,18 +200,19 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
             query: queryParameters,
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CustomBotFromJSON));
     }
 
     /**
      */
-    async customBotControllerFindAll(): Promise<void> {
-        await this.customBotControllerFindAllRaw();
+    async customBotControllerFindAll(): Promise<Array<CustomBot>> {
+        const response = await this.customBotControllerFindAllRaw();
+        return await response.value();
     }
 
     /**
      */
-    async customBotControllerFindOneRaw(requestParameters: CustomBotControllerFindOneRequest): Promise<runtime.ApiResponse<void>> {
+    async customBotControllerFindOneRaw(requestParameters: CustomBotControllerFindOneRequest): Promise<runtime.ApiResponse<CustomBot>> {
         if (requestParameters.uuid === null || requestParameters.uuid === undefined) {
             throw new runtime.RequiredError('uuid','Required parameter requestParameters.uuid was null or undefined when calling customBotControllerFindOne.');
         }
@@ -200,6 +221,14 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/custom-bot/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'GET',
@@ -207,13 +236,14 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
             query: queryParameters,
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CustomBotFromJSON(jsonValue));
     }
 
     /**
      */
-    async customBotControllerFindOne(requestParameters: CustomBotControllerFindOneRequest): Promise<void> {
-        await this.customBotControllerFindOneRaw(requestParameters);
+    async customBotControllerFindOne(requestParameters: CustomBotControllerFindOneRequest): Promise<CustomBot> {
+        const response = await this.customBotControllerFindOneRaw(requestParameters);
+        return await response.value();
     }
 
     /**
@@ -227,6 +257,14 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/custom-bot/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'DELETE',
@@ -254,6 +292,14 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/custom-bot/trigger/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'POST',
@@ -272,7 +318,7 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
 
     /**
      */
-    async customBotControllerUpdateRaw(requestParameters: CustomBotControllerUpdateRequest): Promise<runtime.ApiResponse<void>> {
+    async customBotControllerUpdateRaw(requestParameters: CustomBotControllerUpdateRequest): Promise<runtime.ApiResponse<CustomBot>> {
         if (requestParameters.uuid === null || requestParameters.uuid === undefined) {
             throw new runtime.RequiredError('uuid','Required parameter requestParameters.uuid was null or undefined when calling customBotControllerUpdate.');
         }
@@ -287,6 +333,14 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/custom-bot/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'PATCH',
@@ -295,13 +349,14 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
             body: UpdateCustomBotDtoToJSON(requestParameters.updateCustomBotDto),
         });
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CustomBotFromJSON(jsonValue));
     }
 
     /**
      */
-    async customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest): Promise<void> {
-        await this.customBotControllerUpdateRaw(requestParameters);
+    async customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest): Promise<CustomBot> {
+        const response = await this.customBotControllerUpdateRaw(requestParameters);
+        return await response.value();
     }
 
 }

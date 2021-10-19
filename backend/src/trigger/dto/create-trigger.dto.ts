@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import { TriggerTypeEnum } from "../entities/TriggerTypeEnum";
 
 export class CreateTriggerDto {
@@ -8,6 +9,7 @@ export class CreateTriggerDto {
     @ApiProperty({ enum: TriggerTypeEnum, enumName: "TriggerTypeEnum" })
     public triggerType!: TriggerTypeEnum;
 
+    @Type(() => Object)
     @ApiProperty({ type: Object })
     public meta!: Record<string, unknown>;
 }

@@ -10,13 +10,18 @@ import { CustomBot } from "./entities/custom-bot.entity";
 export class CustomBotService {
     constructor(
         @InjectRepository(CustomBot)
-        private repository: Repository<CustomBot>
+        private repository: Repository<CustomBot>,
+        @InjectRepository(CustomBot)
+        private triggerRepository: Repository<Trigger>
     ) {}
 
-    async create(createCustomBotDto: CreateCustomBotDto): Promise<CustomBot> {
-        const model = this.repository.create();
+    async create(
+        createCustomBotDto: CreateCustomBotDto,
+        ownerId: string
+    ): Promise<CustomBot> {
+        const model = this.repository.create({ ownerId });
         const triggers = createCustomBotDto.triggers.map((x) => {
-            const trigger = new Trigger();
+            const trigger = this.triggerRepository.create();
             trigger.triggerType = x.triggerType;
             trigger.meta = x.meta;
             trigger.updateSchedule = x.updateSchedule;
@@ -27,25 +32,26 @@ export class CustomBotService {
         return this.repository.save(model);
     }
 
-    async findAll(): Promise<CustomBot[]> {
+    async findAll(ownerId: string): Promise<CustomBot[]> {
         return this.repository.find({
             order: { createdDate: "DESC" },
-            // where: {
-            //     ownerId,
-            // },
-        });
-    }
-
-    async findOne(uuid: string): Promise<CustomBot | undefined> {
-        return this.repository.findOne({
-            order: { createdDate: "DESC" },
             where: {
-                uuid,
+                ownerId,
             },
         });
     }
 
-    async trigger(uuid: string): Promise<void> {
+    async findOne(uuid: string, ownerId: string): Promise<CustomBot> {
+        return this.repository.findOneOrFail({
+            order: { createdDate: "DESC" },
+            where: {
+                uuid,
+                ownerId,
+            },
+        });
+    }
+
+    async trigger(uuid: string, ownerId: string): Promise<void> {
         // get the thing
         // for each trigger
         // map to trigger method
@@ -58,12 +64,14 @@ export class CustomBotService {
 
     async update(
         uuid: string,
-        updateCustomBotDto: UpdateCustomBotDto
+        updateCustomBotDto: UpdateCustomBotDto,
+        ownerId: string
     ): Promise<CustomBot> {
         const customBot = await this.repository.findOne({
             order: { createdDate: "DESC" },
             where: {
                 uuid,
+                ownerId,
             },
         });
 
@@ -76,16 +84,19 @@ export class CustomBotService {
         return this.repository.save(customBot);
     }
 
-    async remove(uuid: string): Promise<void> {
+    async remove(uuid: string, ownerId: string): Promise<CustomBot[]> {
         const foundEntity = await this.repository.findOne({
             order: { createdDate: "DESC" },
             where: {
                 uuid,
+                ownerId,
             },
         });
+
         if (!foundEntity) {
-            return;
+            throw new NotFoundException();
         }
-        await this.repository.remove([foundEntity]);
+
+        return this.repository.remove([foundEntity]);
     }
 }

@@ -13,61 +13,74 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    Trigger,
+    TriggerFromJSON,
+    TriggerFromJSONTyped,
+    TriggerToJSON,
+} from './';
+
 /**
  * 
  * @export
- * @interface Organisation
+ * @interface CustomBot
  */
-export interface Organisation {
+export interface CustomBot {
     /**
      * 
      * @type {number}
-     * @memberof Organisation
+     * @memberof CustomBot
      */
     id: number;
     /**
      * 
      * @type {string}
-     * @memberof Organisation
+     * @memberof CustomBot
      */
     uuid: string;
     /**
      * 
-     * @type {number}
-     * @memberof Organisation
+     * @type {string}
+     * @memberof CustomBot
      */
-    ownerId: number;
+    ownerId: string;
+    /**
+     * 
+     * @type {Array<Trigger>}
+     * @memberof CustomBot
+     */
+    triggers: Array<Trigger>;
     /**
      * 
      * @type {string}
-     * @memberof Organisation
+     * @memberof CustomBot
      */
-    name: string;
+    checkSchedule: string;
     /**
      * 
      * @type {Date}
-     * @memberof Organisation
+     * @memberof CustomBot
      */
     createdDate: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Organisation
+     * @memberof CustomBot
      */
     updateDate: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Organisation
+     * @memberof CustomBot
      */
     deletedDate: Date;
 }
 
-export function OrganisationFromJSON(json: any): Organisation {
-    return OrganisationFromJSONTyped(json, false);
+export function CustomBotFromJSON(json: any): CustomBot {
+    return CustomBotFromJSONTyped(json, false);
 }
 
-export function OrganisationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Organisation {
+export function CustomBotFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomBot {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -76,14 +89,15 @@ export function OrganisationFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'id': json['id'],
         'uuid': json['uuid'],
         'ownerId': json['ownerId'],
-        'name': json['name'],
+        'triggers': ((json['triggers'] as Array<any>).map(TriggerFromJSON)),
+        'checkSchedule': json['checkSchedule'],
         'createdDate': (new Date(json['createdDate'])),
         'updateDate': (new Date(json['updateDate'])),
         'deletedDate': (new Date(json['deletedDate'])),
     };
 }
 
-export function OrganisationToJSON(value?: Organisation | null): any {
+export function CustomBotToJSON(value?: CustomBot | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -95,7 +109,8 @@ export function OrganisationToJSON(value?: Organisation | null): any {
         'id': value.id,
         'uuid': value.uuid,
         'ownerId': value.ownerId,
-        'name': value.name,
+        'triggers': ((value.triggers as Array<any>).map(TriggerToJSON)),
+        'checkSchedule': value.checkSchedule,
         'createdDate': (value.createdDate.toISOString()),
         'updateDate': (value.updateDate.toISOString()),
         'deletedDate': (value.deletedDate.toISOString()),

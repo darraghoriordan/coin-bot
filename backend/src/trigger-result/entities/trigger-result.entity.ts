@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude, Type } from "class-transformer";
 import {
     Column,
     CreateDateColumn,
@@ -32,11 +33,14 @@ export class TriggerResult {
     @ApiProperty()
     public result!: boolean;
 
+    @Exclude()
     @ManyToOne(() => Trigger, (trigger) => trigger.triggerResults, {
         eager: true,
         onDelete: "CASCADE",
     })
     @Index()
+    @Type(() => Trigger)
+    @ApiProperty({ type: () => Trigger })
     @JoinColumn()
     trigger!: Trigger;
 

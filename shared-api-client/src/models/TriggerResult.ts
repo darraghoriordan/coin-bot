@@ -13,61 +13,74 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    Trigger,
+    TriggerFromJSON,
+    TriggerFromJSONTyped,
+    TriggerToJSON,
+} from './';
+
 /**
  * 
  * @export
- * @interface Organisation
+ * @interface TriggerResult
  */
-export interface Organisation {
+export interface TriggerResult {
     /**
      * 
      * @type {number}
-     * @memberof Organisation
+     * @memberof TriggerResult
      */
     id: number;
     /**
      * 
      * @type {string}
-     * @memberof Organisation
+     * @memberof TriggerResult
      */
     uuid: string;
     /**
      * 
-     * @type {number}
-     * @memberof Organisation
+     * @type {boolean}
+     * @memberof TriggerResult
      */
-    ownerId: number;
+    result: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof Organisation
+     * @type {Trigger}
+     * @memberof TriggerResult
      */
-    name: string;
+    trigger: Trigger;
+    /**
+     * 
+     * @type {number}
+     * @memberof TriggerResult
+     */
+    triggerId: number;
     /**
      * 
      * @type {Date}
-     * @memberof Organisation
+     * @memberof TriggerResult
      */
     createdDate: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Organisation
+     * @memberof TriggerResult
      */
     updateDate: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Organisation
+     * @memberof TriggerResult
      */
     deletedDate: Date;
 }
 
-export function OrganisationFromJSON(json: any): Organisation {
-    return OrganisationFromJSONTyped(json, false);
+export function TriggerResultFromJSON(json: any): TriggerResult {
+    return TriggerResultFromJSONTyped(json, false);
 }
 
-export function OrganisationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Organisation {
+export function TriggerResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): TriggerResult {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -75,15 +88,16 @@ export function OrganisationFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'id': json['id'],
         'uuid': json['uuid'],
-        'ownerId': json['ownerId'],
-        'name': json['name'],
+        'result': json['result'],
+        'trigger': TriggerFromJSON(json['trigger']),
+        'triggerId': json['triggerId'],
         'createdDate': (new Date(json['createdDate'])),
         'updateDate': (new Date(json['updateDate'])),
         'deletedDate': (new Date(json['deletedDate'])),
     };
 }
 
-export function OrganisationToJSON(value?: Organisation | null): any {
+export function TriggerResultToJSON(value?: TriggerResult | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -94,8 +108,9 @@ export function OrganisationToJSON(value?: Organisation | null): any {
         
         'id': value.id,
         'uuid': value.uuid,
-        'ownerId': value.ownerId,
-        'name': value.name,
+        'result': value.result,
+        'trigger': TriggerToJSON(value.trigger),
+        'triggerId': value.triggerId,
         'createdDate': (value.createdDate.toISOString()),
         'updateDate': (value.updateDate.toISOString()),
         'deletedDate': (value.deletedDate.toISOString()),

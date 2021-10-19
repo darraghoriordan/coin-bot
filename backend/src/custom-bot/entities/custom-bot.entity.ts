@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import {
     Column,
     CreateDateColumn,
@@ -25,10 +26,15 @@ export class CustomBot {
     @ApiProperty()
     public uuid!: string;
 
+    @Column()
+    @ApiProperty()
+    public ownerId!: string;
+
+    @Type(() => Trigger)
     @OneToMany(() => Trigger, (trigger) => trigger.customBot, {
         cascade: true,
     })
-    @ApiProperty({ isArray: true, type: Trigger })
+    @ApiProperty({ isArray: true, type: () => Trigger })
     triggers!: Trigger[];
 
     @ApiProperty()

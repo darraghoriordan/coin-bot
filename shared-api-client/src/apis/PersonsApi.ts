@@ -20,16 +20,12 @@ import {
     PersonToJSON,
 } from '../models';
 
-export interface PersonControllerCreateRequest {
-    body: object;
-}
-
 export interface PersonControllerRemoveRequest {
-    id: string;
+    uuid: string;
 }
 
 export interface PersonControllerUpdateRequest {
-    id: string;
+    uuid: string;
     body: object;
 }
 
@@ -40,19 +36,6 @@ export interface PersonControllerUpdateRequest {
  * @interface PersonsApiInterface
  */
 export interface PersonsApiInterface {
-    /**
-     * 
-     * @param {object} body 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PersonsApiInterface
-     */
-    personControllerCreateRaw(requestParameters: PersonControllerCreateRequest): Promise<runtime.ApiResponse<Person>>;
-
-    /**
-     */
-    personControllerCreate(requestParameters: PersonControllerCreateRequest): Promise<Person>;
-
     /**
      * 
      * @param {*} [options] Override http request option.
@@ -67,7 +50,7 @@ export interface PersonsApiInterface {
 
     /**
      * 
-     * @param {string} id 
+     * @param {string} uuid 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PersonsApiInterface
@@ -80,7 +63,7 @@ export interface PersonsApiInterface {
 
     /**
      * 
-     * @param {string} id 
+     * @param {string} uuid 
      * @param {object} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -98,45 +81,6 @@ export interface PersonsApiInterface {
  * 
  */
 export class PersonsApi extends runtime.BaseAPI implements PersonsApiInterface {
-
-    /**
-     */
-    async personControllerCreateRaw(requestParameters: PersonControllerCreateRequest): Promise<runtime.ApiResponse<Person>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling personControllerCreate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/person`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.body as any,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PersonFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async personControllerCreate(requestParameters: PersonControllerCreateRequest): Promise<Person> {
-        const response = await this.personControllerCreateRaw(requestParameters);
-        return await response.value();
-    }
 
     /**
      */
@@ -173,8 +117,8 @@ export class PersonsApi extends runtime.BaseAPI implements PersonsApiInterface {
     /**
      */
     async personControllerRemoveRaw(requestParameters: PersonControllerRemoveRequest): Promise<runtime.ApiResponse<Person>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling personControllerRemove.');
+        if (requestParameters.uuid === null || requestParameters.uuid === undefined) {
+            throw new runtime.RequiredError('uuid','Required parameter requestParameters.uuid was null or undefined when calling personControllerRemove.');
         }
 
         const queryParameters: any = {};
@@ -190,7 +134,7 @@ export class PersonsApi extends runtime.BaseAPI implements PersonsApiInterface {
             }
         }
         const response = await this.request({
-            path: `/person/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/person/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -209,8 +153,8 @@ export class PersonsApi extends runtime.BaseAPI implements PersonsApiInterface {
     /**
      */
     async personControllerUpdateRaw(requestParameters: PersonControllerUpdateRequest): Promise<runtime.ApiResponse<Person>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling personControllerUpdate.');
+        if (requestParameters.uuid === null || requestParameters.uuid === undefined) {
+            throw new runtime.RequiredError('uuid','Required parameter requestParameters.uuid was null or undefined when calling personControllerUpdate.');
         }
 
         if (requestParameters.body === null || requestParameters.body === undefined) {
@@ -232,7 +176,7 @@ export class PersonsApi extends runtime.BaseAPI implements PersonsApiInterface {
             }
         }
         const response = await this.request({
-            path: `/person/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/person/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,

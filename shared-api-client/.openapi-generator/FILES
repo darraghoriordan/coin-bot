@@ -10,10 +10,12 @@ src/apis/PersonsApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/CreateCustomBotDto.ts
-src/models/CreateOrganisationDto.ts
 src/models/CreateTriggerDto.ts
+src/models/CustomBot.ts
 src/models/Organisation.ts
 src/models/Person.ts
+src/models/Trigger.ts
+src/models/TriggerResult.ts
 src/models/TriggerTypeEnum.ts
 src/models/UpdateCustomBotDto.ts
 src/models/UpdateOrganisationDto.ts
