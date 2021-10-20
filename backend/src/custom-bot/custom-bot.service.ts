@@ -1,3 +1,4 @@
+import { CoreLoggerService } from "@darraghor/nest-backend-libs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -12,18 +13,20 @@ export class CustomBotService {
         @InjectRepository(CustomBot)
         private repository: Repository<CustomBot>,
         @InjectRepository(CustomBot)
-        private triggerRepository: Repository<Trigger>
+        private triggerRepository: Repository<Trigger>,
+        private logger: CoreLoggerService
     ) {}
 
     async create(
         createCustomBotDto: CreateCustomBotDto,
         ownerId: string
     ): Promise<CustomBot> {
+        this.logger.log("creating", createCustomBotDto);
         const model = this.repository.create({ ownerId });
         const triggers = createCustomBotDto.triggers.map((x) => {
             const trigger = this.triggerRepository.create();
             trigger.triggerType = x.triggerType;
-            trigger.meta = x.meta;
+            trigger.meta = {}; //x.meta;
             trigger.updateSchedule = x.updateSchedule;
             return trigger;
         });

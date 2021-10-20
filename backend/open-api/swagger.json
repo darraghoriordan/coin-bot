@@ -140,7 +140,22 @@
       },
       "TwitterUserMentionMeta": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "twitterUserName": {
+            "type": "string"
+          },
+          "mentionText": {
+            "type": "string"
+          },
+          "inLastSeconds": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "twitterUserName",
+          "mentionText",
+          "inLastSeconds"
+        ]
       },
       "TriggerTypeEnum": {
         "type": "string",
@@ -244,6 +259,10 @@
           "deletedDate"
         ]
       },
+      "TriggerMeta": {
+        "type": "object",
+        "properties": {}
+      },
       "CreateTriggerDto": {
         "type": "object",
         "properties": {
@@ -254,7 +273,7 @@
             "$ref": "#/components/schemas/TriggerTypeEnum"
           },
           "meta": {
-            "type": "object"
+            "$ref": "#/components/schemas/TriggerMeta"
           }
         },
         "required": [
@@ -336,7 +355,7 @@
             "$ref": "#/components/schemas/TriggerTypeEnum"
           },
           "meta": {
-            "type": "object"
+            "$ref": "#/components/schemas/TriggerMeta"
           },
           "id": {
             "type": "number"

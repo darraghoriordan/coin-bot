@@ -17,6 +17,7 @@ src/models/Person.ts
 src/models/Trigger.ts
 src/models/TriggerResult.ts
 src/models/TriggerTypeEnum.ts
+src/models/TwitterUserMentionMeta.ts
 src/models/UpdateCustomBotDto.ts
 src/models/UpdateOrganisationDto.ts
 src/models/UpdateTriggerDto.ts

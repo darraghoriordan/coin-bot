@@ -6,6 +6,7 @@ export * from './Person';
 export * from './Trigger';
 export * from './TriggerResult';
 export * from './TriggerTypeEnum';
+export * from './TwitterUserMentionMeta';
 export * from './UpdateCustomBotDto';
 export * from './UpdateOrganisationDto';
 export * from './UpdateTriggerDto';
