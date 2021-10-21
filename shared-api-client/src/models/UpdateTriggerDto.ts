@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    AllMetaTypes,
+    AllMetaTypesFromJSON,
+    AllMetaTypesFromJSONTyped,
+    AllMetaTypesToJSON,
     TriggerTypeEnum,
     TriggerTypeEnumFromJSON,
     TriggerTypeEnumFromJSONTyped,
@@ -40,10 +44,10 @@ export interface UpdateTriggerDto {
     triggerType: TriggerTypeEnum;
     /**
      * 
-     * @type {object}
+     * @type {AllMetaTypes}
      * @memberof UpdateTriggerDto
      */
-    meta: object;
+    allMeta: AllMetaTypes;
     /**
      * 
      * @type {number}
@@ -70,7 +74,7 @@ export function UpdateTriggerDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'updateSchedule': json['updateSchedule'],
         'triggerType': TriggerTypeEnumFromJSON(json['triggerType']),
-        'meta': json['meta'],
+        'allMeta': AllMetaTypesFromJSON(json['allMeta']),
         'id': json['id'],
         'uuid': json['uuid'],
     };
@@ -87,7 +91,7 @@ export function UpdateTriggerDtoToJSON(value?: UpdateTriggerDto | null): any {
         
         'updateSchedule': value.updateSchedule,
         'triggerType': TriggerTypeEnumToJSON(value.triggerType),
-        'meta': value.meta,
+        'allMeta': AllMetaTypesToJSON(value.allMeta),
         'id': value.id,
         'uuid': value.uuid,
     };

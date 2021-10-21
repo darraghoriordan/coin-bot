@@ -209,7 +209,6 @@
           "uuid",
           "updateSchedule",
           "triggerType",
-          "triggerResults",
           "customBotId",
           "meta",
           "createdDate",
@@ -259,9 +258,27 @@
           "deletedDate"
         ]
       },
-      "TriggerMeta": {
+      "NoActionTestMeta": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "testString": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "testString"
+        ]
+      },
+      "AllMetaTypes": {
+        "type": "object",
+        "properties": {
+          "twitterUserMentionMeta": {
+            "$ref": "#/components/schemas/TwitterUserMentionMeta"
+          },
+          "noActionTestMeta": {
+            "$ref": "#/components/schemas/NoActionTestMeta"
+          }
+        }
       },
       "CreateTriggerDto": {
         "type": "object",
@@ -272,14 +289,14 @@
           "triggerType": {
             "$ref": "#/components/schemas/TriggerTypeEnum"
           },
-          "meta": {
-            "$ref": "#/components/schemas/TriggerMeta"
+          "allMeta": {
+            "$ref": "#/components/schemas/AllMetaTypes"
           }
         },
         "required": [
           "updateSchedule",
           "triggerType",
-          "meta"
+          "allMeta"
         ]
       },
       "CreateCustomBotDto": {
@@ -354,8 +371,8 @@
           "triggerType": {
             "$ref": "#/components/schemas/TriggerTypeEnum"
           },
-          "meta": {
-            "$ref": "#/components/schemas/TriggerMeta"
+          "allMeta": {
+            "$ref": "#/components/schemas/AllMetaTypes"
           },
           "id": {
             "type": "number"
@@ -367,7 +384,7 @@
         "required": [
           "updateSchedule",
           "triggerType",
-          "meta",
+          "allMeta",
           "id",
           "uuid"
         ]

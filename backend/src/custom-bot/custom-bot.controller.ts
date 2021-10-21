@@ -1,7 +1,9 @@
 import {
+    CoreLoggerService,
     DefaultAuthGuard,
     RequestWithUser,
 } from "@darraghor/nest-backend-libs";
+
 import {
     Controller,
     Get,
@@ -21,6 +23,7 @@ import {
     ApiTags,
 } from "@nestjs/swagger";
 import { Trigger } from "../trigger/entities/trigger.entity";
+import { NoActionTestMeta } from "../trigger/trigger-types/no-action-test/meta-data";
 import { TwitterUserMentionMeta } from "../trigger/trigger-types/twitter-user-mention/meta-data";
 import { CustomBotService } from "./custom-bot.service";
 import { CreateCustomBotDto } from "./dto/create-custom-bot.dto";
@@ -30,10 +33,13 @@ import { CustomBot } from "./entities/custom-bot.entity";
 @ApiTags("Custom Bot")
 @ApiBearerAuth()
 @UseGuards(DefaultAuthGuard)
-@ApiExtraModels(TwitterUserMentionMeta, Trigger)
+@ApiExtraModels(TwitterUserMentionMeta, Trigger, NoActionTestMeta)
 @Controller("custom-bot")
 export class CustomBotController {
-    constructor(private readonly customBotService: CustomBotService) {}
+    constructor(
+        private readonly customBotService: CustomBotService,
+        private readonly logger: CoreLoggerService
+    ) {}
 
     @Post()
     @ApiCreatedResponse({ type: CustomBot })
@@ -41,6 +47,8 @@ export class CustomBotController {
         @Body() createCustomBotDto: CreateCustomBotDto,
         @Request() request: RequestWithUser
     ): Promise<CustomBot> {
+        this.logger.log("creating custombot", createCustomBotDto);
+
         return this.customBotService.create(
             createCustomBotDto,
             request.user.uuid

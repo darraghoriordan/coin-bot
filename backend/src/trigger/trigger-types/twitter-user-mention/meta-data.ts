@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
+import TriggerMeta from "../meta.dto";
 
-export class TwitterUserMentionMeta {
+export class TwitterUserMentionMeta extends TriggerMeta {
     @ApiProperty()
     public twitterUserName!: string;
     @ApiProperty()

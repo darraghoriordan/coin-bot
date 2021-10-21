@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Trigger } from "../trigger/entities/trigger.entity";
+import { TriggerTypeEnum } from "../trigger/trigger-types/TriggerTypeEnum";
 import { CreateCustomBotDto } from "./dto/create-custom-bot.dto";
 import { UpdateCustomBotDto } from "./dto/update-custom-bot.dto";
 import { CustomBot } from "./entities/custom-bot.entity";
@@ -26,7 +27,17 @@ export class CustomBotService {
         const triggers = createCustomBotDto.triggers.map((x) => {
             const trigger = this.triggerRepository.create();
             trigger.triggerType = x.triggerType;
-            trigger.meta = {}; //x.meta;
+            switch (x.triggerType) {
+                case TriggerTypeEnum.NO_ACTION_DEFAULT:
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    trigger.meta = x.allMeta.noActionTestMeta!;
+                    break;
+                case TriggerTypeEnum.TWITTER_USER_MENTION:
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    trigger.meta = x.allMeta.twitterUserMentionMeta!;
+                    break;
+            }
+
             trigger.updateSchedule = x.updateSchedule;
             return trigger;
         });

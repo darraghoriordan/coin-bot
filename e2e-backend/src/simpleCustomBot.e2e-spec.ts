@@ -11,25 +11,27 @@ describe("When working with a simple bot", () => {
 
     it("I can save a custom bot", async () => {
         try {
-            const rmodel = {
+            const customBotModel = {
                 createCustomBotDto: {
                     checkSchedule: "*/30 * * * *",
                     triggers: [
                         {
-                            meta: {
-                                twitterUserName: "@darraghor",
-                                mentionText: "someString",
-                                inLastSeconds: 1800,
-                            } as TwitterUserMentionMeta,
+                            allMeta: {
+                                twitterUserMentionMeta: {
+                                    twitterUserName: "@darraghor",
+                                    mentionText: "someString",
+                                    inLastSeconds: 1800,
+                                } as TwitterUserMentionMeta,
+                            },
                             triggerType: TriggerTypeEnum.TWITTER_USER_MENTION,
                             updateSchedule: "*/30 * * * *",
-                        },
+                        } as CreateTriggerDto,
                     ] as CreateTriggerDto[],
                 } as CreateCustomBotDto,
             };
 
             const saveResponse = await customBotApi.customBotControllerCreate(
-                rmodel
+                customBotModel
             );
             expect(saveResponse.uuid).not.toBeUndefined;
         } catch (error) {

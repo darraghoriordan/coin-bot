@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
+import { ValidateNested } from "class-validator";
 import {
+    AfterLoad,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -35,6 +37,7 @@ export class CustomBot {
         cascade: true,
     })
     @ApiProperty({ isArray: true, type: () => Trigger })
+    @ValidateNested({ each: true })
     triggers!: Trigger[];
 
     @ApiProperty()
@@ -51,4 +54,12 @@ export class CustomBot {
     @DeleteDateColumn()
     @ApiProperty()
     public deletedDate!: Date;
+
+    // eslint-disable-next-line @typescript-eslint/require-await
+    @AfterLoad()
+    async nullChecks() {
+        if (!this.triggers) {
+            this.triggers = [];
+        }
+    }
 }

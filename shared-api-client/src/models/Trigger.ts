@@ -59,7 +59,7 @@ export interface Trigger {
      * @type {Array<TriggerResult>}
      * @memberof Trigger
      */
-    triggerResults: Array<TriggerResult>;
+    triggerResults?: Array<TriggerResult>;
     /**
      * 
      * @type {number}
@@ -106,7 +106,7 @@ export function TriggerFromJSONTyped(json: any, ignoreDiscriminator: boolean): T
         'uuid': json['uuid'],
         'updateSchedule': json['updateSchedule'],
         'triggerType': TriggerTypeEnumFromJSON(json['triggerType']),
-        'triggerResults': ((json['triggerResults'] as Array<any>).map(TriggerResultFromJSON)),
+        'triggerResults': !exists(json, 'triggerResults') ? undefined : ((json['triggerResults'] as Array<any>).map(TriggerResultFromJSON)),
         'customBotId': json['customBotId'],
         'meta': json['meta'],
         'createdDate': (new Date(json['createdDate'])),
@@ -128,7 +128,7 @@ export function TriggerToJSON(value?: Trigger | null): any {
         'uuid': value.uuid,
         'updateSchedule': value.updateSchedule,
         'triggerType': TriggerTypeEnumToJSON(value.triggerType),
-        'triggerResults': ((value.triggerResults as Array<any>).map(TriggerResultToJSON)),
+        'triggerResults': value.triggerResults === undefined ? undefined : ((value.triggerResults as Array<any>).map(TriggerResultToJSON)),
         'customBotId': value.customBotId,
         'meta': value.meta,
         'createdDate': (value.createdDate.toISOString()),
