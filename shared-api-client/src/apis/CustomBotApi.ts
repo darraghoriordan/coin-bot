@@ -18,12 +18,21 @@ import {
     CreateCustomBotDto,
     CreateCustomBotDtoFromJSON,
     CreateCustomBotDtoToJSON,
+    CreateTriggerDto,
+    CreateTriggerDtoFromJSON,
+    CreateTriggerDtoToJSON,
     CustomBot,
     CustomBotFromJSON,
     CustomBotToJSON,
+    Trigger,
+    TriggerFromJSON,
+    TriggerToJSON,
     UpdateCustomBotDto,
     UpdateCustomBotDtoFromJSON,
     UpdateCustomBotDtoToJSON,
+    UpdateTriggerDto,
+    UpdateTriggerDtoFromJSON,
+    UpdateTriggerDtoToJSON,
 } from '../models';
 
 export interface CustomBotControllerCreateRequest {
@@ -45,6 +54,21 @@ export interface CustomBotControllerTriggerRequest {
 export interface CustomBotControllerUpdateRequest {
     uuid: string;
     updateCustomBotDto: UpdateCustomBotDto;
+}
+
+export interface TriggerControllerCreateRequest {
+    botuuid: string;
+    createTriggerDto: CreateTriggerDto;
+}
+
+export interface TriggerControllerRemoveRequest {
+    botuuid: string;
+    triggeruuid: string;
+}
+
+export interface TriggerControllerUpdateRequest {
+    botuuid: string;
+    updateTriggerDto: UpdateTriggerDto;
 }
 
 /**
@@ -131,6 +155,48 @@ export interface CustomBotApiInterface {
     /**
      */
     customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest): Promise<CustomBot>;
+
+    /**
+     * 
+     * @param {string} botuuid 
+     * @param {CreateTriggerDto} createTriggerDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomBotApiInterface
+     */
+    triggerControllerCreateRaw(requestParameters: TriggerControllerCreateRequest): Promise<runtime.ApiResponse<Trigger>>;
+
+    /**
+     */
+    triggerControllerCreate(requestParameters: TriggerControllerCreateRequest): Promise<Trigger>;
+
+    /**
+     * 
+     * @param {string} botuuid 
+     * @param {string} triggeruuid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomBotApiInterface
+     */
+    triggerControllerRemoveRaw(requestParameters: TriggerControllerRemoveRequest): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     */
+    triggerControllerRemove(requestParameters: TriggerControllerRemoveRequest): Promise<void>;
+
+    /**
+     * 
+     * @param {string} botuuid 
+     * @param {UpdateTriggerDto} updateTriggerDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomBotApiInterface
+     */
+    triggerControllerUpdateRaw(requestParameters: TriggerControllerUpdateRequest): Promise<runtime.ApiResponse<Trigger>>;
+
+    /**
+     */
+    triggerControllerUpdate(requestParameters: TriggerControllerUpdateRequest): Promise<Trigger>;
 
 }
 
@@ -356,6 +422,131 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
      */
     async customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest): Promise<CustomBot> {
         const response = await this.customBotControllerUpdateRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async triggerControllerCreateRaw(requestParameters: TriggerControllerCreateRequest): Promise<runtime.ApiResponse<Trigger>> {
+        if (requestParameters.botuuid === null || requestParameters.botuuid === undefined) {
+            throw new runtime.RequiredError('botuuid','Required parameter requestParameters.botuuid was null or undefined when calling triggerControllerCreate.');
+        }
+
+        if (requestParameters.createTriggerDto === null || requestParameters.createTriggerDto === undefined) {
+            throw new runtime.RequiredError('createTriggerDto','Required parameter requestParameters.createTriggerDto was null or undefined when calling triggerControllerCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/custom-bot/{botuuid}/trigger`.replace(`{${"botuuid"}}`, encodeURIComponent(String(requestParameters.botuuid))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateTriggerDtoToJSON(requestParameters.createTriggerDto),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TriggerFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async triggerControllerCreate(requestParameters: TriggerControllerCreateRequest): Promise<Trigger> {
+        const response = await this.triggerControllerCreateRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async triggerControllerRemoveRaw(requestParameters: TriggerControllerRemoveRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.botuuid === null || requestParameters.botuuid === undefined) {
+            throw new runtime.RequiredError('botuuid','Required parameter requestParameters.botuuid was null or undefined when calling triggerControllerRemove.');
+        }
+
+        if (requestParameters.triggeruuid === null || requestParameters.triggeruuid === undefined) {
+            throw new runtime.RequiredError('triggeruuid','Required parameter requestParameters.triggeruuid was null or undefined when calling triggerControllerRemove.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/custom-bot/{botuuid}/trigger/{triggeruuid}`.replace(`{${"botuuid"}}`, encodeURIComponent(String(requestParameters.botuuid))).replace(`{${"triggeruuid"}}`, encodeURIComponent(String(requestParameters.triggeruuid))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async triggerControllerRemove(requestParameters: TriggerControllerRemoveRequest): Promise<void> {
+        await this.triggerControllerRemoveRaw(requestParameters);
+    }
+
+    /**
+     */
+    async triggerControllerUpdateRaw(requestParameters: TriggerControllerUpdateRequest): Promise<runtime.ApiResponse<Trigger>> {
+        if (requestParameters.botuuid === null || requestParameters.botuuid === undefined) {
+            throw new runtime.RequiredError('botuuid','Required parameter requestParameters.botuuid was null or undefined when calling triggerControllerUpdate.');
+        }
+
+        if (requestParameters.updateTriggerDto === null || requestParameters.updateTriggerDto === undefined) {
+            throw new runtime.RequiredError('updateTriggerDto','Required parameter requestParameters.updateTriggerDto was null or undefined when calling triggerControllerUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/custom-bot/{botuuid}/trigger`.replace(`{${"botuuid"}}`, encodeURIComponent(String(requestParameters.botuuid))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateTriggerDtoToJSON(requestParameters.updateTriggerDto),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TriggerFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async triggerControllerUpdate(requestParameters: TriggerControllerUpdateRequest): Promise<Trigger> {
+        const response = await this.triggerControllerUpdateRaw(requestParameters);
         return await response.value();
     }
 

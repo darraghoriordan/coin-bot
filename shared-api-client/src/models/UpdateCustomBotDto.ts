@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    UpdateTriggerDto,
-    UpdateTriggerDtoFromJSON,
-    UpdateTriggerDtoFromJSONTyped,
-    UpdateTriggerDtoToJSON,
-} from './';
-
 /**
  * 
  * @export
@@ -28,10 +21,10 @@ import {
 export interface UpdateCustomBotDto {
     /**
      * 
-     * @type {Array<UpdateTriggerDto>}
+     * @type {string}
      * @memberof UpdateCustomBotDto
      */
-    triggers: Array<UpdateTriggerDto>;
+    name: string;
     /**
      * 
      * @type {string}
@@ -50,7 +43,7 @@ export function UpdateCustomBotDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'triggers': ((json['triggers'] as Array<any>).map(UpdateTriggerDtoFromJSON)),
+        'name': json['name'],
         'checkSchedule': json['checkSchedule'],
     };
 }
@@ -64,7 +57,7 @@ export function UpdateCustomBotDtoToJSON(value?: UpdateCustomBotDto | null): any
     }
     return {
         
-        'triggers': ((value.triggers as Array<any>).map(UpdateTriggerDtoToJSON)),
+        'name': value.name,
         'checkSchedule': value.checkSchedule,
     };
 }

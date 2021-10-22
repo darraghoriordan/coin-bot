@@ -299,21 +299,45 @@
           "allMeta"
         ]
       },
+      "UpdateTriggerDto": {
+        "type": "object",
+        "properties": {
+          "updateSchedule": {
+            "type": "string"
+          },
+          "triggerType": {
+            "$ref": "#/components/schemas/TriggerTypeEnum"
+          },
+          "allMeta": {
+            "$ref": "#/components/schemas/AllMetaTypes"
+          },
+          "id": {
+            "type": "number"
+          },
+          "uuid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "updateSchedule",
+          "triggerType",
+          "allMeta",
+          "id",
+          "uuid"
+        ]
+      },
       "CreateCustomBotDto": {
         "type": "object",
         "properties": {
-          "triggers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CreateTriggerDto"
-            }
+          "name": {
+            "type": "string"
           },
           "checkSchedule": {
             "type": "string"
           }
         },
         "required": [
-          "triggers",
+          "name",
           "checkSchedule"
         ]
       },
@@ -327,6 +351,9 @@
             "type": "string"
           },
           "ownerId": {
+            "type": "string"
+          },
+          "name": {
             "type": "string"
           },
           "triggers": {
@@ -355,6 +382,7 @@
           "id",
           "uuid",
           "ownerId",
+          "name",
           "triggers",
           "checkSchedule",
           "createdDate",
@@ -362,48 +390,18 @@
           "deletedDate"
         ]
       },
-      "UpdateTriggerDto": {
-        "type": "object",
-        "properties": {
-          "updateSchedule": {
-            "type": "string"
-          },
-          "triggerType": {
-            "$ref": "#/components/schemas/TriggerTypeEnum"
-          },
-          "allMeta": {
-            "$ref": "#/components/schemas/AllMetaTypes"
-          },
-          "id": {
-            "type": "number"
-          },
-          "uuid": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "updateSchedule",
-          "triggerType",
-          "allMeta",
-          "id",
-          "uuid"
-        ]
-      },
       "UpdateCustomBotDto": {
         "type": "object",
         "properties": {
-          "triggers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UpdateTriggerDto"
-            }
+          "name": {
+            "type": "string"
           },
           "checkSchedule": {
             "type": "string"
           }
         },
         "required": [
-          "triggers",
+          "name",
           "checkSchedule"
         ]
       }
@@ -714,6 +712,130 @@
         },
         "tags": [
           "email-client"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/custom-bot/{botuuid}/trigger": {
+      "post": {
+        "operationId": "TriggerController_create",
+        "parameters": [
+          {
+            "name": "botuuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTriggerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Trigger"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "TriggerController_update",
+        "parameters": [
+          {
+            "name": "botuuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTriggerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Trigger"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/custom-bot/{botuuid}/trigger/{triggeruuid}": {
+      "delete": {
+        "operationId": "TriggerController_remove",
+        "parameters": [
+          {
+            "name": "botuuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "triggeruuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Custom Bot"
         ],
         "security": [
           {

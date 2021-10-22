@@ -46,6 +46,12 @@ export interface CustomBot {
     ownerId: string;
     /**
      * 
+     * @type {string}
+     * @memberof CustomBot
+     */
+    name: string;
+    /**
+     * 
      * @type {Array<Trigger>}
      * @memberof CustomBot
      */
@@ -89,6 +95,7 @@ export function CustomBotFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'id': json['id'],
         'uuid': json['uuid'],
         'ownerId': json['ownerId'],
+        'name': json['name'],
         'triggers': ((json['triggers'] as Array<any>).map(TriggerFromJSON)),
         'checkSchedule': json['checkSchedule'],
         'createdDate': (new Date(json['createdDate'])),
@@ -109,6 +116,7 @@ export function CustomBotToJSON(value?: CustomBot | null): any {
         'id': value.id,
         'uuid': value.uuid,
         'ownerId': value.ownerId,
+        'name': value.name,
         'triggers': ((value.triggers as Array<any>).map(TriggerToJSON)),
         'checkSchedule': value.checkSchedule,
         'createdDate': (value.createdDate.toISOString()),

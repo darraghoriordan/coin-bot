@@ -3,6 +3,8 @@ import { Type } from "class-transformer";
 import { ValidateNested } from "class-validator";
 import {
     AfterLoad,
+    AfterInsert,
+    AfterUpdate,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -32,6 +34,10 @@ export class CustomBot {
     @ApiProperty()
     public ownerId!: string;
 
+    @Column()
+    @ApiProperty()
+    public name!: string;
+
     @Type(() => Trigger)
     @OneToMany(() => Trigger, (trigger) => trigger.customBot, {
         cascade: true,
@@ -57,6 +63,8 @@ export class CustomBot {
 
     // eslint-disable-next-line @typescript-eslint/require-await
     @AfterLoad()
+    @AfterInsert()
+    @AfterUpdate()
     async nullChecks() {
         if (!this.triggers) {
             this.triggers = [];
