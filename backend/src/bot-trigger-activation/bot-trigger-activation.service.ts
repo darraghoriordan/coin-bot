@@ -2,6 +2,7 @@ import { CoreLoggerService, EmailClient } from "@darraghor/nest-backend-libs";
 import { Person } from "@darraghor/nest-backend-libs/dist/person/entities/person.entity";
 import { PersonService } from "@darraghor/nest-backend-libs/dist/person/person.service";
 import { Inject, Injectable } from "@nestjs/common";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { CustomBotService } from "../custom-bot/custom-bot.service";
 import { CustomBot } from "../custom-bot/entities/custom-bot.entity";
 import { CreateTriggerResultDto } from "../trigger-result/dto/create-trigger-result.dto";
@@ -31,6 +32,7 @@ export class BotTriggerActivationService {
      * This should all be shifted off to some async handler
      * @returns
      */
+    @Cron(CronExpression.EVERY_5_MINUTES)
     async triggerAll(): Promise<void> {
         const botsToRun = await this.customBotService.getAllBotsToRun();
 
@@ -70,6 +72,7 @@ export class BotTriggerActivationService {
             }
         }
         if (allTriggerResults.every((x) => x === true)) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
             const p: Person = await this.personService.findOneByUuid(
                 bot.ownerId
             );

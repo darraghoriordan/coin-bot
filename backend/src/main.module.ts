@@ -10,6 +10,7 @@ import { TriggerModule } from "./trigger/trigger.module";
 import { TriggerResultModule } from "./trigger-result/trigger-result.module";
 import { CustomBotModule } from "./custom-bot/custom-bot.module";
 import { BotTriggerActivationModule } from "./bot-trigger-activation/bot-trigger-activation.module";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { BotTriggerActivationModule } from "./bot-trigger-activation/bot-trigger
         TriggerResultModule,
         CustomBotModule,
         BotTriggerActivationModule,
+        ScheduleModule.forRoot(),
     ],
     providers: [],
 })

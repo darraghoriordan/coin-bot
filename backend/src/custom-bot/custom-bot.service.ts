@@ -1,7 +1,7 @@
 import { CoreLoggerService } from "@darraghor/nest-backend-libs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { IsNull, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { CreateCustomBotDto } from "./dto/create-custom-bot.dto";
 import { RunningStateEnum } from "./dto/runningStateEnum";
 import { UpdateCustomBotDto } from "./dto/update-custom-bot.dto";
@@ -50,17 +50,6 @@ export class CustomBotService {
         });
     }
 
-    async trigger(uuid: string, ownerId: string): Promise<void> {
-        // get the thing
-        // for each trigger
-        // map to trigger method
-        // run synchronously
-        // save results
-        // at some stage in the future kick off the actions (queue anyone?)
-        // return all results = true
-        return Promise.resolve();
-    }
-
     /**
      * This is serial and horrible on purpose to just get something working.
      * This should all be shifted off to some async handler
@@ -69,8 +58,8 @@ export class CustomBotService {
     async getAllBotsToRun(): Promise<CustomBot[]> {
         // get all active bots
         const allActiveBots = await this.repository.find({
-            deletedDate: IsNull(),
-            runningState: RunningStateEnum.RUNNING,
+            withDeleted: false,
+            where: { runningState: RunningStateEnum.RUNNING },
         });
         return allActiveBots.filter((x) => {
             const nowInSeconds = Date.now() / 1000;
