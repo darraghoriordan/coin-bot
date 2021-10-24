@@ -2,6 +2,7 @@ import {
     CreateCustomBotDto,
     CreateTriggerDto,
     NoActionTestMeta,
+    RunningStateEnum,
     TriggerTypeEnum,
     TwitterUserMentionMeta,
 } from "shared-api-client";
@@ -12,30 +13,24 @@ describe("When working with a simple bot", () => {
 
     it("I can save a custom bot", async () => {
         try {
-            const customBotModel = {
-                createCustomBotDto: {
-                    checkSchedule: "*/30 * * * *",
-                    name: "Super Manual Bot",
-                } as CreateCustomBotDto,
-            };
+            const botModel = {
+                runEveryInSeconds: 3100,
+                runningState: RunningStateEnum.STARTED,
+                name: "Super Manual Bot",
+            } as CreateCustomBotDto;
 
-            const saveResponse = await customBotApi.customBotControllerCreate(
-                customBotModel
-            );
+            const saveResponse = await customBotApi.customBotControllerCreate({
+                createCustomBotDto: botModel,
+            });
             expect(saveResponse.uuid).not.toBeUndefined;
+            expect(saveResponse).toMatchObject(botModel);
+            let getBotWithTriggers =
+                await customBotApi.customBotControllerFindOne({
+                    uuid: saveResponse.uuid,
+                });
 
+            expect(getBotWithTriggers).toMatchObject(botModel);
             const triggers = [
-                {
-                    allMeta: {
-                        twitterUserMentionMeta: {
-                            twitterUserName: "@darraghor",
-                            mentionText: "someString",
-                            inLastSeconds: 1800,
-                        } as TwitterUserMentionMeta,
-                    },
-                    triggerType: TriggerTypeEnum.TWITTER_USER_MENTION,
-                    updateSchedule: "*/30 * * * *",
-                } as CreateTriggerDto,
                 {
                     allMeta: {
                         noActionTestMeta: {
@@ -43,7 +38,15 @@ describe("When working with a simple bot", () => {
                         } as NoActionTestMeta,
                     },
                     triggerType: TriggerTypeEnum.NO_ACTION_DEFAULT,
-                    updateSchedule: "*/5 * * * *",
+                } as CreateTriggerDto,
+                {
+                    allMeta: {
+                        twitterUserMentionMeta: {
+                            twitterUserName: "@darraghor",
+                            mentionText: "someString",
+                        } as TwitterUserMentionMeta,
+                    },
+                    triggerType: TriggerTypeEnum.TWITTER_USER_MENTION,
                 } as CreateTriggerDto,
             ] as CreateTriggerDto[];
 
@@ -55,9 +58,17 @@ describe("When working with a simple bot", () => {
                     });
 
                 expect(triggerResponse.uuid).not.toBeUndefined;
-                expect(triggerResponse.updateSchedule).not.toBeUndefined;
                 expect(triggerResponse.triggerType).not.toBeUndefined;
             }
+
+            getBotWithTriggers = await customBotApi.customBotControllerFindOne({
+                uuid: saveResponse.uuid,
+            });
+
+            expect(getBotWithTriggers.triggers).toMatchObject([
+                { triggerType: TriggerTypeEnum.NO_ACTION_DEFAULT },
+                { triggerType: TriggerTypeEnum.TWITTER_USER_MENTION },
+            ]);
         } catch (error) {
             console.log("error", error);
             console.log("error", await (error as any).text());

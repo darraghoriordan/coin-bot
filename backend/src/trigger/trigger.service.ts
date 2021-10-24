@@ -30,15 +30,15 @@ export class TriggerService {
 
         const trigger = this.triggerRepository.create();
         trigger.triggerType = createTriggerResultDto.triggerType;
-        trigger.updateSchedule = createTriggerResultDto.updateSchedule;
 
         trigger.meta = this.triggerMetaMapper.mapMeta(
             createTriggerResultDto.allMeta,
             createTriggerResultDto.triggerType
         );
-        bot.triggers.push(trigger);
+        trigger.customBot = bot;
+        trigger.customBotId = bot.id;
 
-        await this.botRepository.save(bot);
+        await this.triggerRepository.save(trigger);
 
         return trigger;
     }
@@ -61,12 +61,9 @@ export class TriggerService {
             throw new NotFoundException();
         }
 
-        trigger.triggerType = updateTriggerResultDto.triggerType;
-        trigger.updateSchedule = updateTriggerResultDto.updateSchedule;
-
         trigger.meta = this.triggerMetaMapper.mapMeta(
             updateTriggerResultDto.allMeta,
-            updateTriggerResultDto.triggerType
+            trigger.triggerType
         );
 
         return this.triggerRepository.save(trigger);

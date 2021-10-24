@@ -28,7 +28,7 @@ import { CreateTriggerDto } from "./dto/create-trigger.dto";
 import { UpdateTriggerDto } from "./dto/update-trigger.dto";
 import { TriggerService } from "./trigger.service";
 
-@ApiTags("Custom Bot")
+@ApiTags("Triggers")
 @ApiBearerAuth()
 @UseGuards(DefaultAuthGuard)
 @ApiExtraModels(TwitterUserMentionMeta, Trigger, NoActionTestMeta)

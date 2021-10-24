@@ -9,5 +9,6 @@ import { Trigger } from "../trigger/entities/trigger.entity";
     imports: [TypeOrmModule.forFeature([CustomBot, Trigger])],
     controllers: [CustomBotController],
     providers: [CustomBotService],
+    exports: [CustomBotService],
 })
 export class CustomBotModule {}

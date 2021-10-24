@@ -9,6 +9,7 @@ import {
 import { TriggerModule } from "./trigger/trigger.module";
 import { TriggerResultModule } from "./trigger-result/trigger-result.module";
 import { CustomBotModule } from "./custom-bot/custom-bot.module";
+import { BotTriggerActivationModule } from "./bot-trigger-activation/bot-trigger-activation.module";
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { CustomBotModule } from "./custom-bot/custom-bot.module";
         TriggerModule,
         TriggerResultModule,
         CustomBotModule,
+        BotTriggerActivationModule,
     ],
     providers: [],
 })

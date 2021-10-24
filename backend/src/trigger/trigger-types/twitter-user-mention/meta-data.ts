@@ -6,6 +6,4 @@ export class TwitterUserMentionMeta extends TriggerMeta {
     public twitterUserName!: string;
     @ApiProperty()
     public mentionText!: string;
-    @ApiProperty()
-    public inLastSeconds!: number;
 }

@@ -17,7 +17,6 @@ import {
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
-    RelationId,
     UpdateDateColumn,
 } from "typeorm";
 import { CustomBot } from "../../custom-bot/entities/custom-bot.entity";
@@ -41,10 +40,6 @@ export class Trigger {
     @ApiProperty()
     public uuid!: string;
 
-    @Column()
-    @ApiProperty()
-    public updateSchedule!: string;
-
     @Column({
         type: "enum",
         enum: TriggerTypeEnum,
@@ -67,10 +62,10 @@ export class Trigger {
     })
     @Index()
     @Type(() => CustomBot)
-    @JoinColumn()
+    @JoinColumn({ name: "customBotId" })
     customBot!: CustomBot;
 
-    @RelationId((trigger: Trigger) => trigger.customBot)
+    @Column()
     @ApiProperty()
     customBotId!: number;
 

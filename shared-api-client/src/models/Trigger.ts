@@ -44,12 +44,6 @@ export interface Trigger {
     uuid: string;
     /**
      * 
-     * @type {string}
-     * @memberof Trigger
-     */
-    updateSchedule: string;
-    /**
-     * 
      * @type {TriggerTypeEnum}
      * @memberof Trigger
      */
@@ -104,7 +98,6 @@ export function TriggerFromJSONTyped(json: any, ignoreDiscriminator: boolean): T
         
         'id': json['id'],
         'uuid': json['uuid'],
-        'updateSchedule': json['updateSchedule'],
         'triggerType': TriggerTypeEnumFromJSON(json['triggerType']),
         'triggerResults': !exists(json, 'triggerResults') ? undefined : ((json['triggerResults'] as Array<any>).map(TriggerResultFromJSON)),
         'customBotId': json['customBotId'],
@@ -126,7 +119,6 @@ export function TriggerToJSON(value?: Trigger | null): any {
         
         'id': value.id,
         'uuid': value.uuid,
-        'updateSchedule': value.updateSchedule,
         'triggerType': TriggerTypeEnumToJSON(value.triggerType),
         'triggerResults': value.triggerResults === undefined ? undefined : ((value.triggerResults as Array<any>).map(TriggerResultToJSON)),
         'customBotId': value.customBotId,

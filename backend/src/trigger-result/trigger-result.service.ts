@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { Trigger } from "../trigger/entities/trigger.entity";
 import { CreateTriggerResultDto } from "./dto/create-trigger-result.dto";
 import { TriggerResult } from "./entities/trigger-result.entity";
 
@@ -8,13 +9,24 @@ import { TriggerResult } from "./entities/trigger-result.entity";
 export class TriggerResultService {
     constructor(
         @InjectRepository(TriggerResult)
-        private repository: Repository<TriggerResult>
+        private repository: Repository<TriggerResult>,
+        @InjectRepository(Trigger)
+        private triggerRepository: Repository<Trigger>
     ) {}
 
     async create(
         createTriggerResultDto: CreateTriggerResultDto
     ): Promise<TriggerResult> {
-        const model = this.repository.create(createTriggerResultDto);
+        const trigger = await this.triggerRepository.findOneOrFail({
+            id: createTriggerResultDto.triggerId,
+        });
+        const model = this.repository.create({
+            result: createTriggerResultDto.result,
+            errorMessage: createTriggerResultDto.errorMessage,
+            errorState: createTriggerResultDto.errorState,
+            trigger: trigger,
+            triggerId: trigger.id,
+        });
         return this.repository.save(model);
     }
 

@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    RunningStateEnum,
+    RunningStateEnumFromJSON,
+    RunningStateEnumFromJSONTyped,
+    RunningStateEnumToJSON,
     Trigger,
     TriggerFromJSON,
     TriggerFromJSONTyped,
@@ -58,10 +62,22 @@ export interface CustomBot {
     triggers: Array<Trigger>;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof CustomBot
      */
-    checkSchedule: string;
+    runEveryInSeconds: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof CustomBot
+     */
+    lastRun: Date;
+    /**
+     * 
+     * @type {RunningStateEnum}
+     * @memberof CustomBot
+     */
+    runningState: RunningStateEnum;
     /**
      * 
      * @type {Date}
@@ -97,7 +113,9 @@ export function CustomBotFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'ownerId': json['ownerId'],
         'name': json['name'],
         'triggers': ((json['triggers'] as Array<any>).map(TriggerFromJSON)),
-        'checkSchedule': json['checkSchedule'],
+        'runEveryInSeconds': json['runEveryInSeconds'],
+        'lastRun': (new Date(json['lastRun'])),
+        'runningState': RunningStateEnumFromJSON(json['runningState']),
         'createdDate': (new Date(json['createdDate'])),
         'updateDate': (new Date(json['updateDate'])),
         'deletedDate': (new Date(json['deletedDate'])),
@@ -118,7 +136,9 @@ export function CustomBotToJSON(value?: CustomBot | null): any {
         'ownerId': value.ownerId,
         'name': value.name,
         'triggers': ((value.triggers as Array<any>).map(TriggerToJSON)),
-        'checkSchedule': value.checkSchedule,
+        'runEveryInSeconds': value.runEveryInSeconds,
+        'lastRun': (value.lastRun.toISOString()),
+        'runningState': RunningStateEnumToJSON(value.runningState),
         'createdDate': (value.createdDate.toISOString()),
         'updateDate': (value.updateDate.toISOString()),
         'deletedDate': (value.deletedDate.toISOString()),

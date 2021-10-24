@@ -146,15 +146,11 @@
           },
           "mentionText": {
             "type": "string"
-          },
-          "inLastSeconds": {
-            "type": "number"
           }
         },
         "required": [
           "twitterUserName",
-          "mentionText",
-          "inLastSeconds"
+          "mentionText"
         ]
       },
       "TriggerTypeEnum": {
@@ -171,9 +167,6 @@
             "type": "number"
           },
           "uuid": {
-            "type": "string"
-          },
-          "updateSchedule": {
             "type": "string"
           },
           "triggerType": {
@@ -207,7 +200,6 @@
         "required": [
           "id",
           "uuid",
-          "updateSchedule",
           "triggerType",
           "customBotId",
           "meta",
@@ -227,6 +219,12 @@
           },
           "result": {
             "type": "boolean"
+          },
+          "errorState": {
+            "type": "boolean"
+          },
+          "errorMessage": {
+            "type": "string"
           },
           "trigger": {
             "$ref": "#/components/schemas/Trigger"
@@ -251,6 +249,7 @@
           "id",
           "uuid",
           "result",
+          "errorState",
           "trigger",
           "triggerId",
           "createdDate",
@@ -283,9 +282,6 @@
       "CreateTriggerDto": {
         "type": "object",
         "properties": {
-          "updateSchedule": {
-            "type": "string"
-          },
           "triggerType": {
             "$ref": "#/components/schemas/TriggerTypeEnum"
           },
@@ -294,7 +290,6 @@
           }
         },
         "required": [
-          "updateSchedule",
           "triggerType",
           "allMeta"
         ]
@@ -302,28 +297,27 @@
       "UpdateTriggerDto": {
         "type": "object",
         "properties": {
-          "updateSchedule": {
-            "type": "string"
-          },
-          "triggerType": {
-            "$ref": "#/components/schemas/TriggerTypeEnum"
-          },
-          "allMeta": {
-            "$ref": "#/components/schemas/AllMetaTypes"
-          },
           "id": {
             "type": "number"
           },
           "uuid": {
             "type": "string"
+          },
+          "allMeta": {
+            "$ref": "#/components/schemas/AllMetaTypes"
           }
         },
         "required": [
-          "updateSchedule",
-          "triggerType",
-          "allMeta",
           "id",
-          "uuid"
+          "uuid",
+          "allMeta"
+        ]
+      },
+      "RunningStateEnum": {
+        "type": "string",
+        "enum": [
+          "STARTED",
+          "STOPPED"
         ]
       },
       "CreateCustomBotDto": {
@@ -332,13 +326,17 @@
           "name": {
             "type": "string"
           },
-          "checkSchedule": {
-            "type": "string"
+          "runEveryInSeconds": {
+            "type": "number"
+          },
+          "runningState": {
+            "$ref": "#/components/schemas/RunningStateEnum"
           }
         },
         "required": [
           "name",
-          "checkSchedule"
+          "runEveryInSeconds",
+          "runningState"
         ]
       },
       "CustomBot": {
@@ -362,8 +360,15 @@
               "$ref": "#/components/schemas/Trigger"
             }
           },
-          "checkSchedule": {
+          "runEveryInSeconds": {
+            "type": "number"
+          },
+          "lastRun": {
+            "format": "date-time",
             "type": "string"
+          },
+          "runningState": {
+            "$ref": "#/components/schemas/RunningStateEnum"
           },
           "createdDate": {
             "format": "date-time",
@@ -384,7 +389,9 @@
           "ownerId",
           "name",
           "triggers",
-          "checkSchedule",
+          "runEveryInSeconds",
+          "lastRun",
+          "runningState",
           "createdDate",
           "updateDate",
           "deletedDate"
@@ -396,13 +403,17 @@
           "name": {
             "type": "string"
           },
-          "checkSchedule": {
-            "type": "string"
+          "runEveryInSeconds": {
+            "type": "number"
+          },
+          "runningState": {
+            "$ref": "#/components/schemas/RunningStateEnum"
           }
         },
         "required": [
           "name",
-          "checkSchedule"
+          "runEveryInSeconds",
+          "runningState"
         ]
       }
     }
@@ -756,7 +767,7 @@
           }
         },
         "tags": [
-          "Custom Bot"
+          "Triggers"
         ],
         "security": [
           {
@@ -799,7 +810,7 @@
           }
         },
         "tags": [
-          "Custom Bot"
+          "Triggers"
         ],
         "security": [
           {
@@ -835,7 +846,7 @@
           }
         },
         "tags": [
-          "Custom Bot"
+          "Triggers"
         ],
         "security": [
           {
@@ -895,34 +906,6 @@
                 }
               }
             }
-          }
-        },
-        "tags": [
-          "Custom Bot"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/custom-bot/trigger/{uuid}": {
-      "post": {
-        "operationId": "CustomBotController_trigger",
-        "parameters": [
-          {
-            "name": "uuid",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
           }
         },
         "tags": [
@@ -1031,6 +1014,34 @@
         },
         "tags": [
           "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/bot-trigger-activation/{uuid}": {
+      "post": {
+        "operationId": "BotTriggerActivationController_triggerOne",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Bot Trigger"
         ],
         "security": [
           {

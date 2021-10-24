@@ -5,6 +5,7 @@ export * from './CustomBot';
 export * from './NoActionTestMeta';
 export * from './Organisation';
 export * from './Person';
+export * from './RunningStateEnum';
 export * from './Trigger';
 export * from './TriggerResult';
 export * from './TriggerTypeEnum';

@@ -1,17 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { Allow, IsDefined, IsEnum, IsString } from "class-validator";
+import { IsDefined, IsEnum } from "class-validator";
 import { TriggerTypeEnum } from "../trigger-types/TriggerTypeEnum";
 import AllMetaTypes from "../trigger-types/all-meta-types.dto";
 //import TriggerMeta from "./meta.dto";
 
 export class CreateTriggerDto {
-    @ApiProperty()
-    @IsString()
-    @Allow()
-    @IsDefined()
-    public updateSchedule!: string;
-
     @IsDefined()
     @IsEnum(TriggerTypeEnum)
     @ApiProperty({ enum: TriggerTypeEnum, enumName: "TriggerTypeEnum" })

@@ -1,8 +1,9 @@
 import { CoreLoggerService } from "@darraghor/nest-backend-libs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { IsNull, Repository } from "typeorm";
 import { CreateCustomBotDto } from "./dto/create-custom-bot.dto";
+import { RunningStateEnum } from "./dto/runningStateEnum";
 import { UpdateCustomBotDto } from "./dto/update-custom-bot.dto";
 import { CustomBot } from "./entities/custom-bot.entity";
 
@@ -22,7 +23,8 @@ export class CustomBotService {
         const model = this.repository.create({
             ownerId,
             name: createCustomBotDto.name,
-            checkSchedule: createCustomBotDto.checkSchedule,
+            runEveryInSeconds: createCustomBotDto.runEveryInSeconds,
+            runningState: createCustomBotDto.runningState,
         });
 
         return this.repository.save(model);
@@ -44,6 +46,7 @@ export class CustomBotService {
                 uuid,
                 ownerId,
             },
+            relations: ["triggers", "triggers.triggerResults"],
         });
     }
 
@@ -56,6 +59,34 @@ export class CustomBotService {
         // at some stage in the future kick off the actions (queue anyone?)
         // return all results = true
         return Promise.resolve();
+    }
+
+    /**
+     * This is serial and horrible on purpose to just get something working.
+     * This should all be shifted off to some async handler
+     * @returns
+     */
+    async getAllBotsToRun(): Promise<CustomBot[]> {
+        // get all active bots
+        const allActiveBots = await this.repository.find({
+            deletedDate: IsNull(),
+            runningState: RunningStateEnum.RUNNING,
+        });
+        return allActiveBots.filter((x) => {
+            const nowInSeconds = Date.now() / 1000;
+            const lastRunInSeconds = x.lastRun.getTime() / 1000;
+            const nextRunInSeconds = lastRunInSeconds + x.runEveryInSeconds;
+            return nowInSeconds > nextRunInSeconds;
+        });
+    }
+    /**
+     * To be used when automatically triggering
+     * @param bot
+     * @returns
+     */
+    async updateLastRun(bot: CustomBot): Promise<CustomBot> {
+        bot.lastRun = new Date();
+        return this.repository.save(bot);
     }
 
     async update(
@@ -75,7 +106,8 @@ export class CustomBotService {
             throw new NotFoundException();
         }
         customBot.name = updateCustomBotDto.name;
-        customBot.checkSchedule = updateCustomBotDto.checkSchedule;
+        customBot.runEveryInSeconds = updateCustomBotDto.runEveryInSeconds;
+        customBot.runningState = updateCustomBotDto.runningState;
 
         return this.repository.save(customBot);
     }

@@ -31,12 +31,6 @@ export interface TwitterUserMentionMeta {
      * @memberof TwitterUserMentionMeta
      */
     mentionText: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof TwitterUserMentionMeta
-     */
-    inLastSeconds: number;
 }
 
 export function TwitterUserMentionMetaFromJSON(json: any): TwitterUserMentionMeta {
@@ -51,7 +45,6 @@ export function TwitterUserMentionMetaFromJSONTyped(json: any, ignoreDiscriminat
         
         'twitterUserName': json['twitterUserName'],
         'mentionText': json['mentionText'],
-        'inLastSeconds': json['inLastSeconds'],
     };
 }
 
@@ -66,7 +59,6 @@ export function TwitterUserMentionMetaToJSON(value?: TwitterUserMentionMeta | nu
         
         'twitterUserName': value.twitterUserName,
         'mentionText': value.mentionText,
-        'inLastSeconds': value.inLastSeconds,
     };
 }
 

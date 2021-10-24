@@ -1,8 +1,18 @@
+import { Injectable } from "@nestjs/common";
 import { Trigger } from "../../entities/trigger.entity";
 import { TriggerChecker } from "../TriggerChecker";
+import { TriggerTypeEnum } from "../TriggerTypeEnum";
 
+@Injectable()
 export class TwitterUserMentionCheck implements TriggerChecker {
-    public check(trigger: Trigger): boolean {
+    public shouldHandle(trigger: Trigger): boolean {
+        if (trigger.triggerType !== TriggerTypeEnum.TWITTER_USER_MENTION) {
+            return false;
+        }
+        return true;
+    }
+
+    public async check(trigger: Trigger): Promise<boolean> {
         // validate and convert
         // shouldRun()?
         // startTime: now -inLastSeconds
@@ -12,6 +22,6 @@ export class TwitterUserMentionCheck implements TriggerChecker {
         // if text present
         // return true
         // else
-        return false;
+        return Promise.resolve(true);
     }
 }

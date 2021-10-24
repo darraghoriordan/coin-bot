@@ -16,6 +16,7 @@ src/models/CustomBot.ts
 src/models/NoActionTestMeta.ts
 src/models/Organisation.ts
 src/models/Person.ts
+src/models/RunningStateEnum.ts
 src/models/Trigger.ts
 src/models/TriggerResult.ts
 src/models/TriggerTypeEnum.ts

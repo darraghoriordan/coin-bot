@@ -18,10 +18,6 @@ import {
     AllMetaTypesFromJSON,
     AllMetaTypesFromJSONTyped,
     AllMetaTypesToJSON,
-    TriggerTypeEnum,
-    TriggerTypeEnumFromJSON,
-    TriggerTypeEnumFromJSONTyped,
-    TriggerTypeEnumToJSON,
 } from './';
 
 /**
@@ -30,24 +26,6 @@ import {
  * @interface UpdateTriggerDto
  */
 export interface UpdateTriggerDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateTriggerDto
-     */
-    updateSchedule: string;
-    /**
-     * 
-     * @type {TriggerTypeEnum}
-     * @memberof UpdateTriggerDto
-     */
-    triggerType: TriggerTypeEnum;
-    /**
-     * 
-     * @type {AllMetaTypes}
-     * @memberof UpdateTriggerDto
-     */
-    allMeta: AllMetaTypes;
     /**
      * 
      * @type {number}
@@ -60,6 +38,12 @@ export interface UpdateTriggerDto {
      * @memberof UpdateTriggerDto
      */
     uuid: string;
+    /**
+     * 
+     * @type {AllMetaTypes}
+     * @memberof UpdateTriggerDto
+     */
+    allMeta: AllMetaTypes;
 }
 
 export function UpdateTriggerDtoFromJSON(json: any): UpdateTriggerDto {
@@ -72,11 +56,9 @@ export function UpdateTriggerDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'updateSchedule': json['updateSchedule'],
-        'triggerType': TriggerTypeEnumFromJSON(json['triggerType']),
-        'allMeta': AllMetaTypesFromJSON(json['allMeta']),
         'id': json['id'],
         'uuid': json['uuid'],
+        'allMeta': AllMetaTypesFromJSON(json['allMeta']),
     };
 }
 
@@ -89,11 +71,9 @@ export function UpdateTriggerDtoToJSON(value?: UpdateTriggerDto | null): any {
     }
     return {
         
-        'updateSchedule': value.updateSchedule,
-        'triggerType': TriggerTypeEnumToJSON(value.triggerType),
-        'allMeta': AllMetaTypesToJSON(value.allMeta),
         'id': value.id,
         'uuid': value.uuid,
+        'allMeta': AllMetaTypesToJSON(value.allMeta),
     };
 }
 

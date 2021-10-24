@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Exclude, Type } from "class-transformer";
 import {
     Column,
@@ -10,7 +10,6 @@ import {
     JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
-    RelationId,
     UpdateDateColumn,
 } from "typeorm";
 import { Trigger } from "../../trigger/entities/trigger.entity";
@@ -29,9 +28,23 @@ export class TriggerResult {
     @ApiProperty()
     public uuid!: string;
 
-    @Column()
+    @Column({
+        type: "boolean",
+        default: false,
+    })
     @ApiProperty()
     public result!: boolean;
+
+    @Column({
+        type: "boolean",
+        default: false,
+    })
+    @ApiProperty()
+    public errorState!: boolean;
+
+    @Column({ nullable: true })
+    @ApiPropertyOptional()
+    public errorMessage?: string;
 
     @Exclude()
     @ManyToOne(() => Trigger, (trigger) => trigger.triggerResults, {
@@ -41,10 +54,10 @@ export class TriggerResult {
     @Index()
     @Type(() => Trigger)
     @ApiProperty({ type: () => Trigger })
-    @JoinColumn()
+    @JoinColumn({ name: "triggerId" })
     trigger!: Trigger;
 
-    @RelationId((triggerResult: TriggerResult) => triggerResult.trigger)
+    @Column()
     @ApiProperty()
     triggerId!: number;
 

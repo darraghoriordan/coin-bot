@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    RunningStateEnum,
+    RunningStateEnumFromJSON,
+    RunningStateEnumFromJSONTyped,
+    RunningStateEnumToJSON,
+} from './';
+
 /**
  * 
  * @export
@@ -27,10 +34,16 @@ export interface CreateCustomBotDto {
     name: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof CreateCustomBotDto
      */
-    checkSchedule: string;
+    runEveryInSeconds: number;
+    /**
+     * 
+     * @type {RunningStateEnum}
+     * @memberof CreateCustomBotDto
+     */
+    runningState: RunningStateEnum;
 }
 
 export function CreateCustomBotDtoFromJSON(json: any): CreateCustomBotDto {
@@ -44,7 +57,8 @@ export function CreateCustomBotDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'name': json['name'],
-        'checkSchedule': json['checkSchedule'],
+        'runEveryInSeconds': json['runEveryInSeconds'],
+        'runningState': RunningStateEnumFromJSON(json['runningState']),
     };
 }
 
@@ -58,7 +72,8 @@ export function CreateCustomBotDtoToJSON(value?: CreateCustomBotDto | null): any
     return {
         
         'name': value.name,
-        'checkSchedule': value.checkSchedule,
+        'runEveryInSeconds': value.runEveryInSeconds,
+        'runningState': RunningStateEnumToJSON(value.runningState),
     };
 }
 

@@ -15,6 +15,7 @@ import {
     UpdateDateColumn,
 } from "typeorm";
 import { Trigger } from "../../trigger/entities/trigger.entity";
+import { RunningStateEnum } from "../dto/runningStateEnum";
 
 @Entity()
 export class CustomBot {
@@ -34,7 +35,9 @@ export class CustomBot {
     @ApiProperty()
     public ownerId!: string;
 
-    @Column()
+    @Column({
+        default: "My Bot",
+    })
     @ApiProperty()
     public name!: string;
 
@@ -47,7 +50,28 @@ export class CustomBot {
     triggers!: Trigger[];
 
     @ApiProperty()
-    public checkSchedule!: string;
+    @Column({
+        type: "integer",
+        nullable: false,
+        default: 3000,
+    })
+    public runEveryInSeconds!: number;
+
+    @ApiProperty()
+    @Column({
+        type: "timestamp with time zone",
+        nullable: false,
+        default: () => "CURRENT_TIMESTAMP",
+    })
+    public lastRun!: Date;
+
+    @Column({
+        type: "enum",
+        enum: RunningStateEnum,
+        default: RunningStateEnum.STOPPED,
+    })
+    @ApiProperty({ enum: RunningStateEnum, enumName: "RunningStateEnum" })
+    public runningState!: RunningStateEnum;
 
     @CreateDateColumn()
     @ApiProperty()

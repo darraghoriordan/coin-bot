@@ -55,15 +55,6 @@ export class CustomBotController {
         );
     }
 
-    @Post("trigger/:uuid")
-    @ApiOkResponse()
-    trigger(
-        @Param("uuid") uuid: string,
-        @Request() request: RequestWithUser
-    ): Promise<void> {
-        return this.customBotService.trigger(uuid, request.user.uuid);
-    }
-
     @Get()
     @ApiOkResponse({ type: CustomBot, isArray: true })
     findAll(@Request() request: RequestWithUser): Promise<CustomBot[]> {

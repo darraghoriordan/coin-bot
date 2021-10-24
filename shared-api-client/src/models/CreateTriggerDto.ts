@@ -32,12 +32,6 @@ import {
 export interface CreateTriggerDto {
     /**
      * 
-     * @type {string}
-     * @memberof CreateTriggerDto
-     */
-    updateSchedule: string;
-    /**
-     * 
      * @type {TriggerTypeEnum}
      * @memberof CreateTriggerDto
      */
@@ -60,7 +54,6 @@ export function CreateTriggerDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'updateSchedule': json['updateSchedule'],
         'triggerType': TriggerTypeEnumFromJSON(json['triggerType']),
         'allMeta': AllMetaTypesFromJSON(json['allMeta']),
     };
@@ -75,7 +68,6 @@ export function CreateTriggerDtoToJSON(value?: CreateTriggerDto | null): any {
     }
     return {
         
-        'updateSchedule': value.updateSchedule,
         'triggerType': TriggerTypeEnumToJSON(value.triggerType),
         'allMeta': AllMetaTypesToJSON(value.allMeta),
     };

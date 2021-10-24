@@ -1,8 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import { IsDefined } from "class-validator";
-import { CreateTriggerDto } from "./create-trigger.dto";
+import AllMetaTypes from "../trigger-types/all-meta-types.dto";
 
-export class UpdateTriggerDto extends CreateTriggerDto {
+export class UpdateTriggerDto {
     @ApiProperty()
     @IsDefined()
     public id!: number;
@@ -10,4 +11,9 @@ export class UpdateTriggerDto extends CreateTriggerDto {
     @ApiProperty()
     @IsDefined()
     public uuid!: string;
+
+    @ApiProperty()
+    @IsDefined()
+    @Type(() => AllMetaTypes)
+    public allMeta!: AllMetaTypes;
 }
