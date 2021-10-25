@@ -40,14 +40,19 @@ export class CustomBotService {
     }
 
     async findOne(uuid: string, ownerId: string): Promise<CustomBot> {
-        return this.repository.findOneOrFail({
-            order: { createdDate: "DESC" },
-            where: {
-                uuid,
-                ownerId,
-            },
-            relations: ["triggers", "triggers.triggerResults"],
-        });
+        try {
+            return this.repository.findOneOrFail({
+                order: { createdDate: "DESC" },
+                where: {
+                    uuid,
+                    ownerId,
+                },
+                relations: ["triggers", "triggers.triggerResults"],
+            });
+        } catch (error) {
+            this.logger.error(error);
+            throw new NotFoundException();
+        }
     }
 
     /**
@@ -60,12 +65,13 @@ export class CustomBotService {
         const allActiveBots = await this.repository.find({
             withDeleted: false,
             where: { runningState: RunningStateEnum.RUNNING },
+            relations: ["triggers"],
         });
         return allActiveBots.filter((x) => {
             const nowInSeconds = Date.now() / 1000;
             const lastRunInSeconds = x.lastRun.getTime() / 1000;
             const nextRunInSeconds = lastRunInSeconds + x.runEveryInSeconds;
-            return nowInSeconds > nextRunInSeconds;
+            return nowInSeconds > nextRunInSeconds && x.triggers.length > 0;
         });
     }
     /**
@@ -89,6 +95,7 @@ export class CustomBotService {
                 uuid,
                 ownerId,
             },
+            relations: ["triggers"],
         });
 
         if (!customBot) {

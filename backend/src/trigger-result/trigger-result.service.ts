@@ -24,7 +24,6 @@ export class TriggerResultService {
             result: createTriggerResultDto.result,
             errorMessage: createTriggerResultDto.errorMessage,
             errorState: createTriggerResultDto.errorState,
-            trigger: trigger,
             triggerId: trigger.id,
         });
         return this.repository.save(model);

@@ -83,7 +83,7 @@ const SubmitOffer = (): JSX.Element => {
     (submitOfferMutation.data as any).statusCode === 429
   ) {
     return (
-      <ApiError message="You have exceeded the number of applications from a single recruiter that this candidate allows per day. Please try again tomorrow." />
+      <ApiError message="You have exceeded the number of bots allowed" />
     );
   }
 
@@ -96,25 +96,6 @@ const SubmitOffer = (): JSX.Element => {
       initialValues={{
         offerUuid: offerId,
 
-        // Applicant and Role
-        applicantName: authenticationStateChanges.name,
-        applicantRole: ApplicantRole.RECRUITER,
-        applicantEmail: authenticationStateChanges.email, // going to remove this because it will be in the login
-
-        // Role Details
-        roleTitle: "",
-        roleLocation: "",
-        primaryResponsibility: JobResponsibility.INDIVIDUAL_CONTRIBUTOR,
-        remoteAllowance: RemoteAllowance.NO_REMOTE,
-        tellMeAboutWhoWillIBeWorkingWith: "",
-        describeHowAPieceOfWorkGoesFromIdeaToProduct: "",
-
-        // Salary
-        salary: 0,
-        totalCompensation: 0,
-        inclusiveOfPension: false,
-        providesSomeMedicalBenefit: false,
-
         // Culture Details
         whyNotFilledInternally: "",
         learningTimePercentPerMonth: 0,
@@ -123,17 +104,6 @@ const SubmitOffer = (): JSX.Element => {
         isFamilyFriendly: false,
         familyFriendlyTellMeMore: "",
         isOvertimeExpected: false,
-
-        // Diversity Details
-        hasActiveDiversityProgram: false,
-        tellMeMoreAboutDiversity: "",
-        // Company Details
-        companyAudience: CompanyAudience.B_TO_C,
-        companyFunding: CompanyFunding.SELF_FUNDED,
-
-        companyName: "",
-        whatIsYourCompetitiveAdvantage: "",
-        nonCompeteAgreementRequired: false,
       }}
       validationSchema={Yup.object({
         applicantName: Yup.string()
@@ -341,7 +311,7 @@ const SubmitOffer = (): JSX.Element => {
         <div className="mb-8">
           <div className="px-8 pt-6 pb-6 overflow-hidden bg-white rounded-lg shadow lg:pb-8">
             <div className="grid grid-cols-12 gap-6">
-              <h2 className="text-2xl col-span-12">Submit the job</h2>
+              <h2 className="text-2xl col-span-12">Submit</h2>
               <div className="col-span-12">
                 {authenticationStateChanges.signupMessage}
               </div>{" "}
@@ -354,14 +324,14 @@ const SubmitOffer = (): JSX.Element => {
                     disabled={authenticationStateChanges.disableSaveButton}
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-gray-300 rounded-md shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500 disabled:opacity-50"
                   >
-                    Click to submit this job to the candidate
+                    Click to submit
                   </button>
                 )}
               </div>
               <div className="col-span-12">
                 {submitOfferMutation.isSuccess && (
                   <p>
-                    Success - Job submitted!{" "}
+                    Success - submitted!{" "}
                     <Link
                       to={"/submitted-roles"}
                       className="font-bold info-link text-dark-accent"

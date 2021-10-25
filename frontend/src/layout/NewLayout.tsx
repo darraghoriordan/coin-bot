@@ -14,26 +14,8 @@ import InitialisedUserWrapped from "./InitialisedUserWrapped";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const navigation = [
-    { name: "Sharing Link", href: "/", icon: HomeIcon, exact: true },
-    {
-        name: "Received roles",
-        href: "/received-roles",
-        icon: InboxInIcon,
-        exact: false,
-    },
-    {
-        name: "Filter Setup",
-        href: "/settings",
-        icon: AdjustmentsIcon,
-        exact: false,
-    },
-
-    {
-        name: "Submitted roles",
-        href: "/submitted-roles",
-        icon: ChevronDoubleRightIcon,
-        exact: false,
-    },
+    { name: "Custom Bots", href: "/", icon: HomeIcon, exact: true },
+    
 ];
 function trimText(length: number, text: string | undefined): string {
     if (text && text.length > length) {
@@ -117,7 +99,7 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                             alt="Filtered Reduced"
                                         />
                                         <span className="ml-4 text-lg">
-                                            Filtered Reduced
+                                            Coinbot
                                         </span>
                                     </div>
                                     <nav className="mt-5 px-2 space-y-1">
@@ -210,7 +192,7 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                         alt="Filtered Reduced"
                                     />
                                     <span className="ml-4 text-lg">
-                                        Filtered Reduced
+                                        Coinbot
                                     </span>
                                 </div>
                                 <nav className="mt-5 flex-1 px-2 bg-white space-y-1">

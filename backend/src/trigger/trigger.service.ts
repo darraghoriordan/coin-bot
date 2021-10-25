@@ -75,10 +75,13 @@ export class TriggerService {
         ownerId: string
     ): Promise<Trigger> {
         // just checking for ownership
-        const bot = await this.botRepository.findOneOrFail({
-            uuid: customBotUuid,
-            ownerId,
-        });
+        const bot = await this.botRepository.findOneOrFail(
+            {
+                uuid: customBotUuid,
+                ownerId,
+            },
+            { relations: ["triggers"] }
+        );
 
         const trigger = bot.triggers.find((t) => t.uuid === triggeruuid);
         if (!trigger) {

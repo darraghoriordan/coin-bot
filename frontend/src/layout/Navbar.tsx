@@ -16,7 +16,7 @@ function Navbar() {
           <div className="flex items-center justify-between h-16 px-4 sm:px-0">
             <div className="flex items-center">
               <div className="flex-shrink-0 text-light-shade">
-                <Link to={"/"}>filtered:reduced</Link>
+                <Link to={"/"}>coinbot</Link>
               </div>
               <div className="hidden md:block">
                 {isAuthenticated && (
@@ -28,30 +28,9 @@ function Navbar() {
                       exact={true}
                       activeClassName="active-menu-item"
                     >
-                      Sharing Link
-                    </NavLink>
-                    <NavLink
-                      className="px-3 py-2 text-sm font-medium text-light-shade  hover:bg-gray-700 hover:text-white rounded-md"
-                      to={"/settings"}
-                      activeClassName="active-menu-item"
-                    >
-                      Filter Setup
+                      My Bots
                     </NavLink>
 
-                    <NavLink
-                      className="px-3 py-2 text-sm font-medium text-light-shade hover:bg-gray-700 hover:text-white rounded-md"
-                      to={"/received-roles"}
-                      activeClassName="active-menu-item"
-                    >
-                      Filtered received roles
-                    </NavLink>
-                    <NavLink
-                      className="px-3 py-2 text-sm font-medium text-light-shade  hover:bg-gray-700 hover:text-white rounded-md"
-                      to={"/submitted-roles"}
-                      activeClassName="active-menu-item"
-                    >
-                      Submitted roles
-                    </NavLink>
                   </div>
                 )}
               </div>
@@ -216,29 +195,7 @@ function Navbar() {
               activeClassName="active-menu-item"
               exact={true}
             >
-              Sharing link
-            </NavLink>
-            <NavLink
-              className="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"
-              to={"/settings"}
-              activeClassName="active-menu-item"
-            >
-              Filter Setup
-            </NavLink>
-
-            <NavLink
-              className="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"
-              to={"/received-roles"}
-              activeClassName="active-menu-item"
-            >
-              Filtered received roles
-            </NavLink>
-            <NavLink
-              className="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"
-              to={"/submitted-roles"}
-              activeClassName="active-menu-item"
-            >
-              Submitted roles
+             My Bots
             </NavLink>
           </div>
         )}

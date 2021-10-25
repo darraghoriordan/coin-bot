@@ -43,7 +43,7 @@ export class CustomBot {
 
     @Type(() => Trigger)
     @OneToMany(() => Trigger, (trigger) => trigger.customBot, {
-        cascade: true,
+        onDelete: "CASCADE",
     })
     @ApiProperty({ isArray: true, type: () => Trigger })
     @ValidateNested({ each: true })

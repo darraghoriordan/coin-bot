@@ -12,6 +12,7 @@ export class TwitterUserMentionCheck implements TriggerChecker {
         return true;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async check(trigger: Trigger): Promise<boolean> {
         // validate and convert
         // shouldRun()?

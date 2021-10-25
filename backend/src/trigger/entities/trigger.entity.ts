@@ -51,7 +51,7 @@ export class Trigger {
     @ApiPropertyOptional({ type: () => TriggerResult, isArray: true })
     @Type(() => TriggerResult)
     @OneToMany(() => TriggerResult, (result) => result.trigger, {
-        cascade: true,
+        onDelete: "CASCADE",
     })
     triggerResults?: TriggerResult[];
 

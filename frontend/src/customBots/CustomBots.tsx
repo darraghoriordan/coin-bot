@@ -1,16 +1,14 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
 import { Link } from "react-router-dom";
+import { RunningStateEnum } from "shared-api-client";
 import ApiError from "../api/ApiError";
 import ApiLoading from "../api/ApiLoading";
-import useGetLatestSharingLink from "../sharingLinks/useGetLatestSharingLink";
-import { OfferResult } from "../submittedOffers/OfferResult";
-import useGetReceivedOffers from "./useGetReceivedOffers";
+import { RunningState } from "./RunningState";
+import useGetAllMyBots from "./useGetAllMyBots";
 
-const ReceivedOffers = (): JSX.Element => {
-  const { data, status } = useGetReceivedOffers();
-  const { data: latestSharingLinkData, status: latestSharingLinkStatus } =
-    useGetLatestSharingLink();
+const SubmittedOffers = (): JSX.Element => {
+  const { data, status } = useGetAllMyBots();
 
   if (status === "loading") {
     return <ApiLoading />;
@@ -25,35 +23,26 @@ const ReceivedOffers = (): JSX.Element => {
 
   if (data && data.length === 0) {
     return (
-      <ApiLoading message="You haven't received any roles yet.">
-        <p>
-          This is where you can see the roles you have been sent and if they
-          passed your filters or not.
-        </p>
-        <p>
-          If you like you can submit a job to yourself to test what will happen
-          when a recruiter submits an role to you.
-        </p>
-        <Link
-          to={`/submit/${latestSharingLinkData?.uuid}`}
-          className="flex-none block w-full px-6 py-3 text-lg font-semibold border border-transparent sm:w-auto bg-main-brand text-light-shade leading-6 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-900 focus:outline-none transition-colors duration-200"
-        >
-          Test your own filters now
+      <ApiLoading message="You don't have any bots yet">
+             <Link
+                        to={`/create-custom-bot`}
+                        className="block underline"
+                      >
+         Add a new bot
         </Link>
       </ApiLoading>
     );
   }
-
+  console.log("DATA",data)
   return (
     <div className="mb-8">
       <div className="overflow-hidden bg-white shadow sm:rounded-md">
         <div className="px-4 py-5 sm:px-6">
           <h1 className="pb-6 text-3xl font-bold text-dark-shade">
-            Received Roles
+            My Bots
           </h1>
           <p className="pb-6">
-            These are the roles you've received from people using your sharing
-            link.
+            These are your bots!
           </p>
           <ul className="divide-y divide-gray-200">
             {data &&
@@ -61,11 +50,11 @@ const ReceivedOffers = (): JSX.Element => {
                 .sort(function (a, b) {
                   return +b.createdDate! - +a.createdDate!;
                 })
-                .map((offer) => {
+                .map((customBot) => {
                   return (
-                    <li key={offer.id}>
+                    <li key={customBot.id}>
                       <Link
-                        to={`/submitted-roles/${offer.id}`}
+                        to={`/custom-bot/${customBot.uuid}`}
                         className="block hover:bg-gray-50"
                       >
                         <div className="flex items-center px-4 py-4 sm:px-6">
@@ -73,24 +62,22 @@ const ReceivedOffers = (): JSX.Element => {
                             <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
                               <div>
                                 <p className="text-sm font-medium text-indigo-600 truncate">
-                                  {offer.roleTitle}
+                                  {customBot.name}
                                 </p>
                               </div>
                               <div className="hidden md:block">
                                 <div>
                                   <p className="text-sm text-gray-900">
-                                    Submitted on{" "}
+                                    Last run{" "}
                                     <time
-                                      dateTime={offer.createdDate!.toString()}
+                                      dateTime={customBot.lastRun!.toString()}
                                     >
-                                      {offer.createdDate.toLocaleDateString()}
+                                      {customBot.lastRun.toLocaleDateString()}
                                     </time>
                                   </p>
                                   <p className="mt-2 flex items-center text-sm text-gray-500">
-                                    <OfferResult
-                                      result={offer.questionResultSections.every(
-                                        (x) => x.didPassAllFilters
-                                      )}
+                                    <RunningState
+                                      result={customBot.runningState === RunningStateEnum.STARTED}
                                     />
                                   </p>
                                 </div>
@@ -110,9 +97,13 @@ const ReceivedOffers = (): JSX.Element => {
                 })}
           </ul>
         </div>
+        <Link
+                        to={`/create-custom-bot`}
+                        className="block hover:bg-gray-50"
+                      >Create new bot</Link>
       </div>
     </div>
   );
 };
 
-export default ReceivedOffers;
+export default SubmittedOffers;

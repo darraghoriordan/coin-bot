@@ -1,13 +1,13 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import { QuestionResultIcon } from "./QuestionResultIcon";
 
-type OfferResultProps = {
+type ResultProps = {
   result: boolean;
 };
-export const OfferResult: FunctionComponent<OfferResultProps> = ({
+export const RunningState: FunctionComponent<ResultProps> = ({
   result,
 }) => {
-  const message = result ? "Passed All Filters" : "Failed Filters";
+  const message = result ? "Running" : "Stopped";
 
   return (
     <span className="flex">
