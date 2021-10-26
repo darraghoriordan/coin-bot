@@ -27,6 +27,12 @@ export interface Organisation {
     id: number;
     /**
      * 
+     * @type {string}
+     * @memberof Organisation
+     */
+    uuid: string;
+    /**
+     * 
      * @type {number}
      * @memberof Organisation
      */
@@ -68,6 +74,7 @@ export function OrganisationFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'id': json['id'],
+        'uuid': json['uuid'],
         'ownerId': json['ownerId'],
         'name': json['name'],
         'createdDate': (new Date(json['createdDate'])),
@@ -86,6 +93,7 @@ export function OrganisationToJSON(value?: Organisation | null): any {
     return {
         
         'id': value.id,
+        'uuid': value.uuid,
         'ownerId': value.ownerId,
         'name': value.name,
         'createdDate': (value.createdDate.toISOString()),

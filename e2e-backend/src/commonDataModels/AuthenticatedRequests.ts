@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable sonarjs/no-duplicate-string */
 import request from "supertest";
 import LocalApiTestToken from "./LocalApiTestToken";
 import fs from "fs";
 export class AuthenticatedRequests {
-    static contentType: string = "content-type";
-    static jsonType: string = "application/json";
-    static validToken: string = "";
+    static contentType = "content-type";
+    static jsonType = "application/json";
+    static validToken = "";
 
     public static async setToken(): Promise<void> {
         const shouldRunAuthentication =
@@ -15,17 +19,16 @@ export class AuthenticatedRequests {
             try {
                 let localToken: LocalApiTestToken;
 
-                if (fs.existsSync("./local-api-test-token.json")) {
-                    localToken = new LocalApiTestToken(
-                        JSON.parse(
-                            fs
-                                .readFileSync("./local-api-test-token.json")
-                                .toString()
-                        )
-                    );
-                } else {
-                    localToken = new LocalApiTestToken();
-                }
+                // eslint-disable-next-line prefer-const
+                localToken = fs.existsSync("./local-api-test-token.json")
+                    ? new LocalApiTestToken(
+                          JSON.parse(
+                              fs
+                                  .readFileSync("./local-api-test-token.json")
+                                  .toString()
+                          )
+                      )
+                    : new LocalApiTestToken();
 
                 if (localToken.needNewToken()) {
                     console.log("Getting new token...");
@@ -64,9 +67,10 @@ export class AuthenticatedRequests {
                     );
                 }
 
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 AuthenticatedRequests.validToken = localToken.access_token!;
                 console.log(
-                    "using token for run: ",
+                    "using token for run:",
                     AuthenticatedRequests.validToken
                 );
             } catch (error) {

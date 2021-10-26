@@ -1,0 +1,4 @@
+export enum TriggerTypeEnum {
+    TWITTER_USER_MENTION = "TWITTER_USER_MENTION",
+    NO_ACTION_DEFAULT = "NO_ACTION_DEFAULT",
+}

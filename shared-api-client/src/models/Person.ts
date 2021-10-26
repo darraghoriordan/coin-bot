@@ -33,6 +33,12 @@ export interface Person {
     email: string;
     /**
      * 
+     * @type {string}
+     * @memberof Person
+     */
+    uuid: string;
+    /**
+     * 
      * @type {boolean}
      * @memberof Person
      */
@@ -111,6 +117,7 @@ export function PersonFromJSONTyped(json: any, ignoreDiscriminator: boolean): Pe
         
         'id': json['id'],
         'email': json['email'],
+        'uuid': json['uuid'],
         'emailVerified': json['emailVerified'],
         'blocked': json['blocked'],
         'name': !exists(json, 'name') ? undefined : json['name'],
@@ -136,6 +143,7 @@ export function PersonToJSON(value?: Person | null): any {
         
         'id': value.id,
         'email': value.email,
+        'uuid': value.uuid,
         'emailVerified': value.emailVerified,
         'blocked': value.blocked,
         'name': value.name,

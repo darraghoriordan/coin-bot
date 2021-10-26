@@ -15,9 +15,6 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateOrganisationDto,
-    CreateOrganisationDtoFromJSON,
-    CreateOrganisationDtoToJSON,
     Organisation,
     OrganisationFromJSON,
     OrganisationToJSON,
@@ -26,20 +23,16 @@ import {
     UpdateOrganisationDtoToJSON,
 } from '../models';
 
-export interface OrganisationControllerCreateRequest {
-    createOrganisationDto: CreateOrganisationDto;
-}
-
 export interface OrganisationControllerFindOneRequest {
-    id: string;
+    uuid: string;
 }
 
 export interface OrganisationControllerRemoveRequest {
-    id: string;
+    uuid: string;
 }
 
 export interface OrganisationControllerUpdateRequest {
-    id: string;
+    uuid: string;
     updateOrganisationDto: UpdateOrganisationDto;
 }
 
@@ -52,32 +45,19 @@ export interface OrganisationControllerUpdateRequest {
 export interface OrganisationsApiInterface {
     /**
      * 
-     * @param {CreateOrganisationDto} createOrganisationDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganisationsApiInterface
      */
-    organisationControllerCreateRaw(requestParameters: OrganisationControllerCreateRequest): Promise<runtime.ApiResponse<Organisation>>;
+    organisationControllerFindAllForUserRaw(): Promise<runtime.ApiResponse<Array<Organisation>>>;
 
     /**
      */
-    organisationControllerCreate(requestParameters: OrganisationControllerCreateRequest): Promise<Organisation>;
+    organisationControllerFindAllForUser(): Promise<Array<Organisation>>;
 
     /**
      * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganisationsApiInterface
-     */
-    organisationControllerFindAllRaw(): Promise<runtime.ApiResponse<Array<Organisation>>>;
-
-    /**
-     */
-    organisationControllerFindAll(): Promise<Array<Organisation>>;
-
-    /**
-     * 
-     * @param {string} id 
+     * @param {string} uuid 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganisationsApiInterface
@@ -90,7 +70,7 @@ export interface OrganisationsApiInterface {
 
     /**
      * 
-     * @param {string} id 
+     * @param {string} uuid 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganisationsApiInterface
@@ -103,7 +83,7 @@ export interface OrganisationsApiInterface {
 
     /**
      * 
-     * @param {string} id 
+     * @param {string} uuid 
      * @param {UpdateOrganisationDto} updateOrganisationDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -124,46 +104,7 @@ export class OrganisationsApi extends runtime.BaseAPI implements OrganisationsAp
 
     /**
      */
-    async organisationControllerCreateRaw(requestParameters: OrganisationControllerCreateRequest): Promise<runtime.ApiResponse<Organisation>> {
-        if (requestParameters.createOrganisationDto === null || requestParameters.createOrganisationDto === undefined) {
-            throw new runtime.RequiredError('createOrganisationDto','Required parameter requestParameters.createOrganisationDto was null or undefined when calling organisationControllerCreate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = typeof token === 'function' ? token("bearer", []) : token;
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/organisation`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateOrganisationDtoToJSON(requestParameters.createOrganisationDto),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OrganisationFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async organisationControllerCreate(requestParameters: OrganisationControllerCreateRequest): Promise<Organisation> {
-        const response = await this.organisationControllerCreateRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     */
-    async organisationControllerFindAllRaw(): Promise<runtime.ApiResponse<Array<Organisation>>> {
+    async organisationControllerFindAllForUserRaw(): Promise<runtime.ApiResponse<Array<Organisation>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -188,16 +129,16 @@ export class OrganisationsApi extends runtime.BaseAPI implements OrganisationsAp
 
     /**
      */
-    async organisationControllerFindAll(): Promise<Array<Organisation>> {
-        const response = await this.organisationControllerFindAllRaw();
+    async organisationControllerFindAllForUser(): Promise<Array<Organisation>> {
+        const response = await this.organisationControllerFindAllForUserRaw();
         return await response.value();
     }
 
     /**
      */
     async organisationControllerFindOneRaw(requestParameters: OrganisationControllerFindOneRequest): Promise<runtime.ApiResponse<Organisation>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling organisationControllerFindOne.');
+        if (requestParameters.uuid === null || requestParameters.uuid === undefined) {
+            throw new runtime.RequiredError('uuid','Required parameter requestParameters.uuid was null or undefined when calling organisationControllerFindOne.');
         }
 
         const queryParameters: any = {};
@@ -213,7 +154,7 @@ export class OrganisationsApi extends runtime.BaseAPI implements OrganisationsAp
             }
         }
         const response = await this.request({
-            path: `/organisation/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/organisation/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -232,8 +173,8 @@ export class OrganisationsApi extends runtime.BaseAPI implements OrganisationsAp
     /**
      */
     async organisationControllerRemoveRaw(requestParameters: OrganisationControllerRemoveRequest): Promise<runtime.ApiResponse<Organisation>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling organisationControllerRemove.');
+        if (requestParameters.uuid === null || requestParameters.uuid === undefined) {
+            throw new runtime.RequiredError('uuid','Required parameter requestParameters.uuid was null or undefined when calling organisationControllerRemove.');
         }
 
         const queryParameters: any = {};
@@ -249,7 +190,7 @@ export class OrganisationsApi extends runtime.BaseAPI implements OrganisationsAp
             }
         }
         const response = await this.request({
-            path: `/organisation/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/organisation/uuid`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -268,8 +209,8 @@ export class OrganisationsApi extends runtime.BaseAPI implements OrganisationsAp
     /**
      */
     async organisationControllerUpdateRaw(requestParameters: OrganisationControllerUpdateRequest): Promise<runtime.ApiResponse<Organisation>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling organisationControllerUpdate.');
+        if (requestParameters.uuid === null || requestParameters.uuid === undefined) {
+            throw new runtime.RequiredError('uuid','Required parameter requestParameters.uuid was null or undefined when calling organisationControllerUpdate.');
         }
 
         if (requestParameters.updateOrganisationDto === null || requestParameters.updateOrganisationDto === undefined) {
@@ -291,7 +232,7 @@ export class OrganisationsApi extends runtime.BaseAPI implements OrganisationsAp
             }
         }
         const response = await this.request({
-            path: `/organisation/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/organisation/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters.uuid))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,

@@ -1,1 +1,1054 @@
-{"openapi":"3.0.0","info":{"title":"Coin bot Api","description":"Describes the backend api","version":"1.0.0","contact":{}},"tags":[],"servers":[],"components":{"securitySchemes":{"bearer":{"scheme":"bearer","bearerFormat":"JWT","type":"http"}},"schemas":{"Person":{"type":"object","properties":{"id":{"type":"number"},"email":{"type":"string"},"emailVerified":{"type":"boolean"},"blocked":{"type":"boolean"},"name":{"type":"string"},"familyName":{"type":"string"},"givenName":{"type":"string"},"picture":{"type":"string"},"auth0UserId":{"type":"string"},"username":{"type":"string"},"createdDate":{"format":"date-time","type":"string"},"updateDate":{"format":"date-time","type":"string"},"deletedDate":{"format":"date-time","type":"string"}},"required":["id","email","emailVerified","blocked","picture","auth0UserId","createdDate","updateDate","deletedDate"]},"CreateOrganisationDto":{"type":"object","properties":{"members":{"type":"array","items":{"$ref":"#/components/schemas/Person"}},"owner":{"$ref":"#/components/schemas/Person"},"name":{"type":"string"}},"required":["members","owner","name"]},"Organisation":{"type":"object","properties":{"id":{"type":"number"},"ownerId":{"type":"number"},"name":{"type":"string"},"createdDate":{"format":"date-time","type":"string"},"updateDate":{"format":"date-time","type":"string"},"deletedDate":{"format":"date-time","type":"string"}},"required":["id","ownerId","name","createdDate","updateDate","deletedDate"]},"UpdateOrganisationDto":{"type":"object","properties":{"members":{"type":"array","items":{"$ref":"#/components/schemas/Person"}},"owner":{"$ref":"#/components/schemas/Person"},"name":{"type":"string"}}},"CreatePersonDto":{"type":"object","properties":{}},"UpdatePersonDto":{"type":"object","properties":{}}}},"paths":{"/":{"get":{"operationId":"AppController_getHello","parameters":[],"responses":{"200":{"description":"","content":{"application/json":{"schema":{"type":"string"}}}}},"tags":["Application Support"]}},"/authorise":{"get":{"operationId":"AppController_getHelloAuthorized","parameters":[],"responses":{"200":{"description":"","content":{"application/json":{"schema":{"type":"string"}}}}},"tags":["Application Support"],"security":[{"bearer":[]}]}},"/organisation":{"post":{"operationId":"OrganisationController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateOrganisationDto"}}}},"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Organisation"}}}}},"tags":["organisations"],"security":[{"bearer":[]}]},"get":{"operationId":"OrganisationController_findAll","parameters":[],"responses":{"200":{"description":"","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Organisation"}}}}}},"tags":["organisations"],"security":[{"bearer":[]}]}},"/organisation/{id}":{"get":{"operationId":"OrganisationController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Organisation"}}}}},"tags":["organisations"],"security":[{"bearer":[]}]},"patch":{"operationId":"OrganisationController_update","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateOrganisationDto"}}}},"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Organisation"}}}}},"tags":["organisations"],"security":[{"bearer":[]}]},"delete":{"operationId":"OrganisationController_remove","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Organisation"}}}}},"tags":["organisations"],"security":[{"bearer":[]}]}},"/person":{"post":{"operationId":"PersonController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreatePersonDto"}}}},"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Person"}}}}},"tags":["persons"],"security":[{"bearer":[]}]},"get":{"operationId":"PersonController_findSelf","parameters":[],"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Person"}}}}},"tags":["persons"],"security":[{"bearer":[]}]}},"/person/{id}":{"patch":{"operationId":"PersonController_update","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdatePersonDto"}}}},"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Person"}}}}},"tags":["persons"],"security":[{"bearer":[]}]},"delete":{"operationId":"PersonController_remove","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":"","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Person"}}}}},"tags":["persons"],"security":[{"bearer":[]}]}},"/email-client/verify":{"get":{"operationId":"EmailClientController_verify","parameters":[],"responses":{"200":{"description":""}},"tags":["email-client"],"security":[{"bearer":[]}]}}}}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Coin bot Api",
+    "description": "Describes the backend api",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "Organisation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "ownerId",
+          "name",
+          "createdDate",
+          "updateDate",
+          "deletedDate"
+        ]
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "familyName": {
+            "type": "string"
+          },
+          "givenName": {
+            "type": "string"
+          },
+          "picture": {
+            "type": "string"
+          },
+          "auth0UserId": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "createdDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "uuid",
+          "emailVerified",
+          "blocked",
+          "picture",
+          "auth0UserId",
+          "createdDate",
+          "updateDate",
+          "deletedDate"
+        ]
+      },
+      "UpdateOrganisationDto": {
+        "type": "object",
+        "properties": {
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Person"
+            }
+          },
+          "owner": {
+            "$ref": "#/components/schemas/Person"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdatePersonDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "TwitterUserMentionMeta": {
+        "type": "object",
+        "properties": {
+          "twitterUserName": {
+            "type": "string"
+          },
+          "mentionText": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "twitterUserName",
+          "mentionText"
+        ]
+      },
+      "TriggerTypeEnum": {
+        "type": "string",
+        "enum": [
+          "TWITTER_USER_MENTION",
+          "NO_ACTION_DEFAULT"
+        ]
+      },
+      "Trigger": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "triggerType": {
+            "$ref": "#/components/schemas/TriggerTypeEnum"
+          },
+          "triggerResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TriggerResult"
+            }
+          },
+          "customBotId": {
+            "type": "number"
+          },
+          "meta": {
+            "type": "object"
+          },
+          "createdDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "triggerType",
+          "customBotId",
+          "meta",
+          "createdDate",
+          "updateDate",
+          "deletedDate"
+        ]
+      },
+      "TriggerResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "result": {
+            "type": "boolean"
+          },
+          "errorState": {
+            "type": "boolean"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/Trigger"
+          },
+          "triggerId": {
+            "type": "number"
+          },
+          "createdDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "result",
+          "errorState",
+          "trigger",
+          "triggerId",
+          "createdDate",
+          "updateDate",
+          "deletedDate"
+        ]
+      },
+      "NoActionTestMeta": {
+        "type": "object",
+        "properties": {
+          "testString": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "testString"
+        ]
+      },
+      "AllMetaTypes": {
+        "type": "object",
+        "properties": {
+          "twitterUserMentionMeta": {
+            "$ref": "#/components/schemas/TwitterUserMentionMeta"
+          },
+          "noActionTestMeta": {
+            "$ref": "#/components/schemas/NoActionTestMeta"
+          }
+        }
+      },
+      "CreateTriggerDto": {
+        "type": "object",
+        "properties": {
+          "triggerType": {
+            "$ref": "#/components/schemas/TriggerTypeEnum"
+          },
+          "allMeta": {
+            "$ref": "#/components/schemas/AllMetaTypes"
+          }
+        },
+        "required": [
+          "triggerType",
+          "allMeta"
+        ]
+      },
+      "UpdateTriggerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "allMeta": {
+            "$ref": "#/components/schemas/AllMetaTypes"
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "allMeta"
+        ]
+      },
+      "RunningStateEnum": {
+        "type": "string",
+        "enum": [
+          "STARTED",
+          "STOPPED"
+        ]
+      },
+      "CreateCustomBotDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "runEveryInSeconds": {
+            "type": "number"
+          },
+          "runningState": {
+            "$ref": "#/components/schemas/RunningStateEnum"
+          }
+        },
+        "required": [
+          "name",
+          "runEveryInSeconds",
+          "runningState"
+        ]
+      },
+      "CustomBot": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "triggers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Trigger"
+            }
+          },
+          "runEveryInSeconds": {
+            "type": "number"
+          },
+          "lastRun": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "runningState": {
+            "$ref": "#/components/schemas/RunningStateEnum"
+          },
+          "createdDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "ownerId",
+          "name",
+          "triggers",
+          "runEveryInSeconds",
+          "lastRun",
+          "runningState",
+          "createdDate",
+          "updateDate",
+          "deletedDate"
+        ]
+      },
+      "UpdateCustomBotDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "runEveryInSeconds": {
+            "type": "number"
+          },
+          "runningState": {
+            "$ref": "#/components/schemas/RunningStateEnum"
+          }
+        },
+        "required": [
+          "name",
+          "runEveryInSeconds",
+          "runningState"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Application Support"
+        ]
+      }
+    },
+    "/authorise": {
+      "get": {
+        "operationId": "AppController_getHelloAuthorized",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Application Support"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organisation/{uuid}": {
+      "get": {
+        "operationId": "OrganisationController_findOne",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organisation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "organisations"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "OrganisationController_update",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrganisationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organisation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "organisations"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organisation": {
+      "get": {
+        "operationId": "OrganisationController_findAllForUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Organisation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "organisations"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organisation/uuid": {
+      "delete": {
+        "operationId": "OrganisationController_remove",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organisation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "organisations"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/person": {
+      "get": {
+        "operationId": "PersonController_findSelf",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "persons"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/person/{uuid}": {
+      "patch": {
+        "operationId": "PersonController_update",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePersonDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "persons"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "PersonController_remove",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "persons"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/email-client/verify": {
+      "get": {
+        "operationId": "EmailClientController_verify",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "email-client"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/custom-bot/{botuuid}/trigger": {
+      "post": {
+        "operationId": "TriggerController_create",
+        "parameters": [
+          {
+            "name": "botuuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTriggerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Trigger"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Triggers"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "TriggerController_update",
+        "parameters": [
+          {
+            "name": "botuuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTriggerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Trigger"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Triggers"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/custom-bot/{botuuid}/trigger/{triggeruuid}": {
+      "delete": {
+        "operationId": "TriggerController_remove",
+        "parameters": [
+          {
+            "name": "botuuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "triggeruuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Triggers"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/custom-bot": {
+      "post": {
+        "operationId": "CustomBotController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCustomBotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomBot"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "CustomBotController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomBot"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/custom-bot/{uuid}": {
+      "get": {
+        "operationId": "CustomBotController_findOne",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomBot"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "CustomBotController_update",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCustomBotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomBot"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "CustomBotController_remove",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/bot-trigger-activation/{uuid}": {
+      "post": {
+        "operationId": "BotTriggerActivationController_triggerOne",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Bot Trigger"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  }
+}

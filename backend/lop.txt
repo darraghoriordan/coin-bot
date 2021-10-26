@@ -1,0 +1,10 @@
+
+> code-bot-be@0.0.1 lint /Users/darraghoriordan/Documents/personal-projects/coin-bot/backend
+> eslint "{src,apps,libs,test}/**/*.ts" --fix
+
+
+/Users/darraghoriordan/Documents/personal-projects/coin-bot/backend/src/trigger/trigger-types/twitter-user-mention/trigger-check.ts
+  15:24  warning  'trigger' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (0 errors, 1 warning)
+
