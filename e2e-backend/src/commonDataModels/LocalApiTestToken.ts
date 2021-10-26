@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export default class LocalApiTestToken {
     constructor(part?: Partial<LocalApiTestToken>) {
         this.access_token = part?.access_token;

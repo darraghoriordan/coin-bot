@@ -11,9 +11,9 @@ import { AuthenticatedRequests } from "./AuthenticatedRequests";
 import fetch from "node-fetch";
 
 export class ApiClientFactory {
-    static contentType: string = "content-type";
-    static jsonType: string = "application/json";
-    static validToken: string = "";
+    static contentType = "content-type";
+    static jsonType = "application/json";
+    static validToken = "";
 
     public static getAll(): {
         applicationSupportApi: ApplicationSupportApi;
@@ -41,6 +41,7 @@ export class ApiClientFactory {
         const apiConfig = new Configuration({
             basePath: process.env.TEST_API_URL,
             accessToken: AuthenticatedRequests.validToken,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             fetchApi: fetch as any,
         });
         return new apiService(apiConfig);

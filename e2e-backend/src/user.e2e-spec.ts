@@ -5,6 +5,6 @@ describe("When getting a user", () => {
 
     it("I can get myself", async () => {
         const me = await personApi.personControllerFindSelf();
-        expect(me.auth0UserId).not.toBeUndefined;
+        expect(me.auth0UserId).not.toBeUndefined();
     });
 });

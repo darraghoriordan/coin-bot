@@ -22,7 +22,7 @@ describe("When working with a simple bot", () => {
             const saveResponse = await customBotApi.customBotControllerCreate({
                 createCustomBotDto: botModel,
             });
-            expect(saveResponse.uuid).not.toBeUndefined;
+            expect(saveResponse.uuid).not.toBeUndefined();
             expect(saveResponse).toMatchObject(botModel);
             let getBotWithTriggers =
                 await customBotApi.customBotControllerFindOne({
@@ -57,8 +57,8 @@ describe("When working with a simple bot", () => {
                         createTriggerDto: t,
                     });
 
-                expect(triggerResponse.uuid).not.toBeUndefined;
-                expect(triggerResponse.triggerType).not.toBeUndefined;
+                expect(triggerResponse.uuid).not.toBeUndefined();
+                expect(triggerResponse.triggerType).not.toBeUndefined();
             }
 
             getBotWithTriggers = await customBotApi.customBotControllerFindOne({
@@ -69,9 +69,10 @@ describe("When working with a simple bot", () => {
                 { triggerType: TriggerTypeEnum.NO_ACTION_DEFAULT },
                 { triggerType: TriggerTypeEnum.TWITTER_USER_MENTION },
             ]);
-        } catch (error) {
+        } catch (error: any) {
             console.log("error", error);
-            console.log("error", await (error as any).text());
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            console.log("error", await error.text());
         }
     });
 });
