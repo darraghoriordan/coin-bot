@@ -63,11 +63,17 @@ export class CustomBotController {
 
     @Get(":uuid")
     @ApiOkResponse({ type: CustomBot })
-    findOne(
+    async findOne(
         @Param("uuid") uuid: string,
         @Request() request: RequestWithUser
     ): Promise<CustomBot> {
-        return this.customBotService.findOne(uuid, request.user.uuid);
+        this.logger.log("Retrieving customBot", uuid);
+        const result = await this.customBotService.findOne(
+            uuid,
+            request.user.uuid
+        );
+        this.logger.log("Retrieving customBot - returning", result);
+        return result;
     }
 
     @Patch(":uuid")

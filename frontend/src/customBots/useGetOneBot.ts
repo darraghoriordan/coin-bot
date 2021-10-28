@@ -1,14 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 import { CustomBot, CustomBotApi } from "shared-api-client";
 import { getAuthenticatedApiInstance } from "../api/apiInstanceFactories";
 
 import wellKnownQueries from "./wellKnownQueries";
 
-type GetOneBotVariables = {
-    botUuid: string;
-};
 const apiRequest = async (
     getAccessTokenSilently: () => Promise<string>,
     botUuid: string

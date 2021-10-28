@@ -1,6 +1,7 @@
 import {
     CreateCustomBotDto,
     CreateTriggerDto,
+    CustomBot,
     NoActionTestMeta,
     RunningStateEnum,
     TriggerTypeEnum,
@@ -9,7 +10,9 @@ import {
 import { ApiClientFactory } from "./commonDataModels/ApiClientFactory";
 
 describe("When working with a simple bot", () => {
-    const { customBotApi } = ApiClientFactory.getAll();
+    const { customBotApi, triggerApi } = ApiClientFactory.getAll();
+    let getBotWithTriggers: CustomBot;
+    let savedBotUuid: string;
 
     it("I can save a custom bot", async () => {
         try {
@@ -24,12 +27,20 @@ describe("When working with a simple bot", () => {
             });
             expect(saveResponse.uuid).not.toBeUndefined();
             expect(saveResponse).toMatchObject(botModel);
-            let getBotWithTriggers =
-                await customBotApi.customBotControllerFindOne({
-                    uuid: saveResponse.uuid,
-                });
+            savedBotUuid = saveResponse.uuid;
+            getBotWithTriggers = await customBotApi.customBotControllerFindOne({
+                uuid: saveResponse.uuid,
+            });
 
             expect(getBotWithTriggers).toMatchObject(botModel);
+        } catch (error: any) {
+            console.log("error", error);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            console.log("error", await error.text());
+        }
+    });
+    it("I can save triggers to the custom bot and get them", async () => {
+        try {
             const triggers = [
                 {
                     allMeta: {
@@ -51,18 +62,19 @@ describe("When working with a simple bot", () => {
             ] as CreateTriggerDto[];
 
             for (const t of triggers) {
+                console.log("Saving trigger...", t);
                 const triggerResponse =
-                    await customBotApi.triggerControllerCreate({
-                        botuuid: saveResponse.uuid,
+                    await triggerApi.triggerControllerCreate({
+                        botuuid: savedBotUuid,
                         createTriggerDto: t,
                     });
-
+                console.log("Got past trigger creation...");
                 expect(triggerResponse.uuid).not.toBeUndefined();
                 expect(triggerResponse.triggerType).not.toBeUndefined();
             }
 
             getBotWithTriggers = await customBotApi.customBotControllerFindOne({
-                uuid: saveResponse.uuid,
+                uuid: savedBotUuid,
             });
 
             expect(getBotWithTriggers.triggers).toMatchObject([

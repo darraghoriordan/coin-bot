@@ -6,6 +6,7 @@ import {
     PersonsApi,
     OrganisationsApi,
     CustomBotApi,
+    TriggersApi,
 } from "../../../shared-api-client/dist";
 import { AuthenticatedRequests } from "./AuthenticatedRequests";
 import fetch from "node-fetch";
@@ -21,6 +22,7 @@ export class ApiClientFactory {
         organisationApi: OrganisationsApi;
         customBotApi: CustomBotApi;
         emailClientApi: EmailClientApi;
+        triggerApi: TriggersApi;
     } {
         return {
             applicationSupportApi: ApiClientFactory.getAuthenticatedApiInstance(
@@ -33,11 +35,15 @@ export class ApiClientFactory {
                 ApiClientFactory.getAuthenticatedApiInstance(CustomBotApi),
             emailClientApi:
                 ApiClientFactory.getAuthenticatedApiInstance(EmailClientApi),
+            triggerApi:
+                ApiClientFactory.getAuthenticatedApiInstance<TriggersApi>(
+                    TriggersApi
+                ),
         };
     }
     public static getAuthenticatedApiInstance<T extends BaseAPI>(apiService: {
         new (apiConfig: Configuration): T;
-    }) {
+    }): T {
         const apiConfig = new Configuration({
             basePath: process.env.TEST_API_URL,
             accessToken: AuthenticatedRequests.validToken,

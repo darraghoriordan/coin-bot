@@ -3,10 +3,12 @@
 README.md
 package.json
 src/apis/ApplicationSupportApi.ts
+src/apis/BotTriggerApi.ts
 src/apis/CustomBotApi.ts
 src/apis/EmailClientApi.ts
 src/apis/OrganisationsApi.ts
 src/apis/PersonsApi.ts
+src/apis/TriggersApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/AllMetaTypes.ts

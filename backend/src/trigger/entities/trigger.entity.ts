@@ -3,10 +3,12 @@ import {
     ApiPropertyOptional,
     //   getSchemaPath,
 } from "@nestjs/swagger";
-import { Exclude, Type } from "class-transformer";
+import { Exclude, Expose, Transform, Type } from "class-transformer";
 import { IsDefined } from "class-validator";
 import {
+    AfterInsert,
     AfterLoad,
+    AfterUpdate,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -27,11 +29,13 @@ import { TriggerTypeEnum } from "../trigger-types/TriggerTypeEnum";
 import { TwitterUserMentionMeta } from "../trigger-types/twitter-user-mention/meta-data";
 
 @Entity()
+@Exclude()
 export class Trigger {
+    @Expose()
     @PrimaryGeneratedColumn()
     @ApiProperty()
     public id!: number;
-
+    @Expose()
     @Column("uuid", {
         name: "uuid",
         default: () => "uuid_generate_v4()",
@@ -40,6 +44,7 @@ export class Trigger {
     @ApiProperty()
     public uuid!: string;
 
+    @Expose()
     @Column({
         type: "enum",
         enum: TriggerTypeEnum,
@@ -48,6 +53,10 @@ export class Trigger {
     @ApiProperty({ enum: TriggerTypeEnum, enumName: "TriggerTypeEnum" })
     public triggerType!: TriggerTypeEnum;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+    @Transform((t) => t.value.triggerType.toString())
+    public triggerTypeString!: string;
+
     @ApiPropertyOptional({ type: () => TriggerResult, isArray: true })
     @Type(() => TriggerResult)
     @OneToMany(() => TriggerResult, (result) => result.trigger, {
@@ -55,7 +64,6 @@ export class Trigger {
     })
     triggerResults?: TriggerResult[];
 
-    @Exclude()
     @ManyToOne(() => CustomBot, (customBot) => customBot.triggers, {
         eager: true,
         onDelete: "CASCADE",
@@ -68,23 +76,28 @@ export class Trigger {
     @Column()
     @ApiProperty()
     customBotId!: number;
-
+    @Expose()
     @Column({ type: "jsonb" })
-    @Type(() => TriggerMeta, {
-        discriminator: {
-            property: "triggerType",
-            subTypes: [
-                {
-                    value: TwitterUserMentionMeta,
-                    name: TriggerTypeEnum.TWITTER_USER_MENTION,
-                },
-                {
-                    value: NoActionTestMeta,
-                    name: TriggerTypeEnum.NO_ACTION_DEFAULT,
-                },
-            ],
-        },
-    })
+    @Type(
+        () => TriggerMeta
+
+        // , {
+        //     keepDiscriminatorProperty: true,
+        //     discriminator: {
+        //         property: "triggerTypeString",
+        //         subTypes: [
+        //             {
+        //                 value: TwitterUserMentionMeta,
+        //                 name: TriggerTypeEnum.TWITTER_USER_MENTION,
+        //             },
+        //             {
+        //                 value: NoActionTestMeta,
+        //                 name: TriggerTypeEnum.NO_ACTION_DEFAULT,
+        //             },
+        //         ],
+        //     },
+        // }
+    )
     @IsDefined()
     @ApiProperty()
     // @ApiProperty({
@@ -94,21 +107,23 @@ export class Trigger {
     //     ],
     // })
     public meta!: TwitterUserMentionMeta | NoActionTestMeta;
-
+    @Expose()
     @CreateDateColumn()
     @ApiProperty()
     public createdDate!: Date;
-
+    @Expose()
     @UpdateDateColumn()
     @ApiProperty()
     public updateDate!: Date;
-
+    @Expose()
     @DeleteDateColumn()
     @ApiProperty()
     public deletedDate!: Date;
 
     // eslint-disable-next-line @typescript-eslint/require-await
     @AfterLoad()
+    @AfterInsert()
+    @AfterUpdate()
     async nullChecks() {
         if (!this.triggerResults) {
             this.triggerResults = [];

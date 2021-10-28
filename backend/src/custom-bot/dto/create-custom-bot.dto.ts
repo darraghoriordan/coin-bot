@@ -19,7 +19,7 @@ export class CreateCustomBotDto {
     @ApiProperty()
     @IsDefined()
     @IsInt()
-    @Min(600)
+    @Min(120)
     @Max(86_400)
     runEveryInSeconds!: number;
 

@@ -41,18 +41,21 @@ export class TriggerController {
 
     @Post(":botuuid/trigger")
     @ApiCreatedResponse({ type: Trigger })
-    create(
+    async create(
         @Body() createTriggerDto: CreateTriggerDto,
         @Param("botuuid") botuuid: string,
         @Request() request: RequestWithUser
     ): Promise<Trigger> {
         this.logger.log("creating trigger", createTriggerDto);
 
-        return this.triggerService.create(
+        const trigger = await this.triggerService.create(
             createTriggerDto,
             botuuid,
             request.user.uuid
         );
+
+        this.logger.log("creating trigger - result", trigger);
+        return trigger;
     }
 
     @Patch(":botuuid/trigger")

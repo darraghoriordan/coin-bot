@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQueryClient } from "react-query";
 
-import { CustomBotApi } from "shared-api-client";
+import { TriggersApi } from "shared-api-client";
 import { getAuthenticatedApiInstance } from "../api/apiInstanceFactories";
 
 import wellKnownQueries from "./wellKnownQueries";
@@ -16,7 +16,7 @@ const apiRequest = async (
     triggerUuid: string
 ): Promise<void> => {
     const apiClient = await getAuthenticatedApiInstance(
-        CustomBotApi,
+        TriggersApi,
         getAccessTokenSilently
     );
     return apiClient.triggerControllerRemove({
