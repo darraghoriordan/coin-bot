@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepare": "yarn build"
   },
   "devDependencies": {
     "typescript": "^3.6"

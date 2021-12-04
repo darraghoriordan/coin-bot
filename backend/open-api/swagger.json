@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Coin bot Api",
+    "title": "Coin bot BE Api",
     "description": "Describes the backend api",
     "version": "1.0.0",
     "contact": {}
@@ -542,38 +542,7 @@
             "bearer": []
           }
         ]
-      }
-    },
-    "/organisation": {
-      "get": {
-        "operationId": "OrganisationController_findAllForUser",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Organisation"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "organisations"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/organisation/uuid": {
+      },
       "delete": {
         "operationId": "OrganisationController_remove",
         "parameters": [
@@ -593,6 +562,35 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Organisation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "organisations"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/organisation": {
+      "get": {
+        "operationId": "OrganisationController_findAllForUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Organisation"
+                  }
                 }
               }
             }

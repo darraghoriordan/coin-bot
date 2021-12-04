@@ -11,7 +11,7 @@ module.exports = {
         "import",
         "@darraghor/nestjs-typed",
         "eslint-comments",
-        // "sonarjs",
+        "sonarjs",
         "promise",
         "jest",
     ],
@@ -33,7 +33,7 @@ module.exports = {
         "plugin:import/typescript",
         "plugin:unicorn/recommended",
         "plugin:eslint-comments/recommended",
-        // "plugin:sonarjs/recommended",
+        "plugin:sonarjs/recommended",
         "prettier",
         "plugin:promise/recommended",
         "plugin:jest/recommended",
@@ -48,6 +48,7 @@ module.exports = {
     },
     ignorePatterns: [".eslintrc.js"],
     rules: {
+        "import/namespace": "off", // this is very slow
         // "jest/no-try-expect":"off",
         // "jest/no-conditional-expect":"off",
         // "sonarjs/no-duplicate-string":"off",
