@@ -160,6 +160,51 @@
           "NO_ACTION_DEFAULT"
         ]
       },
+      "TriggerResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "result": {
+            "type": "boolean"
+          },
+          "errorState": {
+            "type": "boolean"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "triggerId": {
+            "type": "number"
+          },
+          "createdDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedDate": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "result",
+          "errorState",
+          "triggerId",
+          "createdDate",
+          "updateDate",
+          "deletedDate"
+        ]
+      },
       "Trigger": {
         "type": "object",
         "properties": {
@@ -201,57 +246,9 @@
           "id",
           "uuid",
           "triggerType",
+          "triggerResults",
           "customBotId",
           "meta",
-          "createdDate",
-          "updateDate",
-          "deletedDate"
-        ]
-      },
-      "TriggerResult": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "uuid": {
-            "type": "string"
-          },
-          "result": {
-            "type": "boolean"
-          },
-          "errorState": {
-            "type": "boolean"
-          },
-          "errorMessage": {
-            "type": "string"
-          },
-          "trigger": {
-            "$ref": "#/components/schemas/Trigger"
-          },
-          "triggerId": {
-            "type": "number"
-          },
-          "createdDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updateDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "deletedDate": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "uuid",
-          "result",
-          "errorState",
-          "trigger",
-          "triggerId",
           "createdDate",
           "updateDate",
           "deletedDate"
@@ -818,6 +815,47 @@
       }
     },
     "/custom-bot/{botuuid}/trigger/{triggeruuid}": {
+      "get": {
+        "operationId": "TriggerController_getOne",
+        "parameters": [
+          {
+            "name": "botuuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "triggeruuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Trigger"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Triggers"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
       "delete": {
         "operationId": "TriggerController_remove",
         "parameters": [

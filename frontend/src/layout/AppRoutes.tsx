@@ -9,6 +9,8 @@ import CreateNewBot from "../customBots/CustomBotCreate";
 import CustomBotDetails from "../customBots/CustomBotDetails";
 import ApiLoading from "../api/ApiLoading";
 import CustomBotEdit from "../customBots/CustomBotEdit";
+import TriggerCreate from "../triggers/TriggerCreate";
+import TriggerEdit from "../triggers/TriggerEdit";
 
 function AppRoutes() {
     return (
@@ -73,6 +75,30 @@ function AppRoutes() {
                         )}
                     >
                         <CustomBotEdit />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="custom-bot/:botUuid/trigger/create"
+                element={
+                    <RequireAuth
+                        onRedirecting={() => (
+                            <ApiLoading message="Loading..." />
+                        )}
+                    >
+                        <TriggerCreate />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="custom-bot/:botUuid/trigger/:triggerUuid/edit"
+                element={
+                    <RequireAuth
+                        onRedirecting={() => (
+                            <ApiLoading message="Loading..." />
+                        )}
+                    >
+                        <TriggerEdit />
                     </RequireAuth>
                 }
             />

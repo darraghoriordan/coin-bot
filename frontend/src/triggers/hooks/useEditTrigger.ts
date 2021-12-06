@@ -1,39 +1,39 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQueryClient } from "react-query";
-import { CreateTriggerDto, Trigger, TriggersApi } from "shared-api-client";
-import { getAuthenticatedApiInstance } from "../api/apiInstanceFactories";
-import wellKnownQueries from "./wellKnownQueries";
-import customBotsWellKnownQueries from "../customBots/wellKnownQueries";
+import { Trigger, TriggersApi, UpdateTriggerDto } from "shared-api-client";
+import { getAuthenticatedApiInstance } from "../../api/apiInstanceFactories";
+import wellKnownQueries from "../wellKnownQueries";
+import customBotsWellKnownQueries from "../../customBots/wellKnownQueries";
 
-type AddTriggerVariables = {
-    model: CreateTriggerDto;
-    botuuid: string;
+type EditTriggerVariables = {
+    model: UpdateTriggerDto;
+    botUuid: string;
 };
 const apiRequest = async (
     getAccessTokenSilently: () => Promise<string>,
-    model: CreateTriggerDto,
+    model: UpdateTriggerDto,
     botuuid: string
 ): Promise<Trigger> => {
     const apiClient = await getAuthenticatedApiInstance(
         TriggersApi,
         getAccessTokenSilently
     );
-    return apiClient.triggerControllerCreate({
+    return apiClient.triggerControllerUpdate({
         botuuid: botuuid,
-        createTriggerDto: model,
+        updateTriggerDto: model,
     });
 };
 
-export default function useAddTrigger() {
+export default function useEditTrigger() {
     const { getAccessTokenSilently } = useAuth0();
     const queryClient = useQueryClient();
     return useMutation(
-        wellKnownQueries.createTrigger,
-        async (variables: AddTriggerVariables) =>
+        wellKnownQueries.updateTrigger,
+        async (variables: EditTriggerVariables) =>
             apiRequest(
                 getAccessTokenSilently,
                 variables.model,
-                variables.botuuid
+                variables.botUuid
             ),
         {
             onSettled: (data) => {

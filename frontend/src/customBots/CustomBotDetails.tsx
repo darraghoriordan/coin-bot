@@ -28,7 +28,7 @@ const CustomBotDetails = (): JSX.Element => {
     if (!data) {
         return <ApiLoading message="Not found"></ApiLoading>;
     }
-
+    console.log("DATA", data);
     return (
         <div className="mb-8">
             <div className="overflow-hidden bg-white shadow sm:rounded-md">

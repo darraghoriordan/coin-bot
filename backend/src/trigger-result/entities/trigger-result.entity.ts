@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Exclude, Type } from "class-transformer";
+import { Exclude, Expose, Type } from "class-transformer";
 import {
     Column,
     CreateDateColumn,
@@ -15,11 +15,14 @@ import {
 import { Trigger } from "../../trigger/entities/trigger.entity";
 
 @Entity()
+@Exclude()
 export class TriggerResult {
+    @Expose()
     @PrimaryGeneratedColumn()
     @ApiProperty()
     public id!: number;
 
+    @Expose()
     @Column("uuid", {
         name: "uuid",
         default: () => "uuid_generate_v4()",
@@ -35,6 +38,7 @@ export class TriggerResult {
     @ApiProperty()
     public result!: boolean;
 
+    @Expose()
     @Column({
         type: "boolean",
         default: false,
@@ -42,33 +46,36 @@ export class TriggerResult {
     @ApiProperty()
     public errorState!: boolean;
 
+    @Expose()
     @Column({ nullable: true })
     @ApiPropertyOptional()
     public errorMessage?: string;
 
-    @Exclude()
     @ManyToOne(() => Trigger, (trigger) => trigger.triggerResults, {
         eager: true,
         onDelete: "CASCADE",
     })
     @Index()
     @Type(() => Trigger)
-    @ApiProperty({ type: () => Trigger })
     @JoinColumn({ name: "triggerId" })
     trigger!: Trigger;
 
+    @Expose()
     @Column()
     @ApiProperty()
     triggerId!: number;
 
+    @Expose()
     @CreateDateColumn()
     @ApiProperty()
     public createdDate!: Date;
 
+    @Expose()
     @UpdateDateColumn()
     @ApiProperty()
     public updateDate!: Date;
 
+    @Expose()
     @DeleteDateColumn()
     @ApiProperty()
     public deletedDate!: Date;

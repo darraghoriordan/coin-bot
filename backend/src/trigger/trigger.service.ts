@@ -45,6 +45,33 @@ export class TriggerService {
         return trigger;
     }
 
+    async findOne(
+        botUuid: string,
+        triggerUuid: string,
+        ownerId: string
+    ): Promise<Trigger> {
+        try {
+            const bot = await this.botRepository.findOneOrFail({
+                order: { createdDate: "DESC" },
+                where: {
+                    uuid: botUuid,
+                    ownerId,
+                },
+                relations: ["triggers"],
+            });
+            const foundTrigger = bot.triggers.find(
+                (x) => x.uuid === triggerUuid
+            );
+            if (!foundTrigger) {
+                throw new NotFoundException();
+            }
+            return foundTrigger;
+        } catch (error) {
+            this.logger.error(error);
+            throw new NotFoundException();
+        }
+    }
+
     async update(
         updateTriggerResultDto: UpdateTriggerDto,
         customBotUuid: string,
@@ -52,8 +79,9 @@ export class TriggerService {
     ): Promise<Trigger> {
         // just checking for ownership
         const bot = await this.botRepository.findOneOrFail({
-            uuid: customBotUuid,
-            ownerId,
+            where: { uuid: customBotUuid, ownerId },
+
+            relations: ["triggers"],
         });
 
         const trigger = bot.triggers.find(
@@ -68,7 +96,8 @@ export class TriggerService {
             trigger.triggerType
         );
 
-        return this.triggerRepository.save(trigger);
+        await this.triggerRepository.update(trigger.id, { meta: trigger.meta });
+        return trigger;
     }
 
     async remove(

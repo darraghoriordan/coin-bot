@@ -1,6 +1,5 @@
 import {
     ApiProperty,
-    ApiPropertyOptional,
     //   getSchemaPath,
 } from "@nestjs/swagger";
 import { Exclude, Expose, Transform, Type } from "class-transformer";
@@ -57,12 +56,13 @@ export class Trigger {
     @Transform((t) => t.value.triggerType.toString())
     public triggerTypeString!: string;
 
-    @ApiPropertyOptional({ type: () => TriggerResult, isArray: true })
+    @Expose()
+    @ApiProperty({ type: () => TriggerResult, isArray: true })
     @Type(() => TriggerResult)
     @OneToMany(() => TriggerResult, (result) => result.trigger, {
         onDelete: "CASCADE",
     })
-    triggerResults?: TriggerResult[];
+    triggerResults!: TriggerResult[];
 
     @ManyToOne(() => CustomBot, (customBot) => customBot.triggers, {
         eager: true,

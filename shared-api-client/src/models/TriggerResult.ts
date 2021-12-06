@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    Trigger,
-    TriggerFromJSON,
-    TriggerFromJSONTyped,
-    TriggerToJSON,
-} from './';
-
 /**
  * 
  * @export
@@ -56,12 +49,6 @@ export interface TriggerResult {
      * @memberof TriggerResult
      */
     errorMessage?: string;
-    /**
-     * 
-     * @type {Trigger}
-     * @memberof TriggerResult
-     */
-    trigger: Trigger;
     /**
      * 
      * @type {number}
@@ -103,7 +90,6 @@ export function TriggerResultFromJSONTyped(json: any, ignoreDiscriminator: boole
         'result': json['result'],
         'errorState': json['errorState'],
         'errorMessage': !exists(json, 'errorMessage') ? undefined : json['errorMessage'],
-        'trigger': TriggerFromJSON(json['trigger']),
         'triggerId': json['triggerId'],
         'createdDate': (new Date(json['createdDate'])),
         'updateDate': (new Date(json['updateDate'])),
@@ -125,7 +111,6 @@ export function TriggerResultToJSON(value?: TriggerResult | null): any {
         'result': value.result,
         'errorState': value.errorState,
         'errorMessage': value.errorMessage,
-        'trigger': TriggerToJSON(value.trigger),
         'triggerId': value.triggerId,
         'createdDate': (value.createdDate.toISOString()),
         'updateDate': (value.updateDate.toISOString()),

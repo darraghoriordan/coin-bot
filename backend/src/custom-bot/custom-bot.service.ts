@@ -36,6 +36,7 @@ export class CustomBotService {
             where: {
                 ownerId,
             },
+            relations: ["triggers", "triggers.triggerResults"],
         });
     }
 

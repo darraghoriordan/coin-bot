@@ -31,6 +31,11 @@ export interface TriggerControllerCreateRequest {
     createTriggerDto: CreateTriggerDto;
 }
 
+export interface TriggerControllerGetOneRequest {
+    botuuid: string;
+    triggeruuid: string;
+}
+
 export interface TriggerControllerRemoveRequest {
     botuuid: string;
     triggeruuid: string;
@@ -61,6 +66,20 @@ export interface TriggersApiInterface {
     /**
      */
     triggerControllerCreate(requestParameters: TriggerControllerCreateRequest, initOverrides?: RequestInit): Promise<Trigger>;
+
+    /**
+     * 
+     * @param {string} botuuid 
+     * @param {string} triggeruuid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TriggersApiInterface
+     */
+    triggerControllerGetOneRaw(requestParameters: TriggerControllerGetOneRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Trigger>>;
+
+    /**
+     */
+    triggerControllerGetOne(requestParameters: TriggerControllerGetOneRequest, initOverrides?: RequestInit): Promise<Trigger>;
 
     /**
      * 
@@ -137,6 +156,46 @@ export class TriggersApi extends runtime.BaseAPI implements TriggersApiInterface
      */
     async triggerControllerCreate(requestParameters: TriggerControllerCreateRequest, initOverrides?: RequestInit): Promise<Trigger> {
         const response = await this.triggerControllerCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async triggerControllerGetOneRaw(requestParameters: TriggerControllerGetOneRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Trigger>> {
+        if (requestParameters.botuuid === null || requestParameters.botuuid === undefined) {
+            throw new runtime.RequiredError('botuuid','Required parameter requestParameters.botuuid was null or undefined when calling triggerControllerGetOne.');
+        }
+
+        if (requestParameters.triggeruuid === null || requestParameters.triggeruuid === undefined) {
+            throw new runtime.RequiredError('triggeruuid','Required parameter requestParameters.triggeruuid was null or undefined when calling triggerControllerGetOne.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/custom-bot/{botuuid}/trigger/{triggeruuid}`.replace(`{${"botuuid"}}`, encodeURIComponent(String(requestParameters.botuuid))).replace(`{${"triggeruuid"}}`, encodeURIComponent(String(requestParameters.triggeruuid))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TriggerFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async triggerControllerGetOne(requestParameters: TriggerControllerGetOneRequest, initOverrides?: RequestInit): Promise<Trigger> {
+        const response = await this.triggerControllerGetOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

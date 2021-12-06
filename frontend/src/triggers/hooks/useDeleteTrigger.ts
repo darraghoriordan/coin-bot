@@ -1,9 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQueryClient } from "react-query";
 import { TriggersApi } from "shared-api-client";
-import { getAuthenticatedApiInstance } from "../api/apiInstanceFactories";
-import wellKnownQueries from "./wellKnownQueries";
-import customBotsWellKnownQueries from "../customBots/wellKnownQueries";
+import { getAuthenticatedApiInstance } from "../../api/apiInstanceFactories";
+import wellKnownQueries from "../wellKnownQueries";
+import customBotsWellKnownQueries from "../../customBots/wellKnownQueries";
 
 type RemoveTriggerVariables = {
     botuuid: string;

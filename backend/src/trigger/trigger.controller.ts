@@ -13,6 +13,7 @@ import {
     Delete,
     Request,
     UseGuards,
+    Get,
 } from "@nestjs/common";
 import {
     ApiBearerAuth,
@@ -68,6 +69,20 @@ export class TriggerController {
         return this.triggerService.update(
             updateTriggerDto,
             botuuid,
+            request.user.uuid
+        );
+    }
+
+    @Get(":botuuid/trigger/:triggeruuid")
+    @ApiOkResponse({ type: Trigger })
+    async getOne(
+        @Param("botuuid") botuuid: string,
+        @Param("triggeruuid") triggeruuid: string,
+        @Request() request: RequestWithUser
+    ): Promise<Trigger> {
+        return this.triggerService.findOne(
+            botuuid,
+            triggeruuid,
             request.user.uuid
         );
     }
