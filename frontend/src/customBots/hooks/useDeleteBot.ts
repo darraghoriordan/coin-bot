@@ -2,9 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
 
 import { CustomBotApi } from "shared-api-client";
-import { getAuthenticatedApiInstance } from "../api/apiInstanceFactories";
+import { getAuthenticatedApiInstance } from "../../api/apiInstanceFactories";
 
-import wellKnownQueries from "./wellKnownQueries";
+import wellKnownQueries from "../wellKnownQueries";
 
 type DeleteBotVariables = {
     botUuid: string;
@@ -26,7 +26,7 @@ export default function useDeleteBot() {
     const { getAccessTokenSilently } = useAuth0();
 
     return useMutation(
-        wellKnownQueries.saveCustomBot,
+        wellKnownQueries.deleteCustomBot,
         async (variables: DeleteBotVariables) =>
             apiRequest(getAccessTokenSilently, variables.botUuid)
     );

@@ -2,16 +2,31 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import ApiError from "../api/ApiError";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import useSaveBot from "./useSaveBot";
 import { RunningStateEnum } from "shared-api-client";
+import useGetOneBot from "./hooks/useGetOneBot";
+import ApiLoading from "../api/ApiLoading";
+import { Fieldset } from "../sharedComponents/Fieldset";
+import useEditBot from "./hooks/useEditBot";
 
-const SubmitOffer = (): JSX.Element => {
+const CustomBotEdit = (): JSX.Element => {
     const { isAuthenticated } = useAuth0();
 
-    const saveMutation = useSaveBot();
+    const saveMutation = useEditBot();
+    let { botUuid } = useParams();
+    const { data, status } = useGetOneBot(botUuid || "couldnt-read-id");
     const [formSubmitting, toggleSubmitting] = useState(false);
+
+    if (status === "loading") {
+        return <ApiLoading />;
+    }
+    if (status === "error") {
+        return <ApiError />;
+    }
+    if (!data) {
+        return <ApiError message="Couldn't find a bot" />;
+    }
     if (saveMutation) {
         console.log("submitState", saveMutation);
     }
@@ -32,9 +47,9 @@ const SubmitOffer = (): JSX.Element => {
     return (
         <Formik
             initialValues={{
-                botName: "My Cool Bot",
-                runEveryInSeconds: 120,
-                runningState: RunningStateEnum.STARTED,
+                botName: data.name,
+                runEveryInSeconds: data.runEveryInSeconds,
+                runningState: data.runningState,
             }}
             validationSchema={Yup.object({
                 botName: Yup.string()
@@ -51,10 +66,11 @@ const SubmitOffer = (): JSX.Element => {
                 toggleSubmitting(true);
                 saveMutation.mutate(
                     {
+                        uuid: botUuid!,
                         model: {
                             name: values.botName,
                             runEveryInSeconds: values.runEveryInSeconds,
-                            runningState: RunningStateEnum.STARTED,
+                            runningState: values.runningState,
                         },
                     },
                     { onError: (error) => console.log("custom:", error) }
@@ -68,13 +84,8 @@ const SubmitOffer = (): JSX.Element => {
                 <div className="mb-8">
                     <div className="px-8 pt-6 pb-6 overflow-hidden bg-white rounded-lg shadow lg:pb-8">
                         <h1 className="pb-2 text-3xl font-bold text-dark-shade">
-                            Create a new bot
+                            Edit a bot
                         </h1>
-                        <h2 className="text-2xl">What is this?</h2>
-                        <p className="my-4">
-                            You can create the bot here. You will add the
-                            triggers later.
-                        </p>
                     </div>
                 </div>
                 <div className="mb-8">
@@ -131,6 +142,41 @@ const SubmitOffer = (): JSX.Element => {
                                     )}
                                 </ErrorMessage>
                             </div>
+                            <div className={`col-span-12`}>
+                                <label
+                                    htmlFor="runningState"
+                                    className="block pb-4 text-sm font-medium text-gray-700"
+                                >
+                                    Running State
+                                </label>
+                                <Fieldset
+                                    legend="Running State"
+                                    name="runningState"
+                                    id="runningState"
+                                    className="block w-full px-3 py-4 mt-4 border border-gray-300 md:w-1/2 rounded-md shadow-sm focus:outline-none focus:ring-light-blue-500 focus:border-light-blue-500 sm:text-sm"
+                                    fieldSetConfig={[
+                                        {
+                                            value: RunningStateEnum.STARTED,
+                                            title: "Started",
+                                            description:
+                                                "The bot should be running as normal",
+                                        },
+                                        {
+                                            value: RunningStateEnum.STOPPED,
+                                            title: "Stopped",
+                                            description:
+                                                "The bot should be stopped",
+                                        },
+                                    ]}
+                                />
+                                <ErrorMessage name="runningState">
+                                    {(msg) => (
+                                        <div className="text-red-500">
+                                            {msg}
+                                        </div>
+                                    )}
+                                </ErrorMessage>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -139,7 +185,7 @@ const SubmitOffer = (): JSX.Element => {
                     <div className="px-8 pt-6 pb-6 overflow-hidden bg-white rounded-lg shadow lg:pb-8">
                         <div className="grid grid-cols-12 gap-6">
                             <h2 className="text-2xl col-span-12">
-                                Click next to continue
+                                Click save to update your bot
                             </h2>
                             <div className="col-span-12 space-x-6">
                                 {formSubmitting ? (
@@ -149,7 +195,7 @@ const SubmitOffer = (): JSX.Element => {
                                         type="submit"
                                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-gray-300 rounded-md shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500 disabled:opacity-50"
                                     >
-                                        Next
+                                        Save changes
                                     </button>
                                 )}
                             </div>
@@ -174,4 +220,4 @@ const SubmitOffer = (): JSX.Element => {
     );
 };
 
-export default SubmitOffer;
+export default CustomBotEdit;

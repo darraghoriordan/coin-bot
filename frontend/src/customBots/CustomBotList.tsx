@@ -5,7 +5,7 @@ import { RunningStateEnum } from "shared-api-client";
 import ApiError from "../api/ApiError";
 import ApiLoading from "../api/ApiLoading";
 import { RunningState } from "./RunningState";
-import useGetAllMyBots from "./useGetAllMyBots";
+import useGetAllMyBots from "./hooks/useGetAllMyBots";
 import { PlusCircleIcon } from "@heroicons/react/solid";
 
 const CustomBotList = (): JSX.Element => {
@@ -25,7 +25,7 @@ const CustomBotList = (): JSX.Element => {
     if (data && data.length === 0) {
         return (
             <ApiLoading message="You don't have any bots yet">
-                <Link to={`/create-custom-bot`} className="block underline">
+                <Link to={`/custom-bot/create`} className="block underline">
                     Add a new bot
                 </Link>
             </ApiLoading>
@@ -41,7 +41,7 @@ const CustomBotList = (): JSX.Element => {
                     </h1>
                     <p className="py-6">
                         <Link
-                            to={`/create-custom-bot`}
+                            to={`/custom-bot/create`}
                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent shadow-sm leading-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             <PlusCircleIcon

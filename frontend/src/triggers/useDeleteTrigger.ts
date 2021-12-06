@@ -28,7 +28,7 @@ export default function useDeleteTrigger() {
     const { getAccessTokenSilently } = useAuth0();
     const queryClient = useQueryClient();
     return useMutation(
-        wellKnownQueries.saveTrigger,
+        wellKnownQueries.deleteTrigger,
         async (variables: RemoveTriggerVariables) =>
             apiRequest(
                 getAccessTokenSilently,

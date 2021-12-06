@@ -2,9 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "react-query";
 
 import { CustomBot, CustomBotApi } from "shared-api-client";
-import { getAuthenticatedApiInstance } from "../api/apiInstanceFactories";
+import { getAuthenticatedApiInstance } from "../../api/apiInstanceFactories";
 
-import wellKnownQueries from "./wellKnownQueries";
+import wellKnownQueries from "../wellKnownQueries";
 
 const apiRequest = async (
     getAccessTokenSilently: () => Promise<string>,

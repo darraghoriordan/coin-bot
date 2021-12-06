@@ -28,7 +28,7 @@ export default function useAddTrigger() {
     const { getAccessTokenSilently } = useAuth0();
     const queryClient = useQueryClient();
     return useMutation(
-        wellKnownQueries.addTrigger,
+        wellKnownQueries.createTrigger,
         async (variables: AddTriggerVariables) =>
             apiRequest(
                 getAccessTokenSilently,

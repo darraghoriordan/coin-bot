@@ -1,11 +1,9 @@
 const wellKnownQueries = {
-    customBotsGetOne: "custom-bots-one",
-    saveCustomBot: "save-custom-bot",
+    customBotsGetOne: "custom-bots-get-one",
+    saveCustomBot: "create-custom-bot",
+    deleteCustomBot: "delete-custom-bot",
     updateCustomBot: "update-custom-bot",
-    saveTrigger: "save-trigger",
-    deleteTrigger: "delete-trigger",
-    updateTrigger: "update-trigger",
-    customBotsGetAllMine: "custom-bots-all-mine",
+    customBotsGetAllMine: "custom-bots-get-all-mine",
 };
 
 export default wellKnownQueries;

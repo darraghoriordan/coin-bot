@@ -4,10 +4,11 @@ import Profile from "../Profile";
 import { RequireAuth } from "./RequireAuth";
 import { Route } from "react-router-dom";
 import NewLayout from "./NewLayout";
-import CustomBots from "../customBots/CustomBots";
-import CreateNewBot from "../customBots/CreateNewBot";
-import EditCustomBot from "../customBots/EditCustomBot";
+import CustomBots from "../customBots/CustomBotList";
+import CreateNewBot from "../customBots/CustomBotCreate";
+import CustomBotDetails from "../customBots/CustomBotDetails";
 import ApiLoading from "../api/ApiLoading";
+import CustomBotEdit from "../customBots/CustomBotEdit";
 
 function AppRoutes() {
     return (
@@ -39,7 +40,7 @@ function AppRoutes() {
             />
 
             <Route
-                path="create-custom-bot"
+                path="custom-bot/create"
                 element={
                     <RequireAuth
                         onRedirecting={() => (
@@ -59,7 +60,19 @@ function AppRoutes() {
                             <ApiLoading message="Loading..." />
                         )}
                     >
-                        <EditCustomBot />
+                        <CustomBotDetails />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="custom-bot/:botUuid/edit"
+                element={
+                    <RequireAuth
+                        onRedirecting={() => (
+                            <ApiLoading message="Loading..." />
+                        )}
+                    >
+                        <CustomBotEdit />
                     </RequireAuth>
                 }
             />
