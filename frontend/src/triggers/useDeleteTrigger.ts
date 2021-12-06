@@ -1,48 +1,48 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQueryClient } from "react-query";
-
-import { CreateTriggerDto, Trigger, TriggersApi } from "shared-api-client";
+import { TriggersApi } from "shared-api-client";
 import { getAuthenticatedApiInstance } from "../api/apiInstanceFactories";
-
 import wellKnownQueries from "./wellKnownQueries";
+import customBotsWellKnownQueries from "../customBots/wellKnownQueries";
 
-type AddTriggerVariables = {
-    model: CreateTriggerDto;
+type RemoveTriggerVariables = {
     botuuid: string;
+    triggeruuid: string;
 };
 const apiRequest = async (
     getAccessTokenSilently: () => Promise<string>,
-    model: CreateTriggerDto,
-    botuuid: string
-): Promise<Trigger> => {
+    botuuid: string,
+    triggerUuid: string
+): Promise<void> => {
     const apiClient = await getAuthenticatedApiInstance(
         TriggersApi,
         getAccessTokenSilently
     );
-    return apiClient.triggerControllerCreate({
+    return apiClient.triggerControllerRemove({
         botuuid: botuuid,
-        createTriggerDto: model,
+        triggeruuid: triggerUuid,
     });
 };
 
-export default function useAddTrigger() {
+export default function useDeleteTrigger() {
     const { getAccessTokenSilently } = useAuth0();
     const queryClient = useQueryClient();
     return useMutation(
-        wellKnownQueries.addTrigger,
-        async (variables: AddTriggerVariables) =>
+        wellKnownQueries.saveTrigger,
+        async (variables: RemoveTriggerVariables) =>
             apiRequest(
                 getAccessTokenSilently,
-                variables.model,
-                variables.botuuid
+                variables.botuuid,
+                variables.triggeruuid
             ),
         {
             onSettled: (data) => {
                 // delay is from a different type of query. can possibly remove here
                 setTimeout(function () {
-                    queryClient.invalidateQueries(
-                        wellKnownQueries.customBotsGetOne
-                    );
+                    queryClient.invalidateQueries([
+                        customBotsWellKnownQueries.customBotsGetOne,
+                        customBotsWellKnownQueries.customBotsGetAllMine,
+                    ]);
                     return;
                 }, 500);
             },

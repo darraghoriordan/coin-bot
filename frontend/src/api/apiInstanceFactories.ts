@@ -1,26 +1,26 @@
-import { BaseAPI, Configuration } from "../../../shared-api-client/dist";
+import { BaseAPI, Configuration } from "shared-api-client";
 const apiBase = import.meta.env.VITE_API_BASE as string;
 
 export const getAuthenticatedApiInstance = async <T extends BaseAPI>(
-  apiService: {
-    new (apiConfig: Configuration): T;
-  },
-  getAccessTokenSilently: () => Promise<string>
+    apiService: {
+        new (apiConfig: Configuration): T;
+    },
+    getAccessTokenSilently: () => Promise<string>
 ) => {
-  const authToken = await getAccessTokenSilently();
+    const authToken = await getAccessTokenSilently();
 
-  const apiConfig = new Configuration({
-    basePath: apiBase,
-    accessToken: authToken,
-  });
-  return new apiService(apiConfig);
+    const apiConfig = new Configuration({
+        basePath: apiBase,
+        accessToken: authToken,
+    });
+    return new apiService(apiConfig);
 };
 
 export const getAnonymousApiInstance = <T extends BaseAPI>(apiService: {
-  new (apiConfig: Configuration): T;
+    new (apiConfig: Configuration): T;
 }): T => {
-  const apiConfig = new Configuration({
-    basePath: apiBase,
-  });
-  return new apiService(apiConfig);
+    const apiConfig = new Configuration({
+        basePath: apiBase,
+    });
+    return new apiService(apiConfig);
 };

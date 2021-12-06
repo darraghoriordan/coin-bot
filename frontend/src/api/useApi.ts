@@ -18,7 +18,11 @@ export const useApi = (
     }
 ) => {
     const { getAccessTokenSilently } = useAuth0();
-    const [state, setState] = useState({
+    const [state, setState] = useState<{
+        error: Error | null;
+        loading: boolean;
+        data: any;
+    }>({
         error: null,
         loading: true,
         data: null,
@@ -50,12 +54,14 @@ export const useApi = (
             } catch (error) {
                 setState({
                     ...state,
-                    error,
+                    data: null,
+                    error: error as Error,
                     loading: false,
                 });
+                throw error;
             }
         })();
-    }, [refreshIndex]);
+    }, [getAccessTokenSilently, options, refreshIndex, state, url]);
 
     return {
         ...state,

@@ -19,10 +19,13 @@ const apiRequest = async (
     });
 };
 
-export default function useGetOneBot(botuuid: string) {
+export default function useGetOneBot(botUuid: string) {
+    if (!botUuid || botUuid === "") {
+        throw new Error("Invalid arguments");
+    }
     const { getAccessTokenSilently } = useAuth0();
 
     return useQuery(wellKnownQueries.customBotsGetOne, () =>
-        apiRequest(getAccessTokenSilently, botuuid)
+        apiRequest(getAccessTokenSilently, botUuid)
     );
 }

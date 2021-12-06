@@ -1,18 +1,16 @@
-import React, { FunctionComponent, ReactNode } from "react";
-import { QuestionResultIcon } from "./QuestionResultIcon";
+import React, { FunctionComponent } from "react";
+import { BooleanCircleIcon } from "../sharedComponents/BooleanCircleIcon";
 
 type ResultProps = {
-  result: boolean;
+    result: boolean;
 };
-export const RunningState: FunctionComponent<ResultProps> = ({
-  result,
-}) => {
-  const message = result ? "Running" : "Stopped";
+export const RunningState: FunctionComponent<ResultProps> = ({ result }) => {
+    const message = result ? "Running" : "Stopped";
 
-  return (
-    <span className="flex">
-      <QuestionResultIcon result={result} />
-      {message}
-    </span>
-  );
+    return (
+        <span className="flex">
+            <BooleanCircleIcon result={result} />
+            {message}
+        </span>
+    );
 };

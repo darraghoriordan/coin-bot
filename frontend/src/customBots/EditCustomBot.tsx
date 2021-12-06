@@ -1,21 +1,18 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { TriggerTypeEnum } from "shared-api-client";
 import ApiError from "../api/ApiError";
 import ApiLoading from "../api/ApiLoading";
-import useDeleteBot from "../customBot/useDeleteBot";
-import useAddTrigger from "./useAddTrigger";
-import useDeleteTrigger from "./useDeleteTrigger";
+import useDeleteBot from "./useDeleteBot";
+import useAddTrigger from "../triggers/useAddTrigger";
+import useDeleteTrigger from "../triggers/useDeleteTrigger";
 
 import useGetOneBot from "./useGetOneBot";
-type RequestParams = {
-    botuuid: string;
-};
 
-const SubmittedOffers = (): JSX.Element => {
-    let { botuuid } = useParams<RequestParams>();
+const EditCustomBot = (): JSX.Element => {
+    let { botUuid } = useParams();
 
-    const { data, status } = useGetOneBot(botuuid);
+    const { data, status } = useGetOneBot(botUuid || "couldnt-read-id");
     const deleteBotMutation = useDeleteBot();
     const useAddTriggerMutation = useAddTrigger();
     const useDeleteTriggerMutation = useDeleteTrigger();
@@ -46,7 +43,7 @@ const SubmittedOffers = (): JSX.Element => {
                     <p>bot run interval (s): {data.runEveryInSeconds}</p>
                     <p>bot last run: {data.lastRun.toLocaleString()}</p>
                     <button
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-grey-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium border border-gray-300 bg-grey-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500"
                         onClick={() =>
                             // should probably redirect after but whatevs
                             useAddTriggerMutation.mutate({
@@ -68,7 +65,7 @@ const SubmittedOffers = (): JSX.Element => {
                     >
                         Add random twitter trigger
                     </button>
-                    <h2 className="pb-6 text-1xl font-bold text-dark-shade">
+                    <h2 className="pb-6 font-bold text-1xl text-dark-shade">
                         Triggers
                     </h2>
 
@@ -101,7 +98,7 @@ const SubmittedOffers = (): JSX.Element => {
                             </>
                         );
                     })}
-                    <h2 className="pb-6 text-1xl font-bold text-dark-shade">
+                    <h2 className="pb-6 font-bold text-1xl text-dark-shade">
                         Actions
                     </h2>
                     <p>Bot currently sends email only</p>
@@ -120,4 +117,4 @@ const SubmittedOffers = (): JSX.Element => {
     );
 };
 
-export default SubmittedOffers;
+export default EditCustomBot;

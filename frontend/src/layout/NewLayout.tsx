@@ -1,21 +1,13 @@
 import React, { Fragment, FunctionComponent, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-    HomeIcon,
-    MenuIcon,
-    InboxInIcon,
-    ChevronDoubleRightIcon,
-    AdjustmentsIcon,
-    XIcon,
-} from "@heroicons/react/outline";
-import { NavLink, Switch } from "react-router-dom";
+import { HomeIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { NavLink, Routes } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import InitialisedUserWrapped from "./InitialisedUserWrapped";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const navigation = [
     { name: "Custom Bots", href: "/", icon: HomeIcon, exact: true },
-    
 ];
 function trimText(length: number, text: string | undefined): string {
     if (text && text.length > length) {
@@ -35,12 +27,12 @@ const NewLayout: FunctionComponent = ({ children }) => {
     const trimmedUsername = trimText(20, user?.name);
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="h-screen flex overflow-hidden bg-white">
+            <div className="flex h-screen overflow-hidden bg-white">
                 <Transition.Root show={sidebarOpen} as={Fragment}>
                     <Dialog
                         as="div"
                         static
-                        className="fixed inset-0 flex z-40 md:hidden"
+                        className="fixed inset-0 z-40 flex md:hidden"
                         open={sidebarOpen}
                         onClose={setSidebarOpen}
                     >
@@ -64,7 +56,7 @@ const NewLayout: FunctionComponent = ({ children }) => {
                             leaveFrom="translate-x-0"
                             leaveTo="-translate-x-full"
                         >
-                            <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+                            <div className="relative flex flex-col flex-1 w-full max-w-xs bg-white">
                                 <Transition.Child
                                     as={Fragment}
                                     enter="ease-in-out duration-300"
@@ -74,9 +66,9 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                     leaveFrom="opacity-100"
                                     leaveTo="opacity-0"
                                 >
-                                    <div className="absolute top-0 right-0 -mr-12 pt-2">
+                                    <div className="absolute top-0 right-0 pt-2 -mr-12">
                                         <button
-                                            className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                                            className="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                                             onClick={() =>
                                                 setSidebarOpen(false)
                                             }
@@ -85,16 +77,16 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                                 Close sidebar
                                             </span>
                                             <XIcon
-                                                className="h-6 w-6 text-white"
+                                                className="w-6 h-6 text-white"
                                                 aria-hidden="true"
                                             />
                                         </button>
                                     </div>
                                 </Transition.Child>
                                 <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
-                                    <div className="flex-shrink-0 flex items-center px-4">
+                                    <div className="flex items-center flex-shrink-0 px-4">
                                         <img
-                                            className="h-8 w-auto"
+                                            className="w-auto h-8"
                                             src="/android-chrome-512x512.png"
                                             alt="Filtered Reduced"
                                         />
@@ -102,17 +94,21 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                             Coinbot
                                         </span>
                                     </div>
-                                    <nav className="mt-5 px-2 space-y-1">
+                                    <nav className="px-2 mt-5 space-y-1">
                                         {navigation.map((item) => (
                                             <NavLink
-                                                exact={item.exact}
+                                                // exact={item.exact}
                                                 key={item.name}
                                                 to={item.href}
-                                                activeClassName="bg-gray-100 text-gray-900"
-                                                className={classNames(
-                                                    "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                                                    "group flex items-center px-2 py-2 text-base font-medium rounded-md"
-                                                )}
+                                                className={(isActive) =>
+                                                    classNames(
+                                                        "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                                                        "group flex items-center px-2 py-2 text-base font-medium rounded-md",
+                                                        isActive
+                                                            ? "bg-gray-100 text-gray-900"
+                                                            : ""
+                                                    )
+                                                }
                                             >
                                                 <item.icon
                                                     className={classNames(
@@ -126,15 +122,15 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                         ))}
                                     </nav>
                                 </div>
-                                <div className="flex-shrink-0 flex flex-col border-t border-gray-200 p-4">
+                                <div className="flex flex-col flex-shrink-0 p-4 border-t border-gray-200">
                                     {!isLoading && user && user.picture ? (
-                                        <div className="flex-shrink-0 group block">
+                                        <div className="flex-shrink-0 block group">
                                             <div className="flex items-center">
                                                 <div>
                                                     <img
-                                                        className="inline-block h-10 w-10 rounded-full"
+                                                        className="inline-block w-10 h-10 rounded-full"
                                                         src={user.picture}
-                                                        alt="Profile picture"
+                                                        alt=""
                                                     />
                                                 </div>
 
@@ -147,17 +143,17 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                         </div>
                                     ) : undefined}
 
-                                    <div className="flex-shrink-0 w-full block">
+                                    <div className="flex-shrink-0 block w-full">
                                         {!user ? (
                                             <button
-                                                className="w-full mt-4 px-3 py-2 text-xs font-medium text-gray-500 group-hover:text-gray-700 border"
+                                                className="w-full px-3 py-2 mt-4 text-xs font-medium text-gray-500 border group-hover:text-gray-700"
                                                 onClick={loginWithRedirect}
                                             >
                                                 Sign In
                                             </button>
                                         ) : (
                                             <button
-                                                className="w-full mt-4 px-3 py-2 text-xs font-medium text-gray-500 group-hover:text-gray-700 border"
+                                                className="w-full px-3 py-2 mt-4 text-xs font-medium text-gray-500 border group-hover:text-gray-700"
                                                 onClick={() =>
                                                     logout({
                                                         returnTo:
@@ -183,11 +179,11 @@ const NewLayout: FunctionComponent = ({ children }) => {
                 <div className="hidden md:flex md:flex-shrink-0">
                     <div className="flex flex-col w-64">
                         {/* Sidebar component, swap this element with another sidebar if you like */}
-                        <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
-                            <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                        <div className="flex flex-col flex-1 h-0 bg-white border-r border-gray-200">
+                            <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
                                 <div className="flex items-center flex-shrink-0 px-4">
                                     <img
-                                        className="h-8 w-auto"
+                                        className="w-auto h-8"
                                         src="/android-chrome-512x512.png"
                                         alt="Filtered Reduced"
                                     />
@@ -195,17 +191,21 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                         Coinbot
                                     </span>
                                 </div>
-                                <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
+                                <nav className="flex-1 px-2 mt-5 bg-white space-y-1">
                                     {navigation.map((item) => (
                                         <NavLink
-                                            exact={item.exact}
+                                            //exact={item.exact}
                                             key={item.name}
                                             to={item.href}
-                                            activeClassName="bg-gray-100 text-gray-900"
-                                            className={classNames(
-                                                "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                                                "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                                            )}
+                                            className={(isActive) =>
+                                                classNames(
+                                                    "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                                                    "group flex items-center px-2 py-2 text-sm font-medium rounded-md",
+                                                    isActive
+                                                        ? "bg-gray-100 text-gray-900"
+                                                        : ""
+                                                )
+                                            }
                                         >
                                             <item.icon
                                                 className={classNames(
@@ -219,13 +219,13 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                     ))}
                                 </nav>
                             </div>
-                            <div className="flex-shrink-0 flex flex-col border-t border-gray-200 p-4">
+                            <div className="flex flex-col flex-shrink-0 p-4 border-t border-gray-200">
                                 {!isLoading && user && user.picture ? (
-                                    <div className="flex-shrink-0 w-full group block">
+                                    <div className="flex-shrink-0 block w-full group">
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0">
                                                 <img
-                                                    className="inline-block h-9 w-9 rounded-full"
+                                                    className="inline-block rounded-full h-9 w-9"
                                                     src={user.picture}
                                                     alt="My Profile Avatar"
                                                 />
@@ -238,17 +238,17 @@ const NewLayout: FunctionComponent = ({ children }) => {
                                         </div>
                                     </div>
                                 ) : undefined}
-                                <div className="flex-shrink-0 w-full block">
+                                <div className="flex-shrink-0 block w-full">
                                     {!user ? (
                                         <button
-                                            className="w-full mt-4 px-3 py-2 text-xs font-medium text-gray-500 group-hover:text-gray-700 border"
+                                            className="w-full px-3 py-2 mt-4 text-xs font-medium text-gray-500 border group-hover:text-gray-700"
                                             onClick={loginWithRedirect}
                                         >
                                             Sign In
                                         </button>
                                     ) : (
                                         <button
-                                            className="w-full mt-4 px-3 py-2 text-xs font-medium text-gray-500 group-hover:text-gray-700 border"
+                                            className="w-full px-3 py-2 mt-4 text-xs font-medium text-gray-500 border group-hover:text-gray-700"
                                             onClick={() =>
                                                 logout({
                                                     returnTo:
@@ -264,26 +264,26 @@ const NewLayout: FunctionComponent = ({ children }) => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col w-0 flex-1 overflow-hidden">
-                    <div className="md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3">
+                <div className="flex flex-col flex-1 w-0 overflow-hidden">
+                    <div className="pt-1 pl-1 md:hidden sm:pl-3 sm:pt-3">
                         <button
-                            className="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                            className="inline-flex items-center justify-center w-12 h-12 text-gray-500 -ml-0.5 -mt-0.5 rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                             onClick={() => setSidebarOpen(true)}
                         >
                             <span className="sr-only">Open sidebar</span>
-                            <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                            <MenuIcon className="w-6 h-6" aria-hidden="true" />
                         </button>
                     </div>
-                    <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+                    <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
                         <div className="py-6">
                             {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                 <h1 className="text-2xl font-semibold text-gray-900">
                   Dashboard
                 </h1>
               </div> */}
-                            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                            <div className="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
                                 <InitialisedUserWrapped>
-                                    <Switch>{children}</Switch>
+                                    <Routes>{children}</Routes>
                                 </InitialisedUserWrapped>
                             </div>
                         </div>

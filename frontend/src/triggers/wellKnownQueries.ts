@@ -1,7 +1,5 @@
 const wellKnownQueries = {
-    getCustomBot: "get-custom-bot",
-    saveCustomBot: "save-custom-bot",
-    updateCustomBot: "update-custom-bot",
+    addTrigger: "custom-bot-add-trigger",
     saveTrigger: "save-trigger",
     deleteTrigger: "delete-trigger",
     updateTrigger: "update-trigger",

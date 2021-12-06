@@ -8,7 +8,7 @@ import useSaveBot from "./useSaveBot";
 import { RunningStateEnum } from "shared-api-client";
 
 const SubmitOffer = (): JSX.Element => {
-    const { isAuthenticated, user, loginWithRedirect } = useAuth0();
+    const { isAuthenticated } = useAuth0();
 
     const saveMutation = useSaveBot();
     const [formSubmitting, toggleSubmitting] = useState(false);
@@ -95,7 +95,7 @@ const SubmitOffer = (): JSX.Element => {
                                         as="input"
                                         name="botName"
                                         id="botName"
-                                        className="inline w-80 px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-light-blue-500 focus:border-light-blue-500 sm:text-sm"
+                                        className="inline px-3 py-2 mt-1 border border-gray-300 w-80 rounded-md shadow-sm focus:outline-none focus:ring-light-blue-500 focus:border-light-blue-500 sm:text-sm"
                                     />
                                 </div>
                                 <ErrorMessage name="botName">
@@ -120,7 +120,7 @@ const SubmitOffer = (): JSX.Element => {
                                         name="runEveryInSeconds"
                                         id="runEveryInSeconds"
                                         step="10"
-                                        className="block md:w-1/4 w-1/2 px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-light-blue-500 focus:border-light-blue-500 sm:text-sm"
+                                        className="block w-1/2 px-3 py-2 mt-1 border border-gray-300 md:w-1/4 rounded-md shadow-sm focus:outline-none focus:ring-light-blue-500 focus:border-light-blue-500 sm:text-sm"
                                     />
                                 </div>
                                 <ErrorMessage name="runEveryInSeconds">
@@ -138,7 +138,9 @@ const SubmitOffer = (): JSX.Element => {
                 <div className="mb-8">
                     <div className="px-8 pt-6 pb-6 overflow-hidden bg-white rounded-lg shadow lg:pb-8">
                         <div className="grid grid-cols-12 gap-6">
-                            <h2 className="text-2xl col-span-12">Submit</h2>
+                            <h2 className="text-2xl col-span-12">
+                                Click next to continue
+                            </h2>
                             <div className="col-span-12 space-x-6">
                                 {formSubmitting ? (
                                     <p>Saving...</p>
@@ -147,7 +149,7 @@ const SubmitOffer = (): JSX.Element => {
                                         type="submit"
                                         className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-gray-300 rounded-md shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500 disabled:opacity-50"
                                     >
-                                        Click to save
+                                        Next
                                     </button>
                                 )}
                             </div>

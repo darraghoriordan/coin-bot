@@ -1,23 +1,68 @@
 import React from "react";
 // import LoginButton from "./LoginButton";
 import Profile from "../Profile";
-import ProtectedRoute from "./ProtectedRoute";
+import { RequireAuth } from "./RequireAuth";
 import { Route } from "react-router-dom";
 import NewLayout from "./NewLayout";
 import CustomBots from "../customBots/CustomBots";
-import CreateNewBot from "../customBot/CreateNewBot";
+import CreateNewBot from "../customBots/CreateNewBot";
 import EditCustomBot from "../customBots/EditCustomBot";
+import ApiLoading from "../api/ApiLoading";
 
 function AppRoutes() {
     return (
         <NewLayout>
-            <ProtectedRoute path={"/"} exact={true} component={CustomBots} />
-            <ProtectedRoute path={"/profile"} component={Profile} />
-            <ProtectedRoute
-                path={"/create-custom-bot"}
-                component={CreateNewBot}
+            <Route
+                path="/"
+                element={
+                    <RequireAuth
+                        onRedirecting={() => (
+                            <ApiLoading message="Loading..." />
+                        )}
+                    >
+                        <CustomBots />
+                    </RequireAuth>
+                }
             />
-            <Route path={"/custom-bot/:botuuid"} component={EditCustomBot} />
+
+            <Route
+                path="profile"
+                element={
+                    <RequireAuth
+                        onRedirecting={() => (
+                            <ApiLoading message="Loading..." />
+                        )}
+                    >
+                        <Profile />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="create-custom-bot"
+                element={
+                    <RequireAuth
+                        onRedirecting={() => (
+                            <ApiLoading message="Loading..." />
+                        )}
+                    >
+                        <CreateNewBot />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="custom-bot/:botUuid"
+                element={
+                    <RequireAuth
+                        onRedirecting={() => (
+                            <ApiLoading message="Loading..." />
+                        )}
+                    >
+                        <EditCustomBot />
+                    </RequireAuth>
+                }
+            />
         </NewLayout>
     );
 }
