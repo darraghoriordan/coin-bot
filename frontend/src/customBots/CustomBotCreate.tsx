@@ -33,7 +33,7 @@ const CustomBotCreate = (): JSX.Element => {
         <Formik
             initialValues={{
                 botName: "My Cool Bot",
-                runEveryInSeconds: 120,
+                runEveryInSeconds: 1200,
                 runningState: RunningStateEnum.STARTED,
             }}
             validationSchema={Yup.object({

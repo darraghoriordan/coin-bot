@@ -25,7 +25,7 @@ export default function useGetOneBot(botUuid: string) {
     }
     const { getAccessTokenSilently } = useAuth0();
 
-    return useQuery(wellKnownQueries.customBotsGetOne, () =>
+    return useQuery([wellKnownQueries.customBotsGetOne, { botUuid }], () =>
         apiRequest(getAccessTokenSilently, botUuid)
     );
 }

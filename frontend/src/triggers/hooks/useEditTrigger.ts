@@ -42,6 +42,7 @@ export default function useEditTrigger() {
                     queryClient.invalidateQueries([
                         customBotsWellKnownQueries.customBotsGetOne,
                         customBotsWellKnownQueries.customBotsGetAllMine,
+                        wellKnownQueries.getOneTrigger,
                     ]);
                     return;
                 }, 500);

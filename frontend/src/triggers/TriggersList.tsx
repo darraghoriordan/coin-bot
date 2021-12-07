@@ -86,7 +86,18 @@ const TriggersList = ({
                                     </dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                         <p>
-                                            Passes:{" "}
+                                            Total Runs:{" "}
+                                            {t.triggerResults
+                                                ? t.triggerResults
+                                                      .filter(
+                                                          (tr) => !tr.errorState
+                                                      )
+                                                      .length.toString()
+                                                : "0"}
+                                        </p>
+
+                                        <p>
+                                            Successful:{" "}
                                             {t.triggerResults
                                                 ? t.triggerResults
                                                       .filter(
@@ -96,7 +107,7 @@ const TriggersList = ({
                                                 : "0"}
                                         </p>
                                         <p>
-                                            Fails:{" "}
+                                            Failures:{" "}
                                             {t.triggerResults
                                                 ? t.triggerResults
                                                       .filter(

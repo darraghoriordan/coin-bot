@@ -27,7 +27,8 @@ export default function useGetOneTrigger(botUuid: string, triggerUuid: string) {
     }
     const { getAccessTokenSilently } = useAuth0();
 
-    return useQuery(wellKnownQueries.getOneTrigger, () =>
-        apiRequest(getAccessTokenSilently, botUuid, triggerUuid)
+    return useQuery(
+        [wellKnownQueries.getOneTrigger, { botUuid, triggerUuid }],
+        () => apiRequest(getAccessTokenSilently, botUuid, triggerUuid)
     );
 }
