@@ -376,20 +376,20 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@darraghor/eslint-plugin-nestjs-typed@3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@darraghor/eslint-plugin-nestjs-typed/-/eslint-plugin-nestjs-typed-3.6.0.tgz#0b80eedde40045b138cb0923341cdbd68160f374"
-  integrity sha512-29OA6Lh15xFvYzyVI34Auprfsi6L2UjBJYvEcthQ8lh8Yk3fskhG5eNncx5Eg1+xRCFI+Sj57eVWC5SpRwnk0Q==
+"@darraghor/eslint-plugin-nestjs-typed@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@darraghor/eslint-plugin-nestjs-typed/-/eslint-plugin-nestjs-typed-3.8.0.tgz#ff112ed679fa36736828391e716f49af3542d832"
+  integrity sha512-CRytKdJvw/qdAPaVTu2KKKHfNqb8f2PSwvwgm+kmmD0hfeVE/gVuYa9FoWFeJMeSriNlyqh2VUNUrprYgFGRvQ==
   dependencies:
     "@typescript-eslint/experimental-utils" "5.5.0"
     "@typescript-eslint/scope-manager" "5.5.0"
     eslint-module-utils "2.7.1"
     reflect-metadata "0.1.13"
 
-"@darraghor/nest-backend-libs@1.11.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.11.0.tgz#ab96cf8428dc3ab5171d91b9213d82dca167aba8"
-  integrity sha512-jwV80xTba4VmBd7bGCj3PpXtmqHyMBUwXdF2lqWJJnICskyjLkiQPIfpK/kYBY65LklZf1gQQU45xuWmP/VQmw==
+"@darraghor/nest-backend-libs@1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.12.0.tgz#29b1007b838319343f838a372f6cd0ee4460414e"
+  integrity sha512-gYzwVA3WhE2osAAvt+1wdY9XGxA/OUlLS2lEe8ErJ2i/qJZqMoXe1FOCP8KExQih5UhjWYpjEW47b2GHv/rMjg==
   dependencies:
     "@nestjs/common" "7.6.18"
     "@nestjs/config" "0.6.3"
