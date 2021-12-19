@@ -386,10 +386,10 @@
     eslint-module-utils "2.7.1"
     reflect-metadata "0.1.13"
 
-"@darraghor/nest-backend-libs@1.12.0":
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.12.0.tgz#29b1007b838319343f838a372f6cd0ee4460414e"
-  integrity sha512-gYzwVA3WhE2osAAvt+1wdY9XGxA/OUlLS2lEe8ErJ2i/qJZqMoXe1FOCP8KExQih5UhjWYpjEW47b2GHv/rMjg==
+"@darraghor/nest-backend-libs@1.16.0":
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.16.0.tgz#b4429ca17cbf9d55a2969989b51097490dd38342"
+  integrity sha512-R/IbaZeIgbvKYHh5N9aFVLMO8vDtL/PZH4c3W0cvVeR8Iwght+++XwGEIUqP982fhpeifVuRZt/asjkoPxcHWg==
   dependencies:
     "@nestjs/common" "7.6.18"
     "@nestjs/config" "0.6.3"
@@ -6553,6 +6553,11 @@ tunnel-agent@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.3.0.tgz#ad681b68f5321ad2827c4cfb1b7d5df2cfe942ee"
   integrity sha1-rWgbaPUyGtKCfEz7G31d8s/pQu4=
+
+twitter-api-v2@1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/twitter-api-v2/-/twitter-api-v2-1.7.2.tgz#56a8213a478e84d8e0e35e23c1714243878b0107"
+  integrity sha512-kN9ADZ6+Qbrg/8Jz9p2VDylvCCLVOwNow8JnJxLrYq0P8+UlCioec5tVBWdcf6Q2GtOO+RwxqeWQUffH1Cm5MA==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
