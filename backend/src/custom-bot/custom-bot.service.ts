@@ -42,14 +42,19 @@ export class CustomBotService {
 
     async findOne(uuid: string, ownerId: string): Promise<CustomBot> {
         try {
-            return this.repository.findOneOrFail({
-                order: { createdDate: "DESC" },
-                where: {
-                    uuid,
-                    ownerId,
-                },
-                relations: ["triggers", "triggers.triggerResults"],
-            });
+            const queryBuilder = this.repository
+                .createQueryBuilder("bot")
+                .leftJoinAndSelect("bot.triggers", "trigger")
+                .leftJoinAndSelect(
+                    "trigger.triggerResults",
+                    "triggerResult",
+                    `"triggerResult"."createdDate" >= NOW() - INTERVAL '2 HOURS'`
+                )
+                .where("bot.ownerId = :ownerId", { ownerId })
+                .andWhere("bot.uuid = :uuid", { uuid });
+
+            const result: CustomBot = await queryBuilder.getOneOrFail();
+            return result;
         } catch (error) {
             this.logger.error(error);
             throw new NotFoundException();
@@ -68,11 +73,21 @@ export class CustomBotService {
             where: { runningState: RunningStateEnum.RUNNING },
             relations: ["triggers"],
         });
-        return allActiveBots.filter((x) => {
-            const nowInSeconds = Date.now() / 1000;
+        return this.filterBotsToRun(allActiveBots, Date.now());
+    }
+
+    filterBotsToRun(bots: CustomBot[], nowDate: number): CustomBot[] {
+        return bots.filter((x) => {
+            const nowInSeconds = nowDate / 1000;
+
             const lastRunInSeconds = x.lastRun.getTime() / 1000;
             const nextRunInSeconds = lastRunInSeconds + x.runEveryInSeconds;
-            return nowInSeconds > nextRunInSeconds && x.triggers.length > 0;
+
+            return (
+                nowInSeconds >= nextRunInSeconds &&
+                x.triggers &&
+                x.triggers.length > 0
+            );
         });
     }
     /**

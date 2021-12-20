@@ -44,6 +44,7 @@ const TriggersList = ({
             <h2 className="pb-6 font-bold text-1xl text-dark-shade">
                 Triggers
             </h2>
+
             {triggers.map((t) => {
                 return (
                     <div
@@ -82,20 +83,26 @@ const TriggersList = ({
                                 </div>
                                 <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">
-                                        Trigger Run Results
+                                        Trigger Run Results (last 2 hours)
                                     </dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                         <p>
                                             Total Runs:{" "}
                                             {t.triggerResults
+                                                ? t.triggerResults.length.toString()
+                                                : "0"}
+                                        </p>
+                                        <p>
+                                            Triggered:{" "}
+                                            {t.triggerResults
                                                 ? t.triggerResults
                                                       .filter(
-                                                          (tr) => !tr.errorState
+                                                          (tr) =>
+                                                              tr.result === true
                                                       )
                                                       .length.toString()
                                                 : "0"}
                                         </p>
-
                                         <p>
                                             Successful:{" "}
                                             {t.triggerResults

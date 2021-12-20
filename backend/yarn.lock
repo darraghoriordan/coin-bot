@@ -386,10 +386,10 @@
     eslint-module-utils "2.7.1"
     reflect-metadata "0.1.13"
 
-"@darraghor/nest-backend-libs@1.12.0":
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.12.0.tgz#29b1007b838319343f838a372f6cd0ee4460414e"
-  integrity sha512-gYzwVA3WhE2osAAvt+1wdY9XGxA/OUlLS2lEe8ErJ2i/qJZqMoXe1FOCP8KExQih5UhjWYpjEW47b2GHv/rMjg==
+"@darraghor/nest-backend-libs@1.16.0":
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.16.0.tgz#b4429ca17cbf9d55a2969989b51097490dd38342"
+  integrity sha512-R/IbaZeIgbvKYHh5N9aFVLMO8vDtL/PZH4c3W0cvVeR8Iwght+++XwGEIUqP982fhpeifVuRZt/asjkoPxcHWg==
   dependencies:
     "@nestjs/common" "7.6.18"
     "@nestjs/config" "0.6.3"
@@ -3915,10 +3915,10 @@ jest-config@^27.4.3:
     pretty-format "^27.4.2"
     slash "^3.0.0"
 
-jest-create-mock-instance@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/jest-create-mock-instance/-/jest-create-mock-instance-1.1.0.tgz#b69e97a4dad34ccebf180424a178217513644d2f"
-  integrity sha1-tp6XpNrTTM6/GAQkoXghdRNkTS8=
+jest-create-mock-instance@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/jest-create-mock-instance/-/jest-create-mock-instance-2.0.0.tgz#3f79a4399af615fc2f186dfa3c9fe13b0589370b"
+  integrity sha512-gW3H87m8hF72JMFPMEorF2jnEyV31XpaOYtDqeRNSwFT73+MNZvbUKQfCbdixxOrCCppToSPmi9gGygIzms6Eg==
 
 jest-diff@^26.0.0:
   version "26.6.2"
@@ -4036,6 +4036,16 @@ jest-jasmine2@^27.4.2:
     jest-util "^27.4.2"
     pretty-format "^27.4.2"
     throat "^6.0.1"
+
+jest-junit@13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-13.0.0.tgz#479be347457aad98ae8a5983a23d7c3ec526c9a3"
+  integrity sha512-JSHR+Dhb32FGJaiKkqsB7AR3OqWKtldLd6ZH2+FJ8D4tsweb8Id8zEVReU4+OlrRO1ZluqJLQEETm+Q6/KilBg==
+  dependencies:
+    mkdirp "^1.0.4"
+    strip-ansi "^6.0.1"
+    uuid "^8.3.2"
+    xml "^1.0.1"
 
 jest-leak-detector@^27.4.2:
   version "27.4.2"
@@ -6554,6 +6564,11 @@ tunnel-agent@~0.3.0:
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.3.0.tgz#ad681b68f5321ad2827c4cfb1b7d5df2cfe942ee"
   integrity sha1-rWgbaPUyGtKCfEz7G31d8s/pQu4=
 
+twitter-api-v2@1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/twitter-api-v2/-/twitter-api-v2-1.7.2.tgz#56a8213a478e84d8e0e35e23c1714243878b0107"
+  integrity sha512-kN9ADZ6+Qbrg/8Jz9p2VDylvCCLVOwNow8JnJxLrYq0P8+UlCioec5tVBWdcf6Q2GtOO+RwxqeWQUffH1Cm5MA==
+
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.4.0.tgz#07b8203bfa7056c0657050e3ccd2c37730bab8f1"
@@ -6732,7 +6747,7 @@ uuid@8.3.1:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.1.tgz#2ba2e6ca000da60fce5a196954ab241131e05a31"
   integrity sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg==
 
-uuid@8.3.2:
+uuid@8.3.2, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
@@ -6962,6 +6977,11 @@ xml2js@^0.4.23:
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~11.0.0"
+
+xml@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
+  integrity sha1-eLpyAgApxbyHuKgaPPzXS0ovweU=
 
 xmlbuilder@~11.0.0:
   version "11.0.1"

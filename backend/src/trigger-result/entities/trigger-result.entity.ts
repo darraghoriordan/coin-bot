@@ -36,7 +36,16 @@ export class TriggerResult {
         default: false,
     })
     @ApiProperty()
+    @Expose()
     public result!: boolean;
+
+    @Column({
+        type: "text",
+        nullable: true,
+    })
+    @ApiPropertyOptional()
+    @Expose()
+    public reason?: string;
 
     @Expose()
     @Column({

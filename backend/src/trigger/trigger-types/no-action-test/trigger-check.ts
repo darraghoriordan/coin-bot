@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { TriggerCheckResult } from "../../dto/triggerCheckReult";
 import { Trigger } from "../../entities/trigger.entity";
 import { TriggerChecker } from "../TriggerChecker";
 import { TriggerTypeEnum } from "../TriggerTypeEnum";
@@ -13,7 +14,10 @@ export class NoActionTestCheck implements TriggerChecker {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async check(trigger: Trigger): Promise<boolean> {
-        return Promise.resolve(true);
+    public async check(trigger: Trigger): Promise<TriggerCheckResult> {
+        const result = new TriggerCheckResult();
+        result.result = true;
+        result.triggerReason = "This trigger always returns true";
+        return Promise.resolve(result);
     }
 }

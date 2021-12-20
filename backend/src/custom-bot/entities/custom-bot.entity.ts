@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { ValidateNested } from "class-validator";
 import {
     AfterLoad,
     AfterInsert,
@@ -46,7 +45,6 @@ export class CustomBot {
         onDelete: "CASCADE",
     })
     @ApiProperty({ isArray: true, type: () => Trigger })
-    @ValidateNested({ each: true })
     triggers!: Trigger[];
 
     @ApiProperty()

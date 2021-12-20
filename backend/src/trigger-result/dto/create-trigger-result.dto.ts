@@ -5,6 +5,9 @@ export class CreateTriggerResultDto {
     public result!: boolean;
 
     @ApiProperty()
+    public triggerResultReason!: string;
+
+    @ApiProperty()
     public errorState!: boolean;
 
     @ApiPropertyOptional()

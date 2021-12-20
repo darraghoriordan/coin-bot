@@ -32,7 +32,7 @@ export class BotTriggerActivationService {
      * This should all be shifted off to some async handler
      * @returns
      */
-    @Cron(CronExpression.EVERY_10_MINUTES)
+    @Cron(CronExpression.EVERY_MINUTE)
     async triggerAll(): Promise<void> {
         const botsToRun = await this.customBotService.getAllBotsToRun();
 
@@ -52,17 +52,19 @@ export class BotTriggerActivationService {
                     x.shouldHandle(t)
                 );
                 if (!triggerCheckMethod) {
-                    this.logger.error("Couldnt find handler for trigger", t);
+                    this.logger.error("Couldn't find handler for trigger", t);
                     throw new Error("Couldn't run trigger");
                 }
                 const shouldRunAction = await triggerCheckMethod.check(t);
                 const triggerResult = new CreateTriggerResultDto();
-                triggerResult.result = shouldRunAction;
+                triggerResult.result = shouldRunAction.result;
+                triggerResult.triggerResultReason =
+                    shouldRunAction.triggerReason;
                 triggerResult.triggerId = t.id;
 
                 const savedTriggerResult =
                     await this.triggerResultService.create(triggerResult);
-                allTriggerResults.push(savedTriggerResult.result);
+                allTriggerResults.push(savedTriggerResult);
             } catch (error) {
                 this.logger.error("Running trigger failed with exception", {
                     trigger: t,
@@ -71,16 +73,22 @@ export class BotTriggerActivationService {
                 });
             }
         }
-        if (allTriggerResults.every((x) => x === true)) {
+        if (allTriggerResults.every((x) => x.result === true)) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
             const p: Person = await this.personService.findOneByUuid(
                 bot.ownerId
             );
+            const reasons = allTriggerResults
+                .map((r) => (r.reason ? r.reason : ""))
+                .join("/r/n");
             await this.emailService.sendMail(
                 [p.email],
                 [],
                 `Bot Triggered - ${bot.name}`,
-                `This bot was triggered at ${new Date().toUTCString()}`,
+                // prettier ignore
+                `This bot was triggered at ${new Date().toUTCString()} with the following results: 
+${reasons}
+`,
                 "TriggerActivation"
             );
         }

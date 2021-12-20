@@ -5,6 +5,7 @@ import {
     AuthzModule,
     DatabaseModule,
     EmailClientModule,
+    OrganisationModule,
 } from "@darraghor/nest-backend-libs";
 import { TriggerModule } from "./trigger/trigger.module";
 import { TriggerResultModule } from "./trigger-result/trigger-result.module";
@@ -16,6 +17,7 @@ import { ScheduleModule } from "@nestjs/schedule";
     imports: [
         CoreModule,
         DatabaseModule,
+        OrganisationModule,
         AuthzModule,
         EmailClientModule,
         TriggerModule,

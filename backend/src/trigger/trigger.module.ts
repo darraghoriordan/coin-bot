@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CustomBot } from "../custom-bot/entities/custom-bot.entity";
+import { TwitterSearchModule } from "../twitter-search/twitter-search.module";
 import { Trigger } from "./entities/trigger.entity";
 import TriggerMetaMapper from "./trigger-meta-mapper";
 import { NoActionTestCheck } from "./trigger-types/no-action-test/trigger-check";
@@ -10,7 +11,10 @@ import { TriggerController } from "./trigger.controller";
 import { TriggerService } from "./trigger.service";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Trigger, CustomBot])],
+    imports: [
+        TypeOrmModule.forFeature([Trigger, CustomBot]),
+        TwitterSearchModule,
+    ],
     providers: [
         TriggerCheckerProvider,
         TriggerService,

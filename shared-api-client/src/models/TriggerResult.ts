@@ -39,6 +39,12 @@ export interface TriggerResult {
     result: boolean;
     /**
      * 
+     * @type {string}
+     * @memberof TriggerResult
+     */
+    reason?: string;
+    /**
+     * 
      * @type {boolean}
      * @memberof TriggerResult
      */
@@ -88,6 +94,7 @@ export function TriggerResultFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': json['id'],
         'uuid': json['uuid'],
         'result': json['result'],
+        'reason': !exists(json, 'reason') ? undefined : json['reason'],
         'errorState': json['errorState'],
         'errorMessage': !exists(json, 'errorMessage') ? undefined : json['errorMessage'],
         'triggerId': json['triggerId'],
@@ -109,6 +116,7 @@ export function TriggerResultToJSON(value?: TriggerResult | null): any {
         'id': value.id,
         'uuid': value.uuid,
         'result': value.result,
+        'reason': value.reason,
         'errorState': value.errorState,
         'errorMessage': value.errorMessage,
         'triggerId': value.triggerId,

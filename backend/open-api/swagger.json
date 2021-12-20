@@ -172,6 +172,9 @@
           "result": {
             "type": "boolean"
           },
+          "reason": {
+            "type": "string"
+          },
           "errorState": {
             "type": "boolean"
           },
@@ -883,6 +886,61 @@
         },
         "tags": [
           "Triggers"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/twitter-client": {
+      "get": {
+        "operationId": "TwitterClientController_findAll",
+        "parameters": [
+          {
+            "name": "twitterName",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "since",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
         ],
         "security": [
           {
