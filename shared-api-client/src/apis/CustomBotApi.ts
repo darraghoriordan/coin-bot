@@ -43,6 +43,12 @@ export interface CustomBotControllerUpdateRequest {
     updateCustomBotDto: UpdateCustomBotDto;
 }
 
+export interface TwitterClientControllerFindAllRequest {
+    twitterName: string;
+    query: string;
+    since: Date;
+}
+
 /**
  * CustomBotApi - interface
  * 
@@ -114,6 +120,21 @@ export interface CustomBotApiInterface {
     /**
      */
     customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest, initOverrides?: RequestInit): Promise<CustomBot>;
+
+    /**
+     * 
+     * @param {string} twitterName 
+     * @param {string} query 
+     * @param {Date} since 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomBotApiInterface
+     */
+    twitterClientControllerFindAllRaw(requestParameters: TwitterClientControllerFindAllRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<object>>>;
+
+    /**
+     */
+    twitterClientControllerFindAll(requestParameters: TwitterClientControllerFindAllRequest, initOverrides?: RequestInit): Promise<Array<object>>;
 
 }
 
@@ -304,6 +325,62 @@ export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterfa
      */
     async customBotControllerUpdate(requestParameters: CustomBotControllerUpdateRequest, initOverrides?: RequestInit): Promise<CustomBot> {
         const response = await this.customBotControllerUpdateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async twitterClientControllerFindAllRaw(requestParameters: TwitterClientControllerFindAllRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<object>>> {
+        if (requestParameters.twitterName === null || requestParameters.twitterName === undefined) {
+            throw new runtime.RequiredError('twitterName','Required parameter requestParameters.twitterName was null or undefined when calling twitterClientControllerFindAll.');
+        }
+
+        if (requestParameters.query === null || requestParameters.query === undefined) {
+            throw new runtime.RequiredError('query','Required parameter requestParameters.query was null or undefined when calling twitterClientControllerFindAll.');
+        }
+
+        if (requestParameters.since === null || requestParameters.since === undefined) {
+            throw new runtime.RequiredError('since','Required parameter requestParameters.since was null or undefined when calling twitterClientControllerFindAll.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.twitterName !== undefined) {
+            queryParameters['twitterName'] = requestParameters.twitterName;
+        }
+
+        if (requestParameters.query !== undefined) {
+            queryParameters['query'] = requestParameters.query;
+        }
+
+        if (requestParameters.since !== undefined) {
+            queryParameters['since'] = (requestParameters.since as any).toISOString();
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/twitter-client`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     */
+    async twitterClientControllerFindAll(requestParameters: TwitterClientControllerFindAllRequest, initOverrides?: RequestInit): Promise<Array<object>> {
+        const response = await this.twitterClientControllerFindAllRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

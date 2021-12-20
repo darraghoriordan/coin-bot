@@ -57,12 +57,12 @@ export class BotTriggerActivationService {
                 }
                 const shouldRunAction = await triggerCheckMethod.check(t);
                 const triggerResult = new CreateTriggerResultDto();
-                triggerResult.result = shouldRunAction;
+                triggerResult.result = shouldRunAction.result;
                 triggerResult.triggerId = t.id;
 
                 const savedTriggerResult =
                     await this.triggerResultService.create(triggerResult);
-                allTriggerResults.push(savedTriggerResult.result);
+                allTriggerResults.push(savedTriggerResult);
             } catch (error) {
                 this.logger.error("Running trigger failed with exception", {
                     trigger: t,
@@ -71,7 +71,7 @@ export class BotTriggerActivationService {
                 });
             }
         }
-        if (allTriggerResults.every((x) => x === true)) {
+        if (allTriggerResults.every((x) => x.result === true)) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
             const p: Person = await this.personService.findOneByUuid(
                 bot.ownerId
@@ -80,7 +80,10 @@ export class BotTriggerActivationService {
                 [p.email],
                 [],
                 `Bot Triggered - ${bot.name}`,
-                `This bot was triggered at ${new Date().toUTCString()}`,
+                // prettier ignore
+                `This bot was triggered at ${new Date().toUTCString()} with the following results
+${allTriggerResults.map((r) => r.reason && r.reason?.toString()).join("/r/n")}
+`,
                 "TriggerActivation"
             );
         }

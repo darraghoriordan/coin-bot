@@ -39,6 +39,14 @@ export class TriggerResult {
     @Expose()
     public result!: boolean;
 
+    @Column({
+        type: "text",
+        nullable: true,
+    })
+    @ApiPropertyOptional()
+    @Expose()
+    public reason?: string;
+
     @Expose()
     @Column({
         type: "boolean",

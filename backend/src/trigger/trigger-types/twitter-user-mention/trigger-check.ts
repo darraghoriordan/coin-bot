@@ -1,6 +1,7 @@
 import { CoreLoggerService } from "@darraghor/nest-backend-libs";
 import { Injectable } from "@nestjs/common";
 import { TwitterSearchService } from "../../../twitter-search/twitter-search.service";
+import { TriggerCheckResult } from "../../dto/triggerCheckReult";
 import { Trigger } from "../../entities/trigger.entity";
 import { TriggerChecker } from "../TriggerChecker";
 import { TriggerTypeEnum } from "../TriggerTypeEnum";
@@ -20,7 +21,7 @@ export class TwitterUserMentionCheck implements TriggerChecker {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async check(trigger: Trigger): Promise<boolean> {
+    public async check(trigger: Trigger): Promise<TriggerCheckResult> {
         const meta = trigger.meta as TwitterUserMentionMeta;
         const { mentionText, twitterUserName } = meta;
         const trimmedTwitterUsername = twitterUserName.replace(/@/, "");
@@ -37,7 +38,19 @@ export class TwitterUserMentionCheck implements TriggerChecker {
             meta,
             lastRun,
         });
+        if (tweets.length <= 0) {
+            const result = new TriggerCheckResult();
+            result.result = false;
+            result.triggerReason = "No tweets found";
 
-        return tweets.length > 0;
+            return result;
+        }
+        const result = new TriggerCheckResult();
+        result.result = true;
+        result.triggerReason = `The following tweets were found: ${tweets
+            .map((t) => t.text)
+            .join(",")}`;
+
+        return result;
     }
 }

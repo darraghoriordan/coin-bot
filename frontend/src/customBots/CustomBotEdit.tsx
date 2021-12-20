@@ -52,15 +52,13 @@ const CustomBotEdit = (): JSX.Element => {
                 runningState: data.runningState,
             }}
             validationSchema={Yup.object({
-                botName: Yup.string()
-                    .required("This is required")
-                    .min(1, "This is required"),
+                botName: Yup.string().required("This is required").min(3),
                 runEveryInSeconds: Yup.number()
                     .transform((num) => (num <= 0 ? undefined : num))
                     .integer()
                     .required()
-                    .min(1, "This one is required")
-                    .max(999999999, "Max is 999999999"),
+                    .min(120)
+                    .max(86400),
             })}
             onSubmit={(values, { setSubmitting }) => {
                 toggleSubmitting(true);

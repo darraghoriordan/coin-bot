@@ -49,7 +49,7 @@ export class CustomBotService {
                 .where("bot.ownerId = :ownerId", { ownerId })
                 .andWhere("bot.uuid = :uuid", { uuid })
                 .andWhere(
-                    `"triggerResult"."createdDate" >= NOW() - INTERVAL '24 HOURS'`
+                    `"triggerResult"."createdDate" >= NOW() - INTERVAL '2 HOURS'`
                 );
 
             const result: CustomBot = await queryBuilder.getOneOrFail();
