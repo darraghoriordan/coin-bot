@@ -31,6 +31,7 @@
     "dependencies": {
         "@darraghor/nest-backend-libs": "1.16.0",
         "@nestjs/common": "7.6.18",
+        "@nestjs/cli": "7.6.0",
         "@nestjs/config": "0.6.3",
         "@nestjs/core": "7.6.18",
         "@nestjs/passport": "7.1.6",
@@ -60,7 +61,6 @@
     },
     "devDependencies": {
         "@darraghor/eslint-plugin-nestjs-typed": "3.8.0",
-        "@nestjs/cli": "7.6.0",
         "@nestjs/schematics": "7.3.1",
         "@nestjs/testing": "7.6.18",
         "@types/auth0": "2.33.4",
