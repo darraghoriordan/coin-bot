@@ -52,12 +52,14 @@ export class BotTriggerActivationService {
                     x.shouldHandle(t)
                 );
                 if (!triggerCheckMethod) {
-                    this.logger.error("Couldnt find handler for trigger", t);
+                    this.logger.error("Couldn't find handler for trigger", t);
                     throw new Error("Couldn't run trigger");
                 }
                 const shouldRunAction = await triggerCheckMethod.check(t);
                 const triggerResult = new CreateTriggerResultDto();
                 triggerResult.result = shouldRunAction.result;
+                triggerResult.triggerResultReason =
+                    shouldRunAction.triggerReason;
                 triggerResult.triggerId = t.id;
 
                 const savedTriggerResult =
@@ -76,13 +78,16 @@ export class BotTriggerActivationService {
             const p: Person = await this.personService.findOneByUuid(
                 bot.ownerId
             );
+            const reasons = allTriggerResults
+                .map((r) => (r.reason ? r.reason : ""))
+                .join("/r/n");
             await this.emailService.sendMail(
                 [p.email],
                 [],
                 `Bot Triggered - ${bot.name}`,
                 // prettier ignore
-                `This bot was triggered at ${new Date().toUTCString()} with the following results
-${allTriggerResults.map((r) => r.reason && r.reason?.toString()).join("/r/n")}
+                `This bot was triggered at ${new Date().toUTCString()} with the following results: 
+${reasons}
 `,
                 "TriggerActivation"
             );

@@ -44,6 +44,7 @@ const TriggersList = ({
             <h2 className="pb-6 font-bold text-1xl text-dark-shade">
                 Triggers
             </h2>
+
             {triggers.map((t) => {
                 return (
                     <div

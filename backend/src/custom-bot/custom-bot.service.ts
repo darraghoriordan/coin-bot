@@ -45,12 +45,13 @@ export class CustomBotService {
             const queryBuilder = this.repository
                 .createQueryBuilder("bot")
                 .leftJoinAndSelect("bot.triggers", "trigger")
-                .leftJoinAndSelect("trigger.triggerResults", "triggerResult")
-                .where("bot.ownerId = :ownerId", { ownerId })
-                .andWhere("bot.uuid = :uuid", { uuid })
-                .andWhere(
+                .leftJoinAndSelect(
+                    "trigger.triggerResults",
+                    "triggerResult",
                     `"triggerResult"."createdDate" >= NOW() - INTERVAL '2 HOURS'`
-                );
+                )
+                .where("bot.ownerId = :ownerId", { ownerId })
+                .andWhere("bot.uuid = :uuid", { uuid });
 
             const result: CustomBot = await queryBuilder.getOneOrFail();
             return result;

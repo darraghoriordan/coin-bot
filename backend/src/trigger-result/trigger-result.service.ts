@@ -22,6 +22,7 @@ export class TriggerResultService {
         });
         const model = this.repository.create({
             result: createTriggerResultDto.result,
+            reason: createTriggerResultDto.triggerResultReason,
             errorMessage: createTriggerResultDto.errorMessage,
             errorState: createTriggerResultDto.errorState,
             triggerId: trigger.id,
