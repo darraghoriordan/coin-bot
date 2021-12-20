@@ -32,7 +32,7 @@ export class BotTriggerActivationService {
      * This should all be shifted off to some async handler
      * @returns
      */
-    @Cron(CronExpression.EVERY_10_MINUTES)
+    @Cron(CronExpression.EVERY_MINUTE)
     async triggerAll(): Promise<void> {
         const botsToRun = await this.customBotService.getAllBotsToRun();
 

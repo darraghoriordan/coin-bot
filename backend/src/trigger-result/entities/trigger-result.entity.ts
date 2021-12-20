@@ -36,6 +36,7 @@ export class TriggerResult {
         default: false,
     })
     @ApiProperty()
+    @Expose()
     public result!: boolean;
 
     @Expose()
