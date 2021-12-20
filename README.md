@@ -55,9 +55,9 @@ ssh -i ~/.ssh/digioceanMacbook root@165.232.148.97
 
 dokku apps:list
 
-dokku config:show coin-bot
+dokku config:show coin-bots
 
-dokku config:set coin-bot AUTH0_DOMAIN=dev-1degfvs2.au.auth0.com KEY=VAL
+dokku config:set coin-bots AUTH0_DOMAIN=dev-1degfvs2.au.auth0.com KEY=VAL
 
 
 ```
