@@ -386,10 +386,10 @@
     eslint-module-utils "2.7.1"
     reflect-metadata "0.1.13"
 
-"@darraghor/nest-backend-libs@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.16.0.tgz#b4429ca17cbf9d55a2969989b51097490dd38342"
-  integrity sha512-R/IbaZeIgbvKYHh5N9aFVLMO8vDtL/PZH4c3W0cvVeR8Iwght+++XwGEIUqP982fhpeifVuRZt/asjkoPxcHWg==
+"@darraghor/nest-backend-libs@1.17.1":
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/@darraghor/nest-backend-libs/-/nest-backend-libs-1.17.1.tgz#16aa985d19d09a205b168af78cb0293ac9ab43c4"
+  integrity sha512-qTU9h9mU/TTTkEY7XjviJNzpySMSxtRx5hhsBoO4eInYwQJy2WvZTRpv/tQeKQBSXk2rANkcJPHp5u2AzECTNA==
   dependencies:
     "@nestjs/common" "7.6.18"
     "@nestjs/config" "0.6.3"

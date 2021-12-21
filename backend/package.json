@@ -29,7 +29,7 @@
         "generate": "sh ./node_modules/@darraghor/nest-backend-libs/dist/open-api-generation/generate.sh"
     },
     "dependencies": {
-        "@darraghor/nest-backend-libs": "1.16.0",
+        "@darraghor/nest-backend-libs": "1.17.1",
         "@nestjs/common": "7.6.18",
         "@nestjs/cli": "7.6.0",
         "@nestjs/config": "0.6.3",
