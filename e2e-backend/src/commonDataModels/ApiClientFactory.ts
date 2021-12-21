@@ -7,7 +7,7 @@ import {
     OrganisationsApi,
     CustomBotApi,
     TriggersApi,
-} from "../../../shared-api-client/dist";
+} from "shared-api-client";
 import { AuthenticatedRequests } from "./AuthenticatedRequests";
 import fetch from "node-fetch";
 
