@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "start": "vite",
-        "build:netlify": "cd ../shared-api-client && yarn --check-files && cd ../frontend && vite build",
+        "build:netlify": "cd ../shared-api-client && yarn --check-files && cd ../frontend && yarn install --check-files && vite build",
         "build": "cd ../shared-api-client && yarn --check-files && cd ../frontend && vite build",
         "serve": "vite preview",
         "test": "vite test"
@@ -49,7 +49,7 @@
         "@testing-library/dom": "8.11.1",
         "@types/jest": "27.0.3",
         "@types/node": "16.11.11",
-    "@types/node-fetch": "2.5.10",
+        "@types/node-fetch": "2.5.10",
         "@types/react": "17.0.37",
         "@types/react-dom": "17.0.11",
         "@types/react-router-dom": "5.3.2",
