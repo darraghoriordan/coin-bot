@@ -14,6 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
+    BinanceAverageAboveMeta,
+    BinanceAverageAboveMetaFromJSON,
+    BinanceAverageAboveMetaFromJSONTyped,
+    BinanceAverageAboveMetaToJSON,
     NoActionTestMeta,
     NoActionTestMetaFromJSON,
     NoActionTestMetaFromJSONTyped,
@@ -42,6 +46,12 @@ export interface AllMetaTypes {
      * @memberof AllMetaTypes
      */
     noActionTestMeta?: NoActionTestMeta;
+    /**
+     * 
+     * @type {BinanceAverageAboveMeta}
+     * @memberof AllMetaTypes
+     */
+    binanceAboveAverageMeta?: BinanceAverageAboveMeta;
 }
 
 export function AllMetaTypesFromJSON(json: any): AllMetaTypes {
@@ -56,6 +66,7 @@ export function AllMetaTypesFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'twitterUserMentionMeta': !exists(json, 'twitterUserMentionMeta') ? undefined : TwitterUserMentionMetaFromJSON(json['twitterUserMentionMeta']),
         'noActionTestMeta': !exists(json, 'noActionTestMeta') ? undefined : NoActionTestMetaFromJSON(json['noActionTestMeta']),
+        'binanceAboveAverageMeta': !exists(json, 'binanceAboveAverageMeta') ? undefined : BinanceAverageAboveMetaFromJSON(json['binanceAboveAverageMeta']),
     };
 }
 
@@ -70,6 +81,7 @@ export function AllMetaTypesToJSON(value?: AllMetaTypes | null): any {
         
         'twitterUserMentionMeta': TwitterUserMentionMetaToJSON(value.twitterUserMentionMeta),
         'noActionTestMeta': NoActionTestMetaToJSON(value.noActionTestMeta),
+        'binanceAboveAverageMeta': BinanceAverageAboveMetaToJSON(value.binanceAboveAverageMeta),
     };
 }
 

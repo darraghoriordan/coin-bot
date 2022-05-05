@@ -58,6 +58,18 @@ export interface TwitterClientControllerFindAllRequest {
 export interface CustomBotApiInterface {
     /**
      * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomBotApiInterface
+     */
+    binanceClientControllerGetAvgPriceRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>>;
+
+    /**
+     */
+    binanceClientControllerGetAvgPrice(initOverrides?: RequestInit): Promise<string>;
+
+    /**
+     * 
      * @param {CreateCustomBotDto} createCustomBotDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -142,6 +154,38 @@ export interface CustomBotApiInterface {
  * 
  */
 export class CustomBotApi extends runtime.BaseAPI implements CustomBotApiInterface {
+
+    /**
+     */
+    async binanceClientControllerGetAvgPriceRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/binance-client/avg-price/btc`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     */
+    async binanceClientControllerGetAvgPrice(initOverrides?: RequestInit): Promise<string> {
+        const response = await this.binanceClientControllerGetAvgPriceRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      */

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AllMetaTypes';
+export * from './BinanceAverageAboveMeta';
 export * from './CreateCustomBotDto';
 export * from './CreateTriggerDto';
 export * from './CustomBot';

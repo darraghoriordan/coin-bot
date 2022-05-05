@@ -12,6 +12,7 @@ src/apis/TriggersApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/AllMetaTypes.ts
+src/models/BinanceAverageAboveMeta.ts
 src/models/CreateCustomBotDto.ts
 src/models/CreateTriggerDto.ts
 src/models/CustomBot.ts
