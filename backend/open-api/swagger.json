@@ -157,6 +157,7 @@
         "type": "string",
         "enum": [
           "TWITTER_USER_MENTION",
+          "BINANCE_AVG_PRICE_ABOVE",
           "NO_ACTION_DEFAULT"
         ]
       },
@@ -268,6 +269,21 @@
           "testString"
         ]
       },
+      "BinanceAverageAboveMeta": {
+        "type": "object",
+        "properties": {
+          "binanceSymbol": {
+            "type": "string"
+          },
+          "aboveLimit": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "binanceSymbol",
+          "aboveLimit"
+        ]
+      },
       "AllMetaTypes": {
         "type": "object",
         "properties": {
@@ -276,6 +292,9 @@
           },
           "noActionTestMeta": {
             "$ref": "#/components/schemas/NoActionTestMeta"
+          },
+          "binanceAboveAverageMeta": {
+            "$ref": "#/components/schemas/BinanceAverageAboveMeta"
           }
         }
       },
@@ -934,6 +953,32 @@
                   "items": {
                     "type": "object"
                   }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Custom Bot"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/binance-client/avg-price/btc": {
+      "get": {
+        "operationId": "BinanceClientController_getAvgPrice",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }

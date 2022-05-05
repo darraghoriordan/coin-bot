@@ -1,3 +1,4 @@
+/* eslint-disable @darraghor/nestjs-typed/all-properties-are-whitelisted */
 import {
     ApiProperty,
     //   getSchemaPath,
@@ -22,6 +23,7 @@ import {
 } from "typeorm";
 import { CustomBot } from "../../custom-bot/entities/custom-bot.entity";
 import { TriggerResult } from "../../trigger-result/entities/trigger-result.entity";
+import { BinanceAverageAboveMeta } from "../trigger-types/binance-avg-above/meta-data";
 import TriggerMeta from "../trigger-types/meta.dto";
 import { NoActionTestMeta } from "../trigger-types/no-action-test/meta-data";
 import { TriggerTypeEnum } from "../trigger-types/TriggerTypeEnum";
@@ -106,7 +108,10 @@ export class Trigger {
     //         { $ref: getSchemaPath(NoActionTestMeta) },
     //     ],
     // })
-    public meta!: TwitterUserMentionMeta | NoActionTestMeta;
+    public meta!:
+        | TwitterUserMentionMeta
+        | NoActionTestMeta
+        | BinanceAverageAboveMeta;
     @Expose()
     @CreateDateColumn()
     @ApiProperty()
